@@ -2,6 +2,7 @@ package com.openclassrooms.joilfull.repository
 
 import com.openclassrooms.joilfull.model.Article
 import com.openclassrooms.joilfull.network.IArticlesAPI
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -22,6 +23,7 @@ class ArticleRepository(
 
         val responseRetrofit = dataService.getArticles()
 
+        delay(5000) // Pour tester le chargement
         //throw Exception("test exception") // Pour tester la gestion d'exception
 
         // si la requête met du temps, pas grave, on est dans une coroutine, le thread principal n'est pas bloqué

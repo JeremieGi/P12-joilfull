@@ -28,33 +28,32 @@ fun ErrorDialog(
    // var bShowDialog by rememberSaveable { mutableStateOf( sMessage.isNotEmpty() ) }
 
    // if (bShowDialog){
+    AlertDialog(
+        onDismissRequest = {
+            // Dismiss the dialog when the user clicks outside the dialog or on the back button.
+            //bShowDialog = false
+            activity.finish()
+        },
+        title = { Text(text = stringResource(R.string.erreur)) },
+        text = { Text(text = sMessage) },
+        modifier = modifier,
 
-        AlertDialog(
-            onDismissRequest = {
-                // Dismiss the dialog when the user clicks outside the dialog or on the back button.
-                //bShowDialog = false
-                activity.finish()
-            },
-            title = { Text(text = stringResource(R.string.erreur)) },
-            text = { Text(text = sMessage) },
-            modifier = modifier,
-
-            dismissButton =  {
-                TextButton(
-                    onClick = {
-                        activity.finish()
-                    }
-                ) {
-                    Text(text = stringResource(R.string.fermer))
+        dismissButton =  {
+            TextButton(
+                onClick = {
+                    activity.finish()
                 }
-            },
-
-            confirmButton = {
-                TextButton(onClick = onClickRetryP ) {
-                    Text(text = stringResource(R.string.reessayer))
-                }
+            ) {
+                Text(text = stringResource(R.string.fermer))
             }
-        )
+        },
+
+        confirmButton = {
+            TextButton(onClick = onClickRetryP ) {
+                Text(text = stringResource(R.string.reessayer))
+            }
+        }
+    )
 
     //}
 
