@@ -50,13 +50,17 @@ fun MainScreen(
             val error = (uiState as ArticleListUIState.Error).exception.message ?: "Unknown error"
             ErrorDialog(
                 modifier=modifier,
-                sMessage = error)
+                sMessage = error,
+                onClickRetryP = { viewModel.loadArticlesList() }
+            )
+
 
         }
     }
 
 }
 
+// TODO : Cette preview ne marche pas
 @Preview(
     showBackground = true
 )
