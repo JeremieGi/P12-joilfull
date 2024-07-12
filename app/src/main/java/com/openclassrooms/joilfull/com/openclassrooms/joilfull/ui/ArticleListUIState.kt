@@ -8,7 +8,7 @@ sealed class ArticleListUIState  {
 
     //val selectedArticle : Article? = null
 
-    object isLoading : ArticleListUIState()
+    data object IsLoading : ArticleListUIState()
 
     data class Success(
         val articles: List<Article>

@@ -13,21 +13,25 @@ import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
-class ArticleListViewModel  @Inject constructor(
+class MainViewModel  @Inject constructor(
 
     private val articleRepository : ArticleRepository
 
 ) : ViewModel() {
 
 
-    // UI state
-    private val _uiState = MutableStateFlow<ArticleListUIState>(ArticleListUIState.isLoading)
+    // UI state - Chargement par défaut
+    private val _uiState = MutableStateFlow<ArticleListUIState>(ArticleListUIState.IsLoading)
     // Backing property to avoid state updates from other classes
     val uiState: StateFlow<ArticleListUIState> = _uiState.asStateFlow() // Accès en lecture seule de l'extérieur
 
 
+    /**
+     * Chargement des articles depuis le repository
+     */
     fun loadArticlesList() {
 
+        // Lecture du flow et écriture dans le UIState
         articleRepository.loadArticlesList().onEach { resultAPI ->
 
             // En fonction du résultat de l'API
@@ -39,7 +43,7 @@ class ArticleListViewModel  @Inject constructor(
 
                 // En chargement
                 ResultCustom.Loading -> {
-                    _uiState.value = ArticleListUIState.isLoading
+                    _uiState.value = ArticleListUIState.IsLoading
                 }
 
                 // Succès

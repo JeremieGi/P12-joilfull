@@ -14,6 +14,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
+/**
+ * Injection de dépendance pour la partie Retrofit
+ */
 
 @Module
 @InstallIn(SingletonComponent::class)

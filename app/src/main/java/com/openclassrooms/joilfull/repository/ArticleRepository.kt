@@ -11,6 +11,9 @@ class ArticleRepository(
 )
 {
 
+    /**
+     * Renvoie la liste des articles dans un Flow
+     */
     fun loadArticlesList() : Flow<ResultCustom<List<Article>>> = flow {
 
         emit(ResultCustom.Loading)
@@ -44,6 +47,10 @@ class ArticleRepository(
             // Ajout au flow
             emit(ResultCustom.Success(resultListCandidate))
 
+        }
+        else{
+            emit(ResultCustom.Failure("Reponse HTTP avec code erreur ${responseRetrofit.code()}" +
+                    " : ${responseRetrofit.message()} "))
         }
 
 

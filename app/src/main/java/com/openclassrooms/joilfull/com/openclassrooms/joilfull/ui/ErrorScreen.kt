@@ -15,7 +15,7 @@ import com.openclassrooms.joilfull.R
 import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
 
 /*
- * Creates and shows an AlertDialog
+ * Error in DialogAlert
  */
 @Composable
 fun ErrorDialog(

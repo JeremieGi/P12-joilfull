@@ -3,5 +3,5 @@
     <string name="erreur">Erreur</string>
     <string name="ok">OK</string>
     <string name="erreur_pr_visualis_e">Erreur prévisualisée</string>
-    <string name="chargement">Chargement…</string>
+    <string name="chargement">Chargement en cours …</string>
 </resources>
