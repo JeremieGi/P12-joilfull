@@ -32,6 +32,7 @@ android {
         }
     }
     compileOptions {
+
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
 
@@ -51,6 +52,7 @@ android {
         }
     }
 }
+
 
 dependencies {
 
@@ -82,8 +84,8 @@ dependencies {
 
 
     // Glide
-    implementation(libs.glide)
-    annotationProcessor(libs.compiler)
+    implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
+
 
     //Hilt
     implementation(libs.hilt.android)
