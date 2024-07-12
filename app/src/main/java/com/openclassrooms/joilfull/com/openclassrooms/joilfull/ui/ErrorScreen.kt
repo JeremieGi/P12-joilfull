@@ -4,6 +4,10 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -19,20 +23,21 @@ fun ErrorDialog(
     modifier: Modifier = Modifier
 ) {
 
-    if (sMessage.isNotEmpty()){
+    var bShowDialog by rememberSaveable { mutableStateOf( sMessage.isNotEmpty() ) }
+
+    if (bShowDialog){
 
         AlertDialog(
             onDismissRequest = {
-                // Dismiss the dialog when the user clicks outside the dialog or on the back
-                // button. If you want to disable that functionality, simply use an empty
-                // onCloseRequest.
+                // Dismiss the dialog when the user clicks outside the dialog or on the back button.
+                bShowDialog = false
             },
             title = { Text(text = stringResource(R.string.erreur)) },
             text = { Text(text = sMessage) },
             modifier = modifier,
 
             confirmButton = {
-                TextButton(onClick = {}) {
+                TextButton(onClick = { bShowDialog = false }) {
                     Text(text = stringResource(R.string.ok))
                 }
             }

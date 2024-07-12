@@ -19,6 +19,8 @@ class ArticleRepository(
 
         val responseRetrofit = dataService.getArticles()
 
+        //throw Exception("test exception") // Pour tester la gestion d'exception
+
         // si la requête met du temps, pas grave, on est dans une coroutine, le thread principal n'est pas bloqué
 
         if (responseRetrofit.isSuccessful){
