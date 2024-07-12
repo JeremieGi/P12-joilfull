@@ -37,10 +37,10 @@ fun MainScreen(
         // Récupération des données avec succès
         is ArticleListUIState.Success -> {
 
-            val articles = (uiState as ArticleListUIState.Success).articles
+            val listCategoryAndArticles = (uiState as ArticleListUIState.Success).categoryAndArticles
             ArticleListScreen(
                 modifier=modifier,
-                listArticles = articles)
+                listCategoryAndArticles = listCategoryAndArticles)
 
         }
 

@@ -2,6 +2,7 @@ package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui
 
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -10,6 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.openclassrooms.joilfull.model.Article
 import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
 import androidx.compose.foundation.lazy.items
+import com.openclassrooms.joilfull.model.CategoryAndArticles
 
 /**
  * Ecran affichant une liste d'article
@@ -17,21 +19,48 @@ import androidx.compose.foundation.lazy.items
 
 @Composable
 fun ArticleListScreen(
-    listArticles : List<Article>,
+    listCategoryAndArticles : List<CategoryAndArticles>,
     modifier: Modifier = Modifier
+) {
+
+    Text(
+        modifier = modifier,
+        text = "Liste des ${listCategoryAndArticles.size} categories à implémenter",
+    )
+
+    LazyColumn (modifier = modifier) {
+
+        items(
+            items = listCategoryAndArticles,
+            key = { it.sCategory }
+        ) { categoryAndArticles ->
+            CategoryAndArticlesItemScreen(
+                modifier = modifier,
+                categoryAndArticles = categoryAndArticles)
+        }
+
+    }
+
+
+}
+
+@Composable
+fun CategoryAndArticlesItemScreen(
+    modifier: Modifier = Modifier,
+    categoryAndArticles : CategoryAndArticles
 ) {
 
     Column (modifier = modifier) {
 
         Text(
-            text = "Liste des ${listArticles.size} articles à implémenter",
+            text = categoryAndArticles.sCategory
         )
 
         LazyRow(
             modifier = modifier
         ) {
             items(
-                items = listArticles,
+                items = categoryAndArticles.listArticles,
                 key = { it.nIDArticle }
             ) { article ->
                 ArticleItemScreen(article)
@@ -40,10 +69,7 @@ fun ArticleListScreen(
 
     }
 
-
 }
-
-
 
 @Preview(
     showBackground = true
@@ -66,9 +92,14 @@ fun ArticleListScreenPreview() {
         listArticlesMut.add(art)
     }
 
+    val categ = CategoryAndArticles(
+        sCategory = "Catégorie preview",
+        listArticles = listArticlesMut.toList()
+    )
+
 
     JoilfullTheme {
-        ArticleListScreen(listArticlesMut.toList())
+        CategoryAndArticlesItemScreen(categoryAndArticles = categ)
     }
 }
 

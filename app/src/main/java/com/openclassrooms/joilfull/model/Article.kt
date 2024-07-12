@@ -11,8 +11,4 @@ class Article (
     val dOriginalPrice : Double,
     val bFavorite : Boolean
 
-){
-
-
-
-}
+)

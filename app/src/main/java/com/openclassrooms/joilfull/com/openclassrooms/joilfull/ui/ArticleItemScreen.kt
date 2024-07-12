@@ -2,14 +2,11 @@ package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.material3.Card
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -38,8 +35,6 @@ fun ArticleItemScreen(
             modifier = Modifier.fillMaxSize(),
         ) {
 
-            Text(text = "en haut")
-
             GlideImage(
                 model = article.sURLPicture,
                 contentDescription = article.sDescriptionPicture,
@@ -51,8 +46,6 @@ fun ArticleItemScreen(
                         color = Color.Black,
                     )
             )
-
-
 
             Text(text = article.sName)
         }

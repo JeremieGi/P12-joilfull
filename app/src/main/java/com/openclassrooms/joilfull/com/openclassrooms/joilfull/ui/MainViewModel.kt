@@ -31,6 +31,32 @@ class MainViewModel  @Inject constructor(
      */
     fun loadArticlesList() {
 
+        articleRepository.loadArticlesListSortByCategory().onEach { resultAPI ->
+
+            // En fonction du résultat de l'API
+            when (resultAPI) {
+
+                // Echec
+                is ResultCustom.Failure ->
+                    _uiState.value = ArticleListUIState.Error(Exception(resultAPI.errorMessage))
+
+                // En chargement
+                ResultCustom.Loading -> {
+                    _uiState.value = ArticleListUIState.IsLoading
+                }
+
+                // Succès
+                is ResultCustom.Success -> {
+                   _uiState.value = ArticleListUIState.Success(resultAPI.value)
+
+                }
+
+
+            }
+
+        }.launchIn(viewModelScope)
+
+        /*
         // Lecture du flow et écriture dans le UIState
         articleRepository.loadArticlesList().onEach { resultAPI ->
 
@@ -56,6 +82,8 @@ class MainViewModel  @Inject constructor(
             }
 
         }.launchIn(viewModelScope)
+        */
+
     }
 
 
