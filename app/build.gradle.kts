@@ -72,6 +72,9 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    // Gestion des tailles d'écran
+    implementation("androidx.compose.material3:material3-window-size-class:1.2.1")
+
     // ViewModel avec Compose
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 

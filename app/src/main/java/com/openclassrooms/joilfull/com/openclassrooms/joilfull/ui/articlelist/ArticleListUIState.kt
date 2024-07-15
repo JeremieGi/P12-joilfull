@@ -1,11 +1,10 @@
-package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui
+package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articlelist
 
 import com.openclassrooms.joilfull.model.CategoryAndArticles
 
 
 sealed class ArticleListUIState  {
 
-    //val selectedArticle : Article? = null
 
     data object IsLoading : ArticleListUIState()
 
@@ -15,6 +14,7 @@ sealed class ArticleListUIState  {
 
     data class Error(val exception: Throwable) : ArticleListUIState() // Error = sous-classe de ArticleListUIState
 
+    //val selectedArticle : Article? = null
 
 }
 

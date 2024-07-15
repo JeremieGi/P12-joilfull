@@ -1,4 +1,4 @@
-package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui
+package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -13,14 +13,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.openclassrooms.joilfull.model.Article
 import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
 import com.bumptech.glide.integration.compose.GlideImage
 
+
+@Composable
+fun ArticleScreen(
+    articleId: String,
+    viewModel: ArticleViewModel = viewModel()
+) {
+
+    val article = viewModel.getArticleById(articleId)
+
+    ArticleItemComposable(article = article)
+}
+
+
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun ArticleItemScreen(
+fun ArticleItemComposable(
     article : Article,
     modifier: Modifier = Modifier
 ) {
@@ -80,6 +94,6 @@ fun ArticleScreenPreview() {
 
 
     JoilfullTheme {
-        ArticleItemScreen(article)
+        ArticleItemComposable(article)
     }
 }

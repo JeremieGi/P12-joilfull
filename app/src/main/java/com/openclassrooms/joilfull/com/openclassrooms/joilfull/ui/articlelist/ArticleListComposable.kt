@@ -1,4 +1,4 @@
-package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui
+package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articlelist
 
 
 import androidx.compose.foundation.layout.Column
@@ -11,6 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.openclassrooms.joilfull.model.Article
 import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
 import androidx.compose.foundation.lazy.items
+import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.ArticleItemComposable
 import com.openclassrooms.joilfull.model.CategoryAndArticles
 
 /**
@@ -18,7 +19,7 @@ import com.openclassrooms.joilfull.model.CategoryAndArticles
  */
 
 @Composable
-fun ArticleListScreen(
+fun ArticleListComposable(
     listCategoryAndArticles : List<CategoryAndArticles>,
     modifier: Modifier = Modifier
 ) {
@@ -63,7 +64,7 @@ fun CategoryAndArticlesItemScreen(
                 items = categoryAndArticles.listArticles,
                 key = { it.nIDArticle }
             ) { article ->
-                ArticleItemScreen(article)
+                ArticleItemComposable(article)
             }
         }
 

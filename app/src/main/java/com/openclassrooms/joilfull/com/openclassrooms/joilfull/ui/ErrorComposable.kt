@@ -17,7 +17,7 @@ import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
  * Error in DialogAlert
  */
 @Composable
-fun ErrorDialog(
+fun ErrorComposable(
     sMessage: String,
     modifier: Modifier = Modifier,
     onClickRetryP: () -> Unit
@@ -64,7 +64,7 @@ fun ErrorDialog(
 @Composable
 fun ErrorDialogPreview() {
     JoilfullTheme {
-        ErrorDialog(
+        ErrorComposable(
             stringResource(R.string.erreur_pr_visualis_e),
             onClickRetryP = { }
         )

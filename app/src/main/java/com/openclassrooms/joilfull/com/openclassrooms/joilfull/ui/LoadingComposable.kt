@@ -19,7 +19,7 @@ import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
  */
 
 @Composable
-fun LoadingScreen(modifier: Modifier = Modifier){
+fun LoadingComposable(modifier: Modifier = Modifier){
 
     Column(
         modifier = modifier
@@ -50,6 +50,6 @@ fun LoadingScreen(modifier: Modifier = Modifier){
 @Composable
 fun LoadingScreenPreview() {
     JoilfullTheme {
-        LoadingScreen()
+        LoadingComposable()
     }
 }

@@ -1,4 +1,4 @@
-package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui
+package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articlelist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel  @Inject constructor(
+class ArticleListViewModel  @Inject constructor(
 
     private val articleRepository : ArticleRepository
 
@@ -55,34 +55,6 @@ class MainViewModel  @Inject constructor(
             }
 
         }.launchIn(viewModelScope)
-
-        /*
-        // Lecture du flow et écriture dans le UIState
-        articleRepository.loadArticlesList().onEach { resultAPI ->
-
-            // En fonction du résultat de l'API
-            when (resultAPI) {
-
-                // Echec
-                is ResultCustom.Failure ->
-                    _uiState.value = ArticleListUIState.Error(Exception(resultAPI.errorMessage))
-
-                // En chargement
-                ResultCustom.Loading -> {
-                    _uiState.value = ArticleListUIState.IsLoading
-                }
-
-                // Succès
-                is ResultCustom.Success -> {
-                    _uiState.value = ArticleListUIState.Success(resultAPI.value)
-
-                }
-
-
-            }
-
-        }.launchIn(viewModelScope)
-        */
 
     }
 
