@@ -1,7 +1,11 @@
 package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articlelist
 
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Text
@@ -11,6 +15,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.openclassrooms.joilfull.model.Article
 import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
 import androidx.compose.foundation.lazy.items
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.ArticleItemComposable
 import com.openclassrooms.joilfull.model.CategoryAndArticles
 
@@ -21,22 +27,36 @@ import com.openclassrooms.joilfull.model.CategoryAndArticles
 @Composable
 fun ArticleListComposable(
     listCategoryAndArticles : List<CategoryAndArticles>,
+    onArticleClickP : (Article) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
+    /*
     Text(
         modifier = modifier,
         text = "Liste des ${listCategoryAndArticles.size} categories à implémenter",
     )
+    */
+    LazyColumn (
+        modifier = modifier
 
-    LazyColumn (modifier = modifier) {
+            .background(
+                color = Color.Blue // TODO : A enlever
+            )
+    ) {
 
+        /*
+         * Le DSL de LazyListScope fournit un certain nombre de fonctions permettant de décrire les éléments de la mise en page.
+         * En premier lieu, item() ajoute un seul élément,
+         * et items(Int) ajoute plusieurs éléments :
+         */
         items(
             items = listCategoryAndArticles,
             key = { it.sCategory }
         ) { categoryAndArticles ->
             CategoryAndArticlesItemScreen(
                 modifier = modifier,
+                onArticleClickP = onArticleClickP,
                 categoryAndArticles = categoryAndArticles)
         }
 
@@ -48,6 +68,7 @@ fun ArticleListComposable(
 @Composable
 fun CategoryAndArticlesItemScreen(
     modifier: Modifier = Modifier,
+    onArticleClickP : (Article) -> Unit,
     categoryAndArticles : CategoryAndArticles
 ) {
 
@@ -58,13 +79,21 @@ fun CategoryAndArticlesItemScreen(
         )
 
         LazyRow(
-            modifier = modifier
+            modifier = modifier,
+            contentPadding = PaddingValues(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+
         ) {
             items(
                 items = categoryAndArticles.listArticles,
                 key = { it.nIDArticle }
             ) { article ->
-                ArticleItemComposable(article)
+                ArticleItemComposable(
+                    modifier = modifier,
+                        //.height(75.dp),
+                    article=article,
+                    onArticleClickP=onArticleClickP
+                )
             }
         }
 
@@ -100,7 +129,10 @@ fun ArticleListScreenPreview() {
 
 
     JoilfullTheme {
-        CategoryAndArticlesItemScreen(categoryAndArticles = categ)
+        CategoryAndArticlesItemScreen(
+            categoryAndArticles = categ,
+            onArticleClickP = {}
+        )
     }
 }
 

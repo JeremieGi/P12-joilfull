@@ -2,10 +2,12 @@ package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,7 +30,10 @@ fun ArticleScreen(
 
     val article = viewModel.getArticleById(articleId)
 
-    ArticleItemComposable(article = article)
+    ArticleItemComposable(
+        article = article,
+        onArticleClickP = {} // On Click neutralisé
+    )
 }
 
 
@@ -36,17 +41,22 @@ fun ArticleScreen(
 @Composable
 fun ArticleItemComposable(
     article : Article,
+    onArticleClickP : (Article) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
     Card(
-        modifier = Modifier
-            .padding(horizontal = 16.dp, vertical = 4.dp)
+        modifier = modifier
+            //.padding(horizontal = 16.dp, vertical = 4.dp)
+            //.size(250.dp) // Définir une taille fixe pour toutes les cartes
+            .clickable {
+                onArticleClickP(article)
+            }
 
         //color = MaterialTheme.colorScheme.background
     ) {
         Column (
-            modifier = Modifier.fillMaxSize(),
+            modifier = modifier.fillMaxSize(),
         ) {
 
             GlideImage(
@@ -54,7 +64,8 @@ fun ArticleItemComposable(
                 contentDescription = article.sDescriptionPicture,
                 modifier = modifier
                     .requiredHeight(100.dp)
-                    .background(Color.Red)
+                    //.background(Color.Red)
+                    //.fillMaxSize()
                     .border(
                         width = 10.dp,
                         color = Color.Black,
@@ -94,6 +105,9 @@ fun ArticleScreenPreview() {
 
 
     JoilfullTheme {
-        ArticleItemComposable(article)
+        ArticleItemComposable(
+            article = article,
+            onArticleClickP = {}
+        )
     }
 }

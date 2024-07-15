@@ -1,5 +1,7 @@
 package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articlelist
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -13,6 +15,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.ErrorComposable
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.LoadingComposable
+import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.ArticleItemComposable
+import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.bTablet
 import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
 
 
@@ -46,17 +50,42 @@ fun articleListScreen(
         // Récupération des données avec succès
         is ArticleListUIState.Success -> {
 
-
-            val listCategoryAndArticles = (uiState as ArticleListUIState.Success).categoryAndArticles
-            ArticleListComposable(
+            Row(
                 modifier=modifier,
-                listCategoryAndArticles = listCategoryAndArticles
-            )
+            ){
 
-            // En mode tablette
-            if (windowSize.widthSizeClass == WindowWidthSizeClass.Expanded) {
-                // Selected item TODO
+                val listCategoryAndArticles = (uiState as ArticleListUIState.Success).categoryAndArticles
+                ArticleListComposable(
+                    modifier=modifier,
+                    onArticleClickP = viewModel::selectArticle,
+                    listCategoryAndArticles = listCategoryAndArticles
+                )
+
+                // En mode tablette
+                // Et un article est sélectionné
+                val selectedArticle = (uiState as ArticleListUIState.Success).selectedArticle
+                if (selectedArticle != null){
+
+                    if (bTablet(windowSize)) {
+
+                        // Affichage de l'article dans l'écran
+                        ArticleItemComposable(
+                            modifier=modifier,
+                            article = selectedArticle,
+                            onArticleClickP = {}
+                        )
+
+                    }
+                    else{
+                        // TODO : Ouverture dans une autre fenêtre
+                    }
+
+                }
+
+                
             }
+
+           
         }
 
         // Exception

@@ -2,6 +2,7 @@ package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articlelist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.openclassrooms.joilfull.model.Article
 import com.openclassrooms.joilfull.repository.ArticleRepository
 import com.openclassrooms.joilfull.repository.ResultCustom
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -55,6 +56,18 @@ class ArticleListViewModel  @Inject constructor(
             }
 
         }.launchIn(viewModelScope)
+
+    }
+
+    fun selectArticle(article: Article) {
+
+        val currentState = _uiState.value
+        // Si on est dans un état de succès
+        if (currentState is ArticleListUIState.Success) {
+            _uiState.value = currentState.copy(
+                selectedArticle = article)
+
+        }
 
     }
 
