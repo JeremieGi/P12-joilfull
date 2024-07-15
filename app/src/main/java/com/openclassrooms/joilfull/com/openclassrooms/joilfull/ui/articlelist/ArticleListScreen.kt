@@ -2,6 +2,9 @@ package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articlelist
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -13,11 +16,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.ErrorComposable
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.LoadingComposable
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.ArticleItemComposable
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.bTablet
 import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
+import androidx.hilt.navigation.compose.hiltViewModel
 
 
 /**
@@ -30,13 +36,17 @@ import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
 @Composable
 fun articleListScreen(
     windowSize: WindowSizeClass,
+    navController: NavController,
     modifier: Modifier = Modifier,
-    viewModel : ArticleListViewModel = viewModel()
+    viewModel : ArticleListViewModel = hiltViewModel(),
+
 ) {
 
     // lorsque la valeur uiState est modifiée,
     // la recomposition a lieu pour les composables utilisant la valeur uiState.
     val uiState by viewModel.uiState.collectAsState()
+
+
 
     // En fonction de l'état du viewModel
     when (uiState) {
@@ -77,15 +87,16 @@ fun articleListScreen(
 
                     }
                     else{
-                        // TODO : Ouverture dans une autre fenêtre
+                        // Ouverture dans une autre fenêtre
+                        navController.navigate("articleItem/${selectedArticle.nIDArticle}")
                     }
 
                 }
 
-                
+
             }
 
-           
+
         }
 
         // Exception
@@ -102,6 +113,8 @@ fun articleListScreen(
         }
     }
 
+
+
 }
 
 // TODO : Cette preview ne marche pas
@@ -112,9 +125,12 @@ fun articleListScreen(
 @Composable
 fun articleListScreenPreview() {
 
+    val navController = rememberNavController()
+
     JoilfullTheme {
         articleListScreen(
-            windowSize = WindowSizeClass.calculateFromSize(DpSize(411.dp, 891.dp))
+            windowSize = WindowSizeClass.calculateFromSize(DpSize(411.dp, 891.dp)),
+            navController = navController
         )
     }
 }

@@ -15,6 +15,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.ui.graphics.Color
+import androidx.navigation.compose.rememberNavController
+import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.NavGraph
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -25,29 +27,17 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
 
+            // Détermine la taille de la fenêtre
             val windowSizeClass = calculateWindowSizeClass(this)
 
-            JoilfullTheme {
-                Scaffold(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        /*.background(
-                            color = Color.Red
-                        )*/
-                ) { innerPadding ->
+            // On appelle le NavController
+            val navController = rememberNavController()
+            NavGraph(
+                navController = navController,
+                windowSizeClass = windowSizeClass
+            )
 
-                    // Appelle l'écran principal
-                    articleListScreen(
-                        windowSize = windowSizeClass,
-                        modifier = Modifier
-                            .padding(innerPadding)
-                            /*.background(
-                                color = Color.Red
-                            )*/
-                    )
 
-                }
-            }
         }
     }
 

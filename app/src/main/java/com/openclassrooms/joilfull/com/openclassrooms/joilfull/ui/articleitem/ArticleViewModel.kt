@@ -3,11 +3,13 @@ package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem
 import androidx.lifecycle.ViewModel
 import com.openclassrooms.joilfull.model.Article
 import com.openclassrooms.joilfull.repository.ArticleRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
+@HiltViewModel
 class ArticleViewModel @Inject constructor(
 
     private val articleRepository : ArticleRepository
@@ -20,7 +22,7 @@ class ArticleViewModel @Inject constructor(
     val uiState: StateFlow<ArticleUIState> = _uiState.asStateFlow() // Accès en lecture seule de l'extérieur
 
 
-    fun getArticleById(articleId: String): Article {
+    fun getArticleById(articleId: Int): Article {
 
         // TODO à écrire
         return Article(

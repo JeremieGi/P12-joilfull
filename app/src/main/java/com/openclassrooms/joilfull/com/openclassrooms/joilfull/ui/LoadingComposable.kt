@@ -1,5 +1,6 @@
 package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui
 
+
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -25,10 +26,11 @@ fun LoadingComposable(modifier: Modifier = Modifier){
         modifier = modifier
             .fillMaxSize()
             .padding(
-                top = 100.dp
+                top = 100.dp // Espace en haut
             ),
-        //verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally
+            //.background(Color.Red),
+            //verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
         Text(
