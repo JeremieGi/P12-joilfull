@@ -24,6 +24,7 @@ import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.Ar
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.bTablet
 import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.openclassrooms.joilfull.model.Article
 
 
 /**
@@ -65,15 +66,32 @@ fun articleListScreen(
             ){
 
                 val listCategoryAndArticles = (uiState as ArticleListUIState.Success).categoryAndArticles
+
+                val selectedArticle = (uiState as ArticleListUIState.Success).selectedArticle
+
+                val onArticleClickP : (Article) -> Unit
+                if (bTablet(windowSize)){
+                    // Tablette => affiche l'article dans le même composant
+                    onArticleClickP = viewModel::selectArticle
+
+                }
+                else{
+                    // Phone => useNavHost
+                    onArticleClickP = { article ->
+                        // TODO : ArticleListScreen est recomposé après cet appel...
+                        navController.navigate("articleItem/${article.nIDArticle}")
+                    }
+                }
+
                 ArticleListComposable(
                     modifier=modifier,
-                    onArticleClickP = viewModel::selectArticle,
+                    onArticleClickP = onArticleClickP,
                     listCategoryAndArticles = listCategoryAndArticles
                 )
 
                 // En mode tablette
                 // Et un article est sélectionné
-                val selectedArticle = (uiState as ArticleListUIState.Success).selectedArticle
+
                 if (selectedArticle != null){
 
                     if (bTablet(windowSize)) {
@@ -86,11 +104,12 @@ fun articleListScreen(
                         )
 
                     }
+                    /*
                     else{
                         // Ouverture dans une autre fenêtre
                         navController.navigate("articleItem/${selectedArticle.nIDArticle}")
                     }
-
+                    */
                 }
 
 

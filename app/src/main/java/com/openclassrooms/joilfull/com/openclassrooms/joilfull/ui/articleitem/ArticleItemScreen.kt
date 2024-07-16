@@ -20,13 +20,14 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.openclassrooms.joilfull.model.Article
 import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
 import com.bumptech.glide.integration.compose.GlideImage
+import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.bTablet
 
 
 @Composable
 fun ArticleScreen(
     navController: NavController,
     articleId: Int,
-    viewModel: ArticleViewModel = hiltViewModel(),
+    viewModel: ArticleViewModel = hiltViewModel(), // View Model depuis le graph de navigation
     modifier: Modifier = Modifier,
 ) {
 
@@ -36,6 +37,9 @@ fun ArticleScreen(
     Column(
         modifier = modifier
     ){
+
+
+        // Bouton visible uniquement en mode téléphone
         Button(onClick = {
             navController.popBackStack()
         }) {

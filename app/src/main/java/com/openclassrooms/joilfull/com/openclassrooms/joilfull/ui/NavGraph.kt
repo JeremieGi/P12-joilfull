@@ -29,7 +29,7 @@ fun NavGraph(
     ) {
 
         // Fenêtre de la liste des articles
-        composable("articleList") {
+        composable("articleList") { backStackEntry ->
 
             StructureComposable(
 
