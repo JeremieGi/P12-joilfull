@@ -9,7 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.ArticleScreen
-import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articlelist.articleListScreen
+import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articlelist.ArticleListScreen
 import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
 
 
@@ -29,12 +29,12 @@ fun NavGraph(
     ) {
 
         // Fenêtre de la liste des articles
-        composable("articleList") { backStackEntry ->
+        composable("articleList") {
 
             StructureComposable(
 
             ){ modifier ->
-                articleListScreen(
+                ArticleListScreen(
                     navController = navController,
                     windowSize = windowSizeClass,
                     modifier = modifier
@@ -46,6 +46,8 @@ fun NavGraph(
 
         // Fenêtre d'un article
         composable("articleItem/{articleId}") { backStackEntry ->
+
+            // TODO : Revoir utilité du backStackEntry ici
 
             StructureComposable(
 

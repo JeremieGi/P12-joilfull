@@ -9,47 +9,81 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.openclassrooms.joilfull.model.Article
 import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
 import com.bumptech.glide.integration.compose.GlideImage
-import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.bTablet
+import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.ErrorComposable
+import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.LoadingComposable
+
 
 
 @Composable
 fun ArticleScreen(
+    modifier: Modifier = Modifier,
     navController: NavController,
     articleId: Int,
     viewModel: ArticleViewModel = hiltViewModel(), // View Model depuis le graph de navigation
-    modifier: Modifier = Modifier,
+
 ) {
 
 
-    val article = viewModel.getArticleById(articleId)
+    val uiState by viewModel.uiState.collectAsState()
 
-    Column(
-        modifier = modifier
-    ){
+    // En fonction de l'état du viewModel
+    when (uiState) {
 
-
-        // Bouton visible uniquement en mode téléphone
-        Button(onClick = {
-            navController.popBackStack()
-        }) {
-            Text("Back")
+        // Chargement
+        is ArticleUIState.IsLoading -> {
+            LoadingComposable(modifier)
+            viewModel.loadArticleByID(articleId)
         }
 
-        ArticleItemComposable(
-            article = article,
-            onArticleClickP = {} // On Click neutralisé
-        )
+        // Récupération des données avec succès
+        is ArticleUIState.Success -> {
+
+            val article = (uiState as ArticleUIState.Success).article
+
+            Column(
+                modifier = modifier
+            ){
+
+                // Bouton visible uniquement en mode téléphone
+                Button(onClick = {
+                    navController.popBackStack()
+                }) {
+                    Text("Back")
+                }
+
+                ArticleItemComposable(
+                    article = article,
+                    onArticleClickP = {} // On Click neutralisé
+                )
+            }
+
+        }
+
+        // Exception
+        is ArticleUIState.Error -> {
+
+            val error = (uiState as ArticleUIState.Error).exception.message ?: "Unknown error"
+            ErrorComposable(
+                modifier=modifier,
+                sMessage = error,
+                onClickRetryP = { viewModel.loadArticleByID(articleId) }
+            )
+
+
+        }
+
     }
 
 

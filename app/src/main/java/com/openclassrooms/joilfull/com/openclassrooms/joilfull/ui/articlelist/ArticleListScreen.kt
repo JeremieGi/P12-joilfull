@@ -1,13 +1,8 @@
 package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articlelist
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -15,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.ErrorComposable
@@ -35,7 +29,7 @@ import com.openclassrooms.joilfull.model.Article
  */
 
 @Composable
-fun articleListScreen(
+fun ArticleListScreen(
     windowSize: WindowSizeClass,
     navController: NavController,
     modifier: Modifier = Modifier,
@@ -142,12 +136,12 @@ fun articleListScreen(
     showBackground = true
 )
 @Composable
-fun articleListScreenPreview() {
+fun ArticleListScreenPreview2() {
 
     val navController = rememberNavController()
 
     JoilfullTheme {
-        articleListScreen(
+        ArticleListScreen(
             windowSize = WindowSizeClass.calculateFromSize(DpSize(411.dp, 891.dp)),
             navController = navController
         )

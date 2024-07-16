@@ -1,12 +1,15 @@
 package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem
 
 import androidx.lifecycle.ViewModel
-import com.openclassrooms.joilfull.model.Article
+import androidx.lifecycle.viewModelScope
 import com.openclassrooms.joilfull.repository.ArticleRepository
+import com.openclassrooms.joilfull.repository.ResultCustom
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,19 +25,32 @@ class ArticleViewModel @Inject constructor(
     val uiState: StateFlow<ArticleUIState> = _uiState.asStateFlow() // Accès en lecture seule de l'extérieur
 
 
-    fun getArticleById(articleId: Int): Article {
+    // Renvoie un article par son ID
+    fun loadArticleByID(articleId: Int) {
 
-        // TODO à écrire
-        return Article(
-            nIDArticle = 1,
-            sURLPicture = "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/D-velopper-une-interface-accessible-en-Jetpack-Compose/main/img/accessories/1.jpg",
-            sDescriptionPicture = "Sac à main orange posé sur une poignée de porte",
-            sName = "Code à enlever",
-            sCategory = "ACCESSORIES", // Enumération ici : pas trop d'intéret si jamais le WS renvoie une nouvelle catégorie
-            nNbLikes = 56,
-            dPrice = 69.99,
-            dOriginalPrice = 99.00,
-            bFavorite = false)
+        articleRepository.loadArticleByID(articleId).onEach { resultAPI ->
+
+            // En fonction du résultat de l'API
+            when (resultAPI) {
+
+                // Echec
+                is ResultCustom.Failure ->
+                    _uiState.value = ArticleUIState.Error(Exception(resultAPI.errorMessage))
+
+                // En chargement
+                ResultCustom.Loading -> {
+                    _uiState.value = ArticleUIState.IsLoading
+                }
+
+                // Succès
+                is ResultCustom.Success -> {
+                    _uiState.value = ArticleUIState.Success(resultAPI.value)
+
+                }
+
+            }
+
+        }.launchIn(viewModelScope)
 
     }
 
