@@ -92,6 +92,7 @@ fun ArticleListScreen(
                         ArticleItemComposable(
                             modifier=modifier,
                             article = selectedArticle,
+                            bModeDetail = true,
                             onArticleClickP = {}
                         )
 

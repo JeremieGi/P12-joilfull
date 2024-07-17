@@ -82,8 +82,7 @@ fun CategoryAndArticlesItemScreen(
             text = categoryAndArticles.sCategory,
             style = MaterialTheme.typography.titleLarge,
 
-
-            //color = MaterialTheme.colorScheme.primary // Noir pour respecter les maquettes
+            //color = MaterialTheme.colorScheme.primary // Je laisse Noir pour respecter les maquettes
         )
 
         LazyRow(
@@ -98,10 +97,11 @@ fun CategoryAndArticlesItemScreen(
             ) { article ->
                 ArticleItemComposable(
                     modifier = modifier
-                        .size(width = 198.dp, height = 250.dp) // Taille définie dans l'appelant
-                        .background(MaterialTheme.colorScheme.surfaceContainer),
+                        .size(width = 198.dp, height = 250.dp)                      // Taille définie dans l'appelant
+                        .background(MaterialTheme.colorScheme.surfaceContainer),    // Couleur de fond pour la liste
                     article=article,
-                    onArticleClickP=onArticleClickP
+                    onArticleClickP=onArticleClickP,
+                    bModeDetail = false
                 )
             }
         }
@@ -110,8 +110,8 @@ fun CategoryAndArticlesItemScreen(
 
 }
 
-@Preview(name = "Light Mode", showBackground = true)
-@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@Preview(name = "Light Mode"/*, showBackground = true*/)
+@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES/*, showBackground = true*/)
 @Composable
 fun CategoryAndArticlesItemScreenPreview() {
 

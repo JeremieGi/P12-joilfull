@@ -5,4 +5,5 @@
     <string name="erreur_pr_visualis_e">Erreur prévisualisée</string>
     <string name="chargement">Chargement en cours …</string>
     <string name="reessayer">Réessayer</string>
+    <string name="etoile">Étoile</string>
 </resources>
