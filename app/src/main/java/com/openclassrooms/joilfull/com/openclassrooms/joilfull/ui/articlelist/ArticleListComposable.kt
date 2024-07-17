@@ -33,12 +33,6 @@ fun ArticleListComposable(
     modifier: Modifier = Modifier
 ) {
 
-    /*
-    Text(
-        modifier = modifier,
-        text = "Liste des ${listCategoryAndArticles.size} categories à implémenter",
-    )
-    */
     LazyColumn (
   //      modifier = modifier
 /*
@@ -59,7 +53,7 @@ fun ArticleListComposable(
         ) { categoryAndArticles ->
             CategoryAndArticlesItemScreen(
                 modifier = Modifier.padding(
-                    top = 20.dp   // Pour mettre un espace bien visible entre les catégories
+                    bottom = 30.dp   // Pour mettre un espace bien visible entre les catégories
                 ),
                 onArticleClickP = onArticleClickP,
                 categoryAndArticles = categoryAndArticles)
@@ -78,19 +72,16 @@ fun CategoryAndArticlesItemScreen(
 ) {
 
     Column (
-        modifier = modifier // Récupération du padding top passé en paramètre du LazyColumn (appelant)
-
+        modifier = modifier // Récupération du padding passé en paramètre du LazyColumn (appelant) -> espace en fin d'item
     ) {
 
         Text(
-
+            modifier = Modifier.padding(
+                vertical = 10.dp
+            ),
             text = categoryAndArticles.sCategory,
             style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier
-                .padding(
-                    top = 10.dp,
-                    bottom = 10.dp
-                )
+
 
             //color = MaterialTheme.colorScheme.primary // Noir pour respecter les maquettes
         )

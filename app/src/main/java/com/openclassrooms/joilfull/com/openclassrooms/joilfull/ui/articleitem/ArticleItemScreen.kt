@@ -9,6 +9,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -35,6 +36,11 @@ fun ArticleScreen(
 
 ) {
 
+    // Trigger loading article details when articleId changes
+    // Premier lancement
+    LaunchedEffect(articleId) {
+        viewModel.loadArticleByID(articleId)
+    }
 
     val uiState by viewModel.uiState.collectAsState()
 
@@ -44,7 +50,6 @@ fun ArticleScreen(
         // Chargement
         is ArticleUIState.IsLoading -> {
             LoadingComposable(modifier)
-            viewModel.loadArticleByID(articleId)
         }
 
         // Récupération des données avec succès

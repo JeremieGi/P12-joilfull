@@ -25,6 +25,7 @@ class ArticleViewModel @Inject constructor(
     val uiState: StateFlow<ArticleUIState> = _uiState.asStateFlow() // Accès en lecture seule de l'extérieur
 
 
+
     // Renvoie un article par son ID
     fun loadArticleByID(articleId: Int) {
 
@@ -39,7 +40,10 @@ class ArticleViewModel @Inject constructor(
 
                 // En chargement
                 ResultCustom.Loading -> {
-                    _uiState.value = ArticleUIState.IsLoading
+                    if (_uiState.value != ArticleUIState.IsLoading){
+                        _uiState.value = ArticleUIState.IsLoading
+                    }
+
                 }
 
                 // Succès

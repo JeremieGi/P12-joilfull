@@ -5,6 +5,7 @@ import com.openclassrooms.joilfull.model.Article
 // TODO revoir l'utilité du sealed dans l'archi (un open marcherait)
 sealed class ArticleUIState {
 
+
     data object IsLoading : ArticleUIState()
 
     data class Success(

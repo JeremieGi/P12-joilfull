@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -33,7 +34,7 @@ fun ArticleListScreen(
     windowSize: WindowSizeClass,
     navController: NavController,
     modifier: Modifier = Modifier,
-    viewModel : ArticleListViewModel = hiltViewModel(),
+    viewModel : ArticleListViewModel = hiltViewModel(), // Par défaut, Hilt utilise la portée @ActivityRetainedScoped pour les ViewModels, ce qui signifie que le même ViewModel est partagé pour toute la durée de vie de l'activité.
 
 ) {
 
@@ -41,15 +42,12 @@ fun ArticleListScreen(
     // la recomposition a lieu pour les composables utilisant la valeur uiState.
     val uiState by viewModel.uiState.collectAsState()
 
-
-
     // En fonction de l'état du viewModel
     when (uiState) {
 
         // Chargement
         is ArticleListUIState.IsLoading -> {
             LoadingComposable(modifier)
-            viewModel.loadArticlesList()
         }
 
         // Récupération des données avec succès
@@ -129,7 +127,7 @@ fun ArticleListScreen(
 
 
 }
-
+/*
 // TODO : Cette preview ne marche pas : Failed to instantiate a ViewModel
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Preview(
@@ -147,3 +145,4 @@ fun ArticleListScreenPreview() {
         )
     }
 }
+*/
