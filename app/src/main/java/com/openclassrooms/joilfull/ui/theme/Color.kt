@@ -221,3 +221,4 @@ val surfaceContainerHighDarkHighContrast = Color(0xFF252B2C)
 val surfaceContainerHighestDarkHighContrast = Color(0xFF303637)
 
 val colorStar = Color(0xFFF99F43)
+val colorHeart = Color(0xFF000000)

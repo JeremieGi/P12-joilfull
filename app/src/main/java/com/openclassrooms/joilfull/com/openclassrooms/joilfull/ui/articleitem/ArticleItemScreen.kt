@@ -1,28 +1,29 @@
 package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem
 
 import android.content.res.Configuration
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -37,18 +38,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.openclassrooms.joilfull.model.Article
-import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
 import com.bumptech.glide.integration.compose.GlideImage
 import com.openclassrooms.joilfull.R
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.ErrorComposable
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.LoadingComposable
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.sDisplayPrice
+import com.openclassrooms.joilfull.model.Article
+import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
+import com.openclassrooms.joilfull.ui.theme.colorHeart
 import com.openclassrooms.joilfull.ui.theme.colorStar
 
 
@@ -130,6 +133,15 @@ fun ArticleItemComposable(
     onArticleClickP : (Article) -> Unit,
     modifier: Modifier = Modifier
 ) {
+
+    // Adaptation des polices si on est dans la fenêtre de détail ou de liste
+    val typo : TextStyle
+    if (bModeDetail){
+        typo = MaterialTheme.typography.titleLarge
+    }
+    else{
+        typo = MaterialTheme.typography.titleSmall
+    }
     
 
     Card(
@@ -143,36 +155,112 @@ fun ArticleItemComposable(
         //color = MaterialTheme.colorScheme.background
     ) {
         Column (
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 //.height(IntrinsicSize.Min)
         ) {
 
-            GlideImage(
-                model = article.sURLPicture,
-                contentDescription = article.sDescriptionPicture,
-                contentScale = ContentScale.Crop, // Échelle de contenu
+            Box(
                 modifier = modifier
                     .weight(1f) // Prend tout l'espace disponible en laissant afficher les colonnes dessous
                     .fillMaxSize()
-                    /*.border(
+                    .border(
                         // Juste pour la preview (A commenter)
                         width = 10.dp,
-                        color = Color.Black,
-                    )*/
-                    .graphicsLayer {
-                        shape = RoundedCornerShape(16.dp) // Coins arrondis
-                    },
-            )
+                        color = Color.Red,
+                    )
 
-            // Adaptation des polices si on est dans la fenêtre de détail ou de liste
-            val typo : TextStyle
-            if (bModeDetail){
-                typo = MaterialTheme.typography.titleLarge
+            ) {
+
+                GlideImage(
+                    model = article.sURLPicture,
+                    contentDescription = article.sDescriptionPicture,
+                    contentScale = ContentScale.FillWidth,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        //.wrapContentSize()
+                        .graphicsLayer {
+                            shape = RoundedCornerShape(16.dp) // Coins arrondis // TODO JG : Les coins en bas sont pas arrondi
+                        }
+                        .border(
+                            // Juste pour la preview (A commenter)
+                            width = 10.dp,
+                            color = Color.Blue,
+                        ),
+                )
+
+                // TODO Prio - Pas sur que çà soit très académique
+                val nHeightAndPadding : Int
+                if (bModeDetail){
+                    nHeightAndPadding = 30
+                }
+                else{
+                    nHeightAndPadding = 15
+                }
+
+                // Superposition du picto cœur avec un nombre entier
+                Row(
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd) // Aligner en bas à droite de l'image
+                        .padding(nHeightAndPadding.dp)
+                ) {
+
+
+
+                    Row(
+                        modifier = Modifier
+                            .background(
+                                color = Color.White,
+                                shape = RoundedCornerShape(30.dp)
+                            )
+                            .wrapContentSize()
+                            .padding(10.dp)
+                            .height(nHeightAndPadding.dp)
+
+                    ){
+
+                        Icon(
+                            imageVector = Icons.Filled.Favorite,
+                            modifier = Modifier
+                                .wrapContentHeight(),
+                            contentDescription = stringResource(R.string.icone_coeur),
+                            tint = colorHeart // TODO : J'ai 2 fichiers de couleurs Color.kt et colors.xml : lequel utiliser ?
+                        )
+
+                        Spacer(modifier = Modifier.size(4.dp))
+
+                        Text(
+                            text = article.nNbLikes.toString(),
+                            color = MaterialTheme.colorScheme.onSurface,
+                            style = typo
+                        )
+
+                    }
+
+                    /*
+                    Icon(
+                        imageVector = Icons.Default.Favorite,
+                        contentDescription = stringResource(R.string.icone_coeur),
+                        tint = Color.Red,
+                        modifier = Modifier.size(24.dp) // Taille de l'icône du cœur
+                    )
+
+                    Spacer(modifier = Modifier.width(4.dp)) // Espacement entre l'icône et le texte
+
+                    Text(
+                        text = "123", // Nombre entier à afficher
+                        color = Color.White,
+                        fontSize = 14.dp
+                    )
+                    */
+
+                }
+
             }
-            else{
-                typo = MaterialTheme.typography.titleSmall
-            }
+
+
+
+
 
 
             Row(
@@ -200,6 +288,9 @@ fun ArticleItemComposable(
                         contentDescription = stringResource(R.string.etoile),
                         tint = colorStar // TODO : J'ai 2 fichiers de couleurs Color.kt et colors.xml : lequel utiliser ?
                     )
+
+                    Spacer(modifier = Modifier.size(2.dp))
+
                     Text(
                         text = "X.X", // TODO : Moyenne des notes
                         modifier = Modifier
@@ -252,9 +343,14 @@ fun ArticleItemComposable(
 @Composable
 fun ArticleItemComposablePreview() {
 
+    // #Remarque : Preview charge mal les images avec URL du component Glide
+
+    //val myURI = Uri.parse("android.resource://com.openclassrooms.joilfull/" + com.openclassrooms.joilfull.R.drawable.sacpreview)
+
     val article = Article(
             nIDArticle = 0,
             sURLPicture = "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/D-velopper-une-interface-accessible-en-Jetpack-Compose/main/img/accessories/1.jpg",
+            //sURLPicture = myURI.toString(),
             sDescriptionPicture = "Sac à main orange posé sur une poignée de porte",
             sName = "Sac à main orange",
             sCategory = "ACCESSORIES", // Enumération ici : pas trop d'intéret si jamais le WS renvoie une nouvelle catégorie
@@ -273,3 +369,34 @@ fun ArticleItemComposablePreview() {
         )
     }
 }
+
+// Preview dans les items
+@Preview(name = "Item Mode",showBackground = true, heightDp = 250, widthDp = 198)
+@Composable
+fun ArticleItemComposablePreviewItemMode() {
+
+    val article = Article(
+        nIDArticle = 0,
+        sURLPicture = "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/D-velopper-une-interface-accessible-en-Jetpack-Compose/main/img/accessories/1.jpg",
+        //sURLPicture = myURI.toString(),
+        sDescriptionPicture = "Sac à main orange posé sur une poignée de porte",
+        sName = "Sac à main orange",
+        sCategory = "ACCESSORIES", // Enumération ici : pas trop d'intéret si jamais le WS renvoie une nouvelle catégorie
+        nNbLikes = 56,
+        dPrice = 69.99,
+        dOriginalPrice = 99.00,
+        bFavorite = false
+    )
+
+
+    JoilfullTheme {
+        ArticleItemComposable(
+            article = article,
+            bModeDetail = false,
+            onArticleClickP = {}
+        )
+    }
+}
+
+
+
