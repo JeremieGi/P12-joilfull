@@ -7,9 +7,10 @@ import com.openclassrooms.joilfull.network.IArticlesAPI
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
 
-class ArticleRepository (
+class ArticleRepository @Inject constructor (
     private val dataService: IArticlesAPI
 )
 {

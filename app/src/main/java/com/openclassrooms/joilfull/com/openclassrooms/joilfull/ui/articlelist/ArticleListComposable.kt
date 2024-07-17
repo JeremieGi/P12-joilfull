@@ -1,11 +1,11 @@
 package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articlelist
 
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Text
@@ -101,11 +101,10 @@ fun CategoryAndArticlesItemScreen(
 
 }
 
-@Preview(
-    showBackground = true
-)
+@Preview(name = "Light Mode", showBackground = true)
+@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_UNDEFINED, showBackground = true)
 @Composable
-fun ArticleListScreenPreview() {
+fun CategoryAndArticlesItemScreenPreview() {
 
     val listArticlesMut = mutableListOf<Article>()
     for (i in 1..5) {

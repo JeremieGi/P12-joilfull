@@ -130,13 +130,13 @@ fun ArticleListScreen(
 
 }
 
-// TODO : Cette preview ne marche pas
+// TODO : Cette preview ne marche pas : Failed to instantiate a ViewModel
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Preview(
     showBackground = true
 )
 @Composable
-fun ArticleListScreenPreview2() {
+fun ArticleListScreenPreview() {
 
     val navController = rememberNavController()
 

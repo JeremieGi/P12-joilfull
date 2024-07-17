@@ -142,7 +142,7 @@ fun ArticleItemComposable(
     showBackground = true
 )
 @Composable
-fun ArticleScreenPreview() {
+fun ArticleItemComposablePreview() {
 
     val article = Article(
             nIDArticle = 0,
