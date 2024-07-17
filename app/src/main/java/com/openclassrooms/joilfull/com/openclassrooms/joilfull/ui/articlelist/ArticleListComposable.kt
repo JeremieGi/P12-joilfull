@@ -98,10 +98,11 @@ fun CategoryAndArticlesItemScreen(
             ) { article ->
                 ArticleItemComposable(
                     modifier = modifier
-                        .size(width = 198.dp, height = 250.dp) // Taille définie dans l'appelant
-                        .background(MaterialTheme.colorScheme.surfaceContainer),
+                        .size(width = 198.dp, height = 250.dp)                      // Taille définie dans l'appelant
+                        .background(MaterialTheme.colorScheme.surfaceContainer),    // Couleur de fond pour la liste
                     article=article,
-                    onArticleClickP=onArticleClickP
+                    onArticleClickP=onArticleClickP,
+                    bModeDetail = false
                 )
             }
         }
