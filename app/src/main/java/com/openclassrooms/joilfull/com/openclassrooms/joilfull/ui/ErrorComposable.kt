@@ -13,6 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.openclassrooms.joilfull.R
 import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
 
+
 /*
  * Error in DialogAlert
  */
@@ -63,6 +64,7 @@ fun ErrorComposable(
 @Preview(showBackground = true)
 @Composable
 fun ErrorDialogPreview() {
+
     JoilfullTheme {
         ErrorComposable(
             stringResource(R.string.erreur_pr_visualis_e),

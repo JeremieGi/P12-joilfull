@@ -71,6 +71,7 @@ class ArticleRepository @Inject constructor (
      */
     fun loadArticlesListSortByCategory()  : Flow<ResultCustom<List<CategoryAndArticles>>> = flow {
 
+        // Transforme le flow renvoyer par loadArticlesList()
         loadArticlesList().collect { resultAPI ->
 
             // En fonction du résultat de l'API
@@ -107,7 +108,8 @@ class ArticleRepository @Inject constructor (
     }
 
     /**
-     * Renvoie un article par son ID (Normalement le Ws devrait me proposer un point d'entrée pour faire çà)
+     * Renvoie un article par son ID (Normalement le WD devrait me proposer un point d'entrée pour faire çà)
+     * @param : Identifiant de l'article
      */
     fun loadArticleByID(nIDArticle : Int)  : Flow<ResultCustom<Article>> = flow {
 

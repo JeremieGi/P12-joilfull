@@ -6,6 +6,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Text
@@ -15,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.openclassrooms.joilfull.model.Article
 import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
 import androidx.compose.foundation.lazy.items
-import androidx.compose.ui.graphics.Color
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.unit.dp
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.ArticleItemComposable
 import com.openclassrooms.joilfull.model.CategoryAndArticles
@@ -38,11 +40,12 @@ fun ArticleListComposable(
     )
     */
     LazyColumn (
-        modifier = modifier
-
+  //      modifier = modifier
+/*
             .background(
-                color = Color.Blue // TODO : A enlever
+                color = Color.Blue
             )
+  */
     ) {
 
         /*
@@ -55,7 +58,9 @@ fun ArticleListComposable(
             key = { it.sCategory }
         ) { categoryAndArticles ->
             CategoryAndArticlesItemScreen(
-                modifier = modifier,
+                modifier = Modifier.padding(
+                    top = 20.dp   // Pour mettre un espace bien visible entre les catégories
+                ),
                 onArticleClickP = onArticleClickP,
                 categoryAndArticles = categoryAndArticles)
         }
@@ -72,16 +77,28 @@ fun CategoryAndArticlesItemScreen(
     categoryAndArticles : CategoryAndArticles
 ) {
 
-    Column (modifier = modifier) {
+    Column (
+        modifier = modifier // Récupération du padding top passé en paramètre du LazyColumn (appelant)
+
+    ) {
 
         Text(
-            text = categoryAndArticles.sCategory
+
+            text = categoryAndArticles.sCategory,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier
+                .padding(
+                    top = 10.dp,
+                    bottom = 10.dp
+                )
+
+            //color = MaterialTheme.colorScheme.primary // Noir pour respecter les maquettes
         )
 
         LazyRow(
-            modifier = modifier,
-            contentPadding = PaddingValues(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            //modifier = modifier,
+            contentPadding = PaddingValues(horizontal = 2.dp),
+            horizontalArrangement = Arrangement.spacedBy(5.dp),
 
         ) {
             items(
@@ -89,8 +106,9 @@ fun CategoryAndArticlesItemScreen(
                 key = { it.nIDArticle }
             ) { article ->
                 ArticleItemComposable(
-                    modifier = modifier,
-                        //.height(75.dp),
+                    modifier = modifier
+                        .size(width = 198.dp, height = 250.dp) // Taille définie dans l'appelant
+                        .background(MaterialTheme.colorScheme.surfaceContainer),
                     article=article,
                     onArticleClickP=onArticleClickP
                 )
@@ -102,7 +120,7 @@ fun CategoryAndArticlesItemScreen(
 }
 
 @Preview(name = "Light Mode", showBackground = true)
-@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_UNDEFINED, showBackground = true)
+@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
 fun CategoryAndArticlesItemScreenPreview() {
 

@@ -72,7 +72,7 @@ fun ArticleListScreen(
                 else{
                     // Phone => useNavHost
                     onArticleClickP = { article ->
-                        // TODO : ArticleListScreen est recomposé après cet appel...
+                        // TODO : pourquoi ArticleListScreen est recomposé après cet appel ?
                         navController.navigate("articleItem/${article.nIDArticle}")
                     }
                 }
