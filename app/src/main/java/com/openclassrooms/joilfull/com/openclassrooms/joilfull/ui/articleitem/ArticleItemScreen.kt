@@ -25,7 +25,7 @@ import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.ErrorComposabl
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.LoadingComposable
 
 
-
+// Ce point d'entrée est utilisé uniquement pour les petits écrans
 @Composable
 fun ArticleScreen(
     modifier: Modifier = Modifier,
@@ -97,6 +97,7 @@ fun ArticleItemComposable(
     onArticleClickP : (Article) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    
 
     Card(
         modifier = modifier
