@@ -77,7 +77,7 @@ fun LikeComposable(
                     .wrapContentSize()
                 ,
                 text = sNbLikeP,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = Color.Black, //MaterialTheme.colorScheme.onSurface, // Sinon problème de contraste en theme Dark
                 textAlign = TextAlign.Center
             )
 

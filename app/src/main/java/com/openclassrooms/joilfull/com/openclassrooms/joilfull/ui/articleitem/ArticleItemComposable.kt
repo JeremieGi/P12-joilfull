@@ -131,8 +131,8 @@ fun ArticleItemComposable(
                 // Superposition du picto cœur avec un nombre entier
                 LikeComposable(
                     modifier = Modifier
-                        .align(Alignment.BottomEnd)     // Aligner en bas à droite de l'image,
-                        .padding(nPadding.dp) // Ecart avec le bas droit
+                        .align(Alignment.BottomEnd) // Aligner en bas à droite de l'image,
+                        .padding(nPadding.dp)       // Ecart avec le bas droit
                         .height(nHeight.dp)
                     ,
                     sNbLikeP = article.nNbLikes.toString()
@@ -175,7 +175,7 @@ fun ArticleItemComposable(
                 Text(
                     text = article.sName,
                     modifier = Modifier
-                        .weight(0.8f),
+                        .weight(0.7f),
                     style =  typo,
                     //maxLines = 1,                       // une ligne
                     //overflow = TextOverflow.Ellipsis    // avec ellipse ...
@@ -183,8 +183,9 @@ fun ArticleItemComposable(
 
                 NoteComposable(
                     modifier = Modifier
-                        .weight(0.2f),
-                    sNote = "X.X" // TODO JG : Moyenne des notes
+                        .weight(0.3f),
+                    sNote = "X.XX", // TODO JG : Moyenne des notes
+                    textStyle = typo
                 )
 
 

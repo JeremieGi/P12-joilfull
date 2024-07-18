@@ -14,11 +14,13 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,6 +33,7 @@ import com.openclassrooms.joilfull.ui.theme.colorStar
 fun NoteComposable(
     modifier: Modifier = Modifier,
     sNote : String,
+    textStyle : TextStyle,
 ) {
 
     // Affichage de la note moyenne
@@ -53,7 +56,7 @@ fun NoteComposable(
 
         Text(
             text = sNote,
-
+            style = textStyle,
             modifier = Modifier
                 .weight(0.5f)
 
@@ -69,11 +72,15 @@ fun NoteComposable(
 @Composable
 fun NoteComposablePreviewItem() {
 
+    // Adaptation des polices si on est dans la fenêtre de détail ou de liste
+    val typo = MaterialTheme.typography.titleSmall
+
     NoteComposable(
         modifier = Modifier
             .height(30.dp)
             .width(100.dp),
-        sNote = "6.8"
+        sNote = "6.8",
+        textStyle = typo
     )
 
 }
@@ -83,12 +90,15 @@ fun NoteComposablePreviewItem() {
 @Composable
 fun NoteComposablePreviewTablet() {
 
+    val typo = MaterialTheme.typography.titleLarge
+
     NoteComposable(
         modifier = Modifier
             .size(
                 width = 100.dp,
                 height = 100.dp),
-        sNote = "5"
+        sNote = "5",
+        textStyle = typo
     )
 
 }
