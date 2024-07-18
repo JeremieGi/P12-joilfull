@@ -7,4 +7,6 @@
     <string name="reessayer">Réessayer</string>
     <string name="etoile">Étoile</string>
     <string name="icone_coeur">Icone coeur</string>
+    <string name="retour">Retour</string>
+    <string name="partager">Partager l\'article sur les réseaux</string>
 </resources>
