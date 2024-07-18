@@ -1,9 +1,6 @@
 package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem
 
 import android.content.res.Configuration
-import android.net.Uri
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,11 +11,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -31,14 +26,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -51,7 +44,6 @@ import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.LoadingComposa
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.sDisplayPrice
 import com.openclassrooms.joilfull.model.Article
 import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
-import com.openclassrooms.joilfull.ui.theme.colorHeart
 import com.openclassrooms.joilfull.ui.theme.colorStar
 
 
@@ -82,11 +74,12 @@ fun ArticleScreen(
 
     val uiState by viewModel.uiState.collectAsState()
 
-    val onLoadArticle = { viewModel.loadArticleByID(articleId) }
+    //val onLoadArticle = { viewModel.loadArticleByID(articleId) }
+
     ArticleItemContent(
         modifier = modifier,
         uiState = uiState,
-        onClickErrorRetryP = onLoadArticle
+        //onClickErrorRetryP = onLoadArticle
     )
 
 }
@@ -94,8 +87,7 @@ fun ArticleScreen(
 @Composable
 fun ArticleItemContent(
     uiState: ArticleUIState,
-    modifier: Modifier = Modifier,
-    onClickErrorRetryP : () -> Unit
+    modifier: Modifier = Modifier
 ){
 
     // En fonction de l'état du viewModel
@@ -113,7 +105,8 @@ fun ArticleItemContent(
         // Récupération des données avec succès
         is ArticleUIState.Success -> {
 
-            val article = (uiState as ArticleUIState.Success).article
+            //val article = (uiState as ArticleUIState.Success).article
+            val article = uiState.article
 
             Column(
                 modifier = modifier
@@ -130,8 +123,8 @@ fun ArticleItemContent(
 
         // Exception
         is ArticleUIState.Error -> {
-            onClickErrorRetryP
-            val error = (uiState as ArticleUIState.Error).exception.message ?: "Unknown error"
+
+            val error = uiState.exception.message ?: "Unknown error"
             ErrorComposable(
                 modifier=modifier,
                 sMessage=error,
@@ -202,7 +195,8 @@ fun ArticleItemComposable(
                         .fillMaxSize()
                         //.wrapContentSize()
                         .graphicsLayer {
-                            shape = RoundedCornerShape(16.dp) // Coins arrondis // TODO JG : Les coins en bas sont pas arrondi
+                            shape =
+                                RoundedCornerShape(16.dp) // Coins arrondis // TODO JG : Les coins en bas sont pas arrondi
                         }
                         /*
                         .border(
@@ -214,71 +208,27 @@ fun ArticleItemComposable(
                 )
 
                 // TODO Denis - Pas sur que çà soit très académique
-                val nHeightAndPadding : Int
+                // J'aimerais faire quelque chose de proportionnel au contenant
+                val nHeight : Int
+                val nPadding : Int
                 if (bModeDetail){
-                    nHeightAndPadding = 30
+                    nHeight = 50
+                    nPadding = 30
                 }
                 else{
-                    nHeightAndPadding = 15
+                    nHeight = 40
+                    nPadding = 15
                 }
 
                 // Superposition du picto cœur avec un nombre entier
-                Row(
+                LikeComposable(
                     modifier = Modifier
-                        .align(Alignment.BottomEnd) // Aligner en bas à droite de l'image
-                        .padding(nHeightAndPadding.dp)
-                ) {
-
-
-
-                    Row(
-                        modifier = Modifier
-                            .background(
-                                color = Color.White,
-                                shape = RoundedCornerShape(30.dp)
-                            )
-                            .wrapContentSize()
-                            .padding(10.dp)
-                            .height(nHeightAndPadding.dp)
-
-                    ){
-
-                        Icon(
-                            imageVector = Icons.Filled.Favorite,
-                            modifier = Modifier
-                                .wrapContentHeight(),
-                            contentDescription = stringResource(R.string.icone_coeur),
-                            tint = colorHeart // TODO Denis : J'ai 2 fichiers de couleurs Color.kt et colors.xml : lequel utiliser ?
-                        )
-
-                        Spacer(modifier = Modifier.size(4.dp))
-
-                        Text(
-                            text = article.nNbLikes.toString(),
-                            color = MaterialTheme.colorScheme.onSurface,
-                            style = typo
-                        )
-
-                    }
-
-                    /*
-                    Icon(
-                        imageVector = Icons.Default.Favorite,
-                        contentDescription = stringResource(R.string.icone_coeur),
-                        tint = Color.Red,
-                        modifier = Modifier.size(24.dp) // Taille de l'icône du cœur
-                    )
-
-                    Spacer(modifier = Modifier.width(4.dp)) // Espacement entre l'icône et le texte
-
-                    Text(
-                        text = "123", // Nombre entier à afficher
-                        color = Color.White,
-                        fontSize = 14.dp
-                    )
-                    */
-
-                }
+                        .align(Alignment.BottomEnd)     // Aligner en bas à droite de l'image,
+                        .padding(nPadding.dp) // Ecart avec le bas droit
+                        .height(nHeight.dp)
+                    ,
+                    sNbLikeP = article.nNbLikes.toString()
+                )
 
             }
 

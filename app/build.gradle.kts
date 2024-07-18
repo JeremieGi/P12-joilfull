@@ -56,6 +56,7 @@ android {
 
 dependencies {
 
+    // TODO Info : Nouvelle façon de déclarer des dépendances
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -89,6 +90,7 @@ dependencies {
     // Glide
     implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
 
+
     //Hilt
     implementation(libs.hilt.android)
     implementation(libs.androidx.legacy.support.v4)
@@ -102,6 +104,7 @@ dependencies {
 
     implementation("androidx.compose.ui:ui-tooling-preview:1.6.8")
     implementation("androidx.compose.ui:ui-text-google-fonts:1.6.8") // Font Open Sans
+
 
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 }

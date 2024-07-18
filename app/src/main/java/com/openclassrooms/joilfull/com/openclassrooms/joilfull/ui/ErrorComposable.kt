@@ -11,13 +11,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.openclassrooms.joilfull.R
-import com.openclassrooms.joilfull.model.Article
 import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
 
 
 /**
  * Error in DialogAlert
- * @param idArticle : 0 => Contexte d'une liste d'article => on recharge la liste sinon l'ID de l'article
  */
 @Composable
 fun ErrorComposable(
@@ -77,4 +75,5 @@ fun ErrorDialogPreview() {
             onClickRetryP = { }
         )
     }
+
 }
