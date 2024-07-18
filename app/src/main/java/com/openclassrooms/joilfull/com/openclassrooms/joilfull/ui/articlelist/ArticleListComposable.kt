@@ -53,7 +53,7 @@ fun ArticleListComposable(
         ) { categoryAndArticles ->
             CategoryAndArticlesItemScreen(
                 modifier = Modifier.padding(
-                    bottom = 30.dp   // Pour mettre un espace bien visible entre les catégories
+                    bottom = 5.dp   // Pour mettre un espace bien visible entre les catégories
                 ),
                 onArticleClickP = onArticleClickP,
                 categoryAndArticles = categoryAndArticles)
@@ -97,7 +97,7 @@ fun CategoryAndArticlesItemScreen(
             ) { article ->
                 ArticleItemComposable(
                     modifier = modifier
-                        .size(width = 198.dp, height = 250.dp)                      // Taille définie dans l'appelant
+                        .size(width = 180.dp, height = 320.dp)                      // Taille définie dans l'appelant
                         .background(MaterialTheme.colorScheme.surfaceContainer),    // Couleur de fond pour la liste
                     article=article,
                     onArticleClickP=onArticleClickP,

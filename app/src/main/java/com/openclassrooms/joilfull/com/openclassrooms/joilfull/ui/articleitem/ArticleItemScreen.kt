@@ -1,5 +1,6 @@
 package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem
 
+import android.R.attr.maxLines
 import android.content.res.Configuration
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -32,6 +33,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -190,7 +192,7 @@ fun ArticleItemComposable(
                 GlideImage(
                     model = article.sURLPicture,
                     contentDescription = article.sDescriptionPicture,
-                    contentScale = ContentScale.FillWidth,
+                    contentScale = ContentScale.FillWidth, // FillBounds = Etiré / Fit = Toute la photo rentre sans déformation
                     modifier = Modifier
                         .fillMaxSize()
                         //.wrapContentSize()
@@ -246,7 +248,9 @@ fun ArticleItemComposable(
                     text = article.sName,
                     modifier = Modifier
                         .weight(1f), // Prend tout l'espace disponible en laissant afficher les lignes à droite
-                    style =  typo
+                    style =  typo,
+                    //maxLines = 1,                       // une ligne
+                    //overflow = TextOverflow.Ellipsis    // avec ellipse ...
                 )
 
                 // Affichage de la note moyenne

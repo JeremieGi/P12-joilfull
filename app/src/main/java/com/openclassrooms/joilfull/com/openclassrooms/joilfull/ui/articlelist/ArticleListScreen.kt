@@ -108,8 +108,7 @@ fun ArticleListScreen(
 
                         ArticleItemContent(
                             modifier = modifier,
-                            uiState = uiStateArticle,
-                            onClickErrorRetryP = {} // TODO JG : Il faudrait faire 2 mode pour le composant d'erreur (1 pour la liste d'article et un pour la fiche article)
+                            uiState = uiStateArticle
                         )
                     }
 
