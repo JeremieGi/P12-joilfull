@@ -115,7 +115,7 @@ fun ArticleItemComposable(
 
 
 
-                // TODO Denis - Pas sur que çà soit très académique
+                // TODO Denis 1 - Pas sur que çà soit très académique
                 // J'aimerais faire quelque chose de proportionnel au contenant
                 val nHeight : Int
                 val nPadding : Int

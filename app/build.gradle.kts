@@ -90,7 +90,6 @@ dependencies {
     // Glide
     implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
 
-
     //Hilt
     implementation(libs.hilt.android)
     implementation(libs.androidx.legacy.support.v4)
