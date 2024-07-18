@@ -1,26 +1,21 @@
 package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,6 +25,7 @@ import androidx.navigation.compose.rememberNavController
 import com.openclassrooms.joilfull.R
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.ErrorComposable
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.LoadingComposable
+import com.openclassrooms.joilfull.model.Article
 import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
 
 
@@ -51,8 +47,6 @@ fun ArticleScreen(
 
     val uiState by viewModel.uiState.collectAsState()
 
-    //val onLoadArticle = { viewModel.loadArticleByID(articleId) }
-
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -61,44 +55,10 @@ fun ArticleScreen(
         ArticleItemContent(
             //modifier = Modifier,
             uiState = uiState,
-            //onClickErrorRetryP = onLoadArticle
+            navController = navController
         )
 
-        // Bouton visible uniquement lors de l'appel à ArticleScreen (c'est à dire utilisation de navController)
-        IconButton(
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(10.dp)
-                //.background(Color.Red)
-            ,
-            onClick = {
-                navController.popBackStack()
-            }
-        ) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = stringResource(R.string.retour),
-                tint = MaterialTheme.colorScheme.onSurface // Utilise la couleur du thème
-            )
-        }
 
-
-        IconButton(
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .padding(10.dp)
-            //.background(Color.Red)
-            ,
-            onClick = {
-                // TODO JG : Partage sur les réseaux
-            }
-        ) {
-            Icon(
-                imageVector = Icons.Filled.Share,
-                contentDescription = stringResource(R.string.partager),
-                tint = MaterialTheme.colorScheme.onSurface // Utilise la couleur du thème
-            )
-        }
 
     }
 
@@ -109,6 +69,7 @@ fun ArticleScreen(
 @Composable
 fun ArticleItemContent(
     uiState: ArticleUIState,
+    navController: NavController,
     modifier: Modifier = Modifier
 ){
 
@@ -133,12 +94,41 @@ fun ArticleItemContent(
             Column(
                 modifier = modifier
             ){
+                Box(
+                    modifier = modifier
+                        .fillMaxSize()
+                ) {
 
-                ArticleItemComposable(
-                    article = article,
-                    bModeDetail = true,
-                    onArticleClickP = {} // On Click neutralisé
-                )
+                    ArticleItemComposable(
+                        article = article,
+                        bModeDetail = true,
+                        onArticleClickP = {} // On Click neutralisé
+                    )
+
+                    // Bouton visible uniquement lors de l'appel à ArticleScreen (c'est à dire utilisation de navController)
+                    IconButton(
+                        modifier = Modifier
+                            .align(Alignment.TopStart)
+                            .padding(10.dp)
+                        //.background(Color.Red)
+                        ,
+                        onClick = {
+                            navController.popBackStack()
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.retour),
+                            tint = MaterialTheme.colorScheme.onSurface // Utilise la couleur du thème
+                        )
+                    }
+
+
+
+
+                }
+
+
             }
 
         }
@@ -166,33 +156,46 @@ fun ArticleItemContent(
 @Composable
 fun ArticleScreenPreview(){
 
-    /*
-     * Si vous souhaitez prévisualiser un composable qui utilise un ViewModel,
-     * vous devez créer un autre composable avec les paramètres de ViewModel transmis en tant qu'arguments du composable. De cette façon, vous n'avez pas besoin de prévisualiser le composable qui utilise ViewModel.
-     */
+
 
     JoilfullTheme {
 
         // Pour tester différents code comme le bouton Back
 
+
         /*
-        val navController = rememberNavController() // factice
+         * Si vous souhaitez prévisualiser un composable qui utilise un ViewModel,
+         * vous devez créer un autre composable avec les paramètres de ViewModel transmis en tant qu'arguments du composable. De cette façon, vous n'avez pas besoin de prévisualiser le composable qui utilise ViewModel.
+         */
+        /*
+
         ArticleScreen(
             navController = navController,
             articleId = 2
         )
         */
 
-        IconButton(
-            onClick = {},
-            modifier = Modifier.padding(8.dp)
-        ) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = stringResource(R.string.retour),
-                tint = MaterialTheme.colorScheme.onSurface // Utilise la couleur du thème
-            )
-        }
+        val article = Article(
+            nIDArticle = 0,
+            sURLPicture = "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/D-velopper-une-interface-accessible-en-Jetpack-Compose/main/img/accessories/1.jpg",
+            sDescriptionPicture = "Sac à main orange posé sur une poignée de porte",
+            sName = "Sac à main orange",
+            sCategory = "ACCESSORIES", // Enumération ici : pas trop d'intéret si jamais le WS renvoie une nouvelle catégorie
+            nNbLikes = 56,
+            dPrice = 69.99,
+            dOriginalPrice = 99.00,
+            bFavorite = false
+        )
+
+        val uiStateSuccess = ArticleUIState.Success(article)
+
+        val navController = rememberNavController() // factice
+
+        ArticleItemContent(
+            uiState = uiStateSuccess,
+            navController = navController
+        )
+
 
     }
 

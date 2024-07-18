@@ -108,7 +108,8 @@ fun ArticleListScreen(
 
                         ArticleItemContent(
                             modifier = modifier,
-                            uiState = uiStateArticle
+                            uiState = uiStateArticle,
+                            navController = navController // Ne sera pas utilisé en mode tablette
                         )
                     }
 

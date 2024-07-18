@@ -15,9 +15,11 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -135,6 +137,28 @@ fun ArticleItemComposable(
                     ,
                     sNbLikeP = article.nNbLikes.toString()
                 )
+
+                if (bModeDetail){
+
+                    IconButton(
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .padding(10.dp)
+                        //.background(Color.Red)
+                        ,
+                        onClick = {
+                            // TODO JG : Partage sur les réseaux
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Share,
+                            contentDescription = stringResource(R.string.partager),
+                            tint = MaterialTheme.colorScheme.onSurface // Utilise la couleur du thème
+                        )
+                    }
+
+                }
+
 
             }
 
