@@ -65,6 +65,15 @@ fun ArticleScreen(
 
 ) {
 
+    // Bouton visible uniquement lors de l'appel à ArticleScreen (c'est à dire utilisation de navController)
+    Button(onClick = {
+        navController.popBackStack()
+    }) {
+        Text("Back")
+    }
+
+
+
     // Trigger loading article details when articleId changes
     // Premier lancement
     LaunchedEffect(articleId) {
@@ -73,8 +82,28 @@ fun ArticleScreen(
 
     val uiState by viewModel.uiState.collectAsState()
 
+    val onLoadArticle = { viewModel.loadArticleByID(articleId) }
+    ArticleItemContent(
+        modifier = modifier,
+        uiState = uiState,
+        onClickErrorRetryP = onLoadArticle
+    )
+
+}
+
+@Composable
+fun ArticleItemContent(
+    uiState: ArticleUIState,
+    modifier: Modifier = Modifier,
+    onClickErrorRetryP : () -> Unit
+){
+
     // En fonction de l'état du viewModel
     when (uiState) {
+
+        is ArticleUIState.InitState -> {
+
+        }
 
         // Chargement
         is ArticleUIState.IsLoading -> {
@@ -89,13 +118,6 @@ fun ArticleScreen(
             Column(
                 modifier = modifier
             ){
-
-                // Bouton visible uniquement en mode téléphone
-                Button(onClick = {
-                    navController.popBackStack()
-                }) {
-                    Text("Back")
-                }
 
                 ArticleItemComposable(
                     article = article,
@@ -113,16 +135,15 @@ fun ArticleScreen(
             ErrorComposable(
                 modifier=modifier,
                 sMessage = error,
-                onClickRetryP = { viewModel.loadArticleByID(articleId) }
+                onClickRetryP = onClickErrorRetryP
             )
 
 
         }
 
     }
-
-
 }
+
 
 
 @OptIn(ExperimentalGlideComposeApi::class)

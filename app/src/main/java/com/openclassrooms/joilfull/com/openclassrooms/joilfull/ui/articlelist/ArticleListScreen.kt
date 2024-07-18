@@ -19,6 +19,10 @@ import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.Ar
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.bTablet
 import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.ArticleItemContent
+import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.ArticleScreen
+import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.ArticleUIState
+import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.ArticleViewModel
 import com.openclassrooms.joilfull.model.Article
 
 
@@ -34,16 +38,19 @@ fun ArticleListScreen(
     windowSize: WindowSizeClass,
     navController: NavController,
     modifier: Modifier = Modifier,
-    viewModel : ArticleListViewModel = hiltViewModel(), // Par défaut, Hilt utilise la portée @ActivityRetainedScoped pour les ViewModels, ce qui signifie que le même ViewModel est partagé pour toute la durée de vie de l'activité.
-
+    viewModelList : ArticleListViewModel = hiltViewModel(), // Par défaut, Hilt utilise la portée @ActivityRetainedScoped pour les ViewModels, ce qui signifie que le même ViewModel est partagé pour toute la durée de vie de l'activité.
+    viewModelArticle : ArticleViewModel = hiltViewModel()
 ) {
 
     // lorsque la valeur uiState est modifiée,
     // la recomposition a lieu pour les composables utilisant la valeur uiState.
-    val uiState by viewModel.uiState.collectAsState()
+    val uiStateList by viewModelList.uiState.collectAsState()
+
+
+
 
     // En fonction de l'état du viewModel
-    when (uiState) {
+    when (uiStateList) {
 
         // Chargement
         is ArticleListUIState.IsLoading -> {
@@ -57,14 +64,20 @@ fun ArticleListScreen(
                 modifier=modifier,
             ){
 
-                val listCategoryAndArticles = (uiState as ArticleListUIState.Success).categoryAndArticles
+                val listCategoryAndArticles = (uiStateList as ArticleListUIState.Success).categoryAndArticles
 
-                val selectedArticle = (uiState as ArticleListUIState.Success).selectedArticle
+                val uiStateArticle by viewModelArticle.uiState.collectAsState()
 
                 val onArticleClickP : (Article) -> Unit
+
                 if (bTablet(windowSize)){
-                    // Tablette => affiche l'article dans le même composant
-                    onArticleClickP = viewModel::selectArticle
+
+                    // Tablette =>
+                    //  - charge l'article depuis le viewModel
+                    //  - va recomposer ce composant avec l'article sélectionné
+                    onArticleClickP = { article ->
+                        viewModelArticle.loadArticleByID(article.nIDArticle)
+                    }
 
                 }
                 else{
@@ -75,6 +88,7 @@ fun ArticleListScreen(
                     }
                 }
 
+
                 ArticleListComposable(
                     modifier=modifier,
                     onArticleClickP = onArticleClickP,
@@ -84,27 +98,24 @@ fun ArticleListScreen(
                 // En mode tablette
                 // Et un article est sélectionné
 
-                if (selectedArticle != null){
+                if (bTablet(windowSize)) {
 
-                    if (bTablet(windowSize)) {
-
-                        // Affichage de l'article dans l'écran
-                        ArticleItemComposable(
-                            modifier=modifier,
-                            article = selectedArticle,
-                            bModeDetail = true,
-                            onArticleClickP = {}
-                        )
-
+                    if (uiStateArticle is ArticleUIState.InitState) {
+                        // Aucun article n'est sélectionné
                     }
-                    /*
                     else{
-                        // Ouverture dans une autre fenêtre
-                        navController.navigate("articleItem/${selectedArticle.nIDArticle}")
-                    }
-                    */
-                }
 
+                        ArticleItemContent(
+                            modifier = modifier,
+                            uiState = uiStateArticle,
+                            onClickErrorRetryP = {} // TODO JG : Il faudrait faire 2 mode pour le composant d'erreur (1 pour la liste d'article et un pour la fiche article)
+                        )
+                    }
+
+                }
+                else{
+                    // Ouverture dans une autre fenêtre via navController.navigate
+                }
 
             }
 
@@ -114,11 +125,11 @@ fun ArticleListScreen(
         // Exception
         is ArticleListUIState.Error -> {
 
-            val error = (uiState as ArticleListUIState.Error).exception.message ?: "Unknown error"
+            val error = (uiStateList as ArticleListUIState.Error).exception.message ?: "Unknown error"
             ErrorComposable(
                 modifier=modifier,
                 sMessage = error,
-                onClickRetryP = { viewModel.loadArticlesList() }
+                onClickRetryP = { viewModelList.loadArticlesList() }
             )
 
 

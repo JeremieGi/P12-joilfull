@@ -61,17 +61,6 @@ class ArticleListViewModel  @Inject constructor(
 
     }
 
-    fun selectArticle(article: Article) {
-
-        val currentState = _uiState.value
-        // Si on est dans un état de succès
-        if (currentState is ArticleListUIState.Success) {
-            _uiState.value = currentState.copy(
-                selectedArticle = article)
-
-        }
-
-    }
 
 
 }

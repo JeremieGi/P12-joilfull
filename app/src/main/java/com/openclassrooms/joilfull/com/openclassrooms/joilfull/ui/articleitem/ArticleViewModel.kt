@@ -2,6 +2,8 @@ package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articlelist.ArticleListUIState
+import com.openclassrooms.joilfull.model.Article
 import com.openclassrooms.joilfull.repository.ArticleRepository
 import com.openclassrooms.joilfull.repository.ResultCustom
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +22,7 @@ class ArticleViewModel @Inject constructor(
 ) : ViewModel() {
 
     // UI state - Chargement par défaut
-    private val _uiState = MutableStateFlow<ArticleUIState>(ArticleUIState.IsLoading)
+    private val _uiState = MutableStateFlow<ArticleUIState>(ArticleUIState.InitState)
     // Backing property to avoid state updates from other classes
     val uiState: StateFlow<ArticleUIState> = _uiState.asStateFlow() // Accès en lecture seule de l'extérieur
 
@@ -57,6 +59,8 @@ class ArticleViewModel @Inject constructor(
         }.launchIn(viewModelScope)
 
     }
+
+
 
 
 }
