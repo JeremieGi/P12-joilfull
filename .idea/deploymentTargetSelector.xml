@@ -25,6 +25,9 @@
       <SelectionState runConfigName="ArticleScreenPreview - Item Mode">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
+      <SelectionState runConfigName="NoteComposablePreviewTablet - Light Mode">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
     </selectionStates>
   </component>
 </project>

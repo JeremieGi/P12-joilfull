@@ -175,18 +175,17 @@ fun ArticleItemComposable(
                 Text(
                     text = article.sName,
                     modifier = Modifier
-                        .weight(1f), // Prend tout l'espace disponible en laissant afficher les lignes à droite
+                        .weight(0.8f),
                     style =  typo,
                     //maxLines = 1,                       // une ligne
                     //overflow = TextOverflow.Ellipsis    // avec ellipse ...
                 )
 
                 NoteComposable(
-                    modifier = modifier,
+                    modifier = Modifier
+                        .weight(0.2f),
                     sNote = "X.X" // TODO JG : Moyenne des notes
                 )
-
-
 
 
             }
