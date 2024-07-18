@@ -2,6 +2,7 @@ package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem
 
 import android.R.attr.maxLines
 import android.content.res.Configuration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,6 +29,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
@@ -180,26 +183,25 @@ fun ArticleItemComposable(
                 modifier = modifier
                     .weight(1f) // Prend tout l'espace disponible en laissant afficher les colonnes dessous
                     .fillMaxSize()
-                    /*
-                    .border(
-                        // Juste pour la preview (A commenter)
-                        width = 10.dp,
-                        color = Color.Red,
-                    )
-                    */
             ) {
 
-                GlideImage(
-                    model = article.sURLPicture,
-                    contentDescription = article.sDescriptionPicture,
-                    contentScale = ContentScale.FillWidth, // FillBounds = Etiré / Fit = Toute la photo rentre sans déformation
+                // Surface spécialement dédié pour arrondir les coins de la GlideImage
+                Surface(
                     modifier = Modifier
-                        .fillMaxSize()
-                        //.wrapContentSize()
-                        .graphicsLayer {
-                            shape =
-                                RoundedCornerShape(16.dp) // Coins arrondis // TODO JG : Les coins en bas sont pas arrondi
-                        }
+                        .fillMaxSize(),
+
+                    shape = RoundedCornerShape(16.dp),  // Coins arrondis
+
+                ){
+
+                    GlideImage(
+                        model = article.sURLPicture,
+                        contentDescription = article.sDescriptionPicture,
+                        contentScale = ContentScale.FillWidth, // FillBounds = Etiré / Fit = Toute la photo rentre sans déformation
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(Color.Black)       // Pour les photos plus petites (comble l'espace)
+
                         /*
                         .border(
                             // Juste pour la preview (A commenter)
@@ -207,7 +209,12 @@ fun ArticleItemComposable(
                             color = Color.Blue,
                         )
                         */
-                )
+                    )
+
+                }
+
+
+
 
                 // TODO Denis - Pas sur que çà soit très académique
                 // J'aimerais faire quelque chose de proportionnel au contenant
