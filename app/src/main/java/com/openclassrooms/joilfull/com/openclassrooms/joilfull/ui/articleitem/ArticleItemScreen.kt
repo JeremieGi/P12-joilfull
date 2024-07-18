@@ -130,12 +130,12 @@ fun ArticleItemContent(
 
         // Exception
         is ArticleUIState.Error -> {
-
+            onClickErrorRetryP
             val error = (uiState as ArticleUIState.Error).exception.message ?: "Unknown error"
             ErrorComposable(
                 modifier=modifier,
-                sMessage = error,
-                onClickRetryP = onClickErrorRetryP
+                sMessage=error,
+                onClickRetryP = { }
             )
 
 

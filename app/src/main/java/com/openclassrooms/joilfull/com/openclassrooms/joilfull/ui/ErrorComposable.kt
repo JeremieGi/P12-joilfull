@@ -11,11 +11,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.openclassrooms.joilfull.R
+import com.openclassrooms.joilfull.model.Article
 import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
 
 
-/*
+/**
  * Error in DialogAlert
+ * @param idArticle : 0 => Contexte d'une liste d'article => on recharge la liste sinon l'ID de l'article
  */
 @Composable
 fun ErrorComposable(
@@ -26,9 +28,7 @@ fun ErrorComposable(
 
     val activity = (LocalContext.current as Activity)
 
-   // var bShowDialog by rememberSaveable { mutableStateOf( sMessage.isNotEmpty() ) }
-
-   // if (bShowDialog){
+    // if (bShowDialog){
     AlertDialog(
         onDismissRequest = {
             // Dismiss the dialog when the user clicks outside the dialog or on the back button.
@@ -49,18 +49,24 @@ fun ErrorComposable(
             }
         },
 
+
         confirmButton = {
-            TextButton(onClick = onClickRetryP ) {
-                Text(text = stringResource(R.string.reessayer))
+
+            // Si une lambda est passé en paramètre
+            if (onClickRetryP != {}){
+                TextButton(onClick = onClickRetryP ) {
+                    Text(text = stringResource(R.string.reessayer))
+                }
             }
+
         }
     )
 
-    //}
 
 
 }
 
+// TODO : Denis 2 => Preview simple qui échoue
 @Preview(showBackground = true)
 @Composable
 fun ErrorDialogPreview() {
