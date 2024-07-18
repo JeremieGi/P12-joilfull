@@ -181,31 +181,12 @@ fun ArticleItemComposable(
                     //overflow = TextOverflow.Ellipsis    // avec ellipse ...
                 )
 
-                // Affichage de la note moyenne
-                Row (
-                    modifier = Modifier
-                        .wrapContentHeight()
-                ){
+                NoteComposable(
+                    modifier = modifier,
+                    sNote = "X.X" // TODO JG : Moyenne des notes
+                )
 
-                    Icon(
-                        imageVector = Icons.Filled.Star,
-                        modifier = Modifier
-                            .wrapContentHeight(),
-                        contentDescription = stringResource(R.string.etoile),
-                        tint = colorStar // TODO Denis : J'ai 2 fichiers de couleurs Color.kt et colors.xml : lequel utiliser ?
-                    )
 
-                    Spacer(modifier = Modifier.size(2.dp))
-
-                    Text(
-                        text = "X.X", // TODO JG : Moyenne des notes
-                        modifier = Modifier
-                            .wrapContentWidth()
-                        /*.align(Alignment.CenterHorizontally)*/,
-                        style =  typo
-                    )
-
-                }
 
 
             }
