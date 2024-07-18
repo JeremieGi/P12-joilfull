@@ -2,10 +2,12 @@ package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem
 
 import com.openclassrooms.joilfull.model.Article
 
-// TODO revoir l'utilité du sealed dans l'archi (un open marcherait)
+// TODO Denis : question : utilité du sealed dans l'archi ? (un open marcherait)
 sealed class ArticleUIState {
 
-    data object InitState : ArticleUIState() // TODO : A renommer
+    // Utile uniquement en mode tablette
+    // Permet de définir un état où aucun article n'est sélectionné
+    data object NoSelectedArticle : ArticleUIState()
 
     data object IsLoading : ArticleUIState()
 

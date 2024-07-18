@@ -22,7 +22,7 @@ class ArticleViewModel @Inject constructor(
 ) : ViewModel() {
 
     // UI state - Chargement par défaut
-    private val _uiState = MutableStateFlow<ArticleUIState>(ArticleUIState.InitState)
+    private val _uiState = MutableStateFlow<ArticleUIState>(ArticleUIState.NoSelectedArticle)
     // Backing property to avoid state updates from other classes
     val uiState: StateFlow<ArticleUIState> = _uiState.asStateFlow() // Accès en lecture seule de l'extérieur
 

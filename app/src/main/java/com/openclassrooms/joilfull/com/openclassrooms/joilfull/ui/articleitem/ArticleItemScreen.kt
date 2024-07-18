@@ -101,8 +101,8 @@ fun ArticleItemContent(
     // En fonction de l'état du viewModel
     when (uiState) {
 
-        is ArticleUIState.InitState -> {
-
+        is ArticleUIState.NoSelectedArticle -> {
+            // Normalement la fenêtre ne doit pas être affichée du tout dans cet état
         }
 
         // Chargement
@@ -185,12 +185,13 @@ fun ArticleItemComposable(
                 modifier = modifier
                     .weight(1f) // Prend tout l'espace disponible en laissant afficher les colonnes dessous
                     .fillMaxSize()
+                    /*
                     .border(
                         // Juste pour la preview (A commenter)
                         width = 10.dp,
                         color = Color.Red,
                     )
-
+                    */
             ) {
 
                 GlideImage(
@@ -203,14 +204,16 @@ fun ArticleItemComposable(
                         .graphicsLayer {
                             shape = RoundedCornerShape(16.dp) // Coins arrondis // TODO JG : Les coins en bas sont pas arrondi
                         }
+                        /*
                         .border(
                             // Juste pour la preview (A commenter)
                             width = 10.dp,
                             color = Color.Blue,
-                        ),
+                        )
+                        */
                 )
 
-                // TODO Prio - Pas sur que çà soit très académique
+                // TODO Denis - Pas sur que çà soit très académique
                 val nHeightAndPadding : Int
                 if (bModeDetail){
                     nHeightAndPadding = 30
@@ -245,7 +248,7 @@ fun ArticleItemComposable(
                             modifier = Modifier
                                 .wrapContentHeight(),
                             contentDescription = stringResource(R.string.icone_coeur),
-                            tint = colorHeart // TODO : J'ai 2 fichiers de couleurs Color.kt et colors.xml : lequel utiliser ?
+                            tint = colorHeart // TODO Denis : J'ai 2 fichiers de couleurs Color.kt et colors.xml : lequel utiliser ?
                         )
 
                         Spacer(modifier = Modifier.size(4.dp))
@@ -307,13 +310,13 @@ fun ArticleItemComposable(
                         modifier = Modifier
                             .wrapContentHeight(),
                         contentDescription = stringResource(R.string.etoile),
-                        tint = colorStar // TODO : J'ai 2 fichiers de couleurs Color.kt et colors.xml : lequel utiliser ?
+                        tint = colorStar // TODO Denis : J'ai 2 fichiers de couleurs Color.kt et colors.xml : lequel utiliser ?
                     )
 
                     Spacer(modifier = Modifier.size(2.dp))
 
                     Text(
-                        text = "X.X", // TODO : Moyenne des notes
+                        text = "X.X", // TODO JG : Moyenne des notes
                         modifier = Modifier
                             .wrapContentWidth()
                             /*.align(Alignment.CenterHorizontally)*/,

@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge() // permet à l'application de s'étendre sur toute la surface de l'écran, y compris sous les barres de statut et de navigation.
 
-        // TODO : Attention : Android studio peut se mettre à bugguer et exécuter plusieurs fois setContent
+        // TODO Info : Attention : Android studio peut se mettre à bugguer et exécuter plusieurs fois setContent
         // https://stackoverflow.com/questions/72301445/why-is-setcontent-being-called-twice
         setContent {
 

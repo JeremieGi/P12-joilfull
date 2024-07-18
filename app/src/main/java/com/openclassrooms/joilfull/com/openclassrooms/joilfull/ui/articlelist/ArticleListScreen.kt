@@ -83,7 +83,7 @@ fun ArticleListScreen(
                 else{
                     // Phone => useNavHost
                     onArticleClickP = { article ->
-                        // TODO : pourquoi ArticleListScreen est recomposé après cet appel ?
+                        // TODO Denis : pourquoi ArticleListScreen est recomposé après cet appel ?
                         navController.navigate("articleItem/${article.nIDArticle}")
                     }
                 }
@@ -100,8 +100,9 @@ fun ArticleListScreen(
 
                 if (bTablet(windowSize)) {
 
-                    if (uiStateArticle is ArticleUIState.InitState) {
+                    if (uiStateArticle is ArticleUIState.NoSelectedArticle) {
                         // Aucun article n'est sélectionné
+                        // Rien ne s'affiche
                     }
                     else{
 
@@ -139,8 +140,9 @@ fun ArticleListScreen(
 
 
 }
+
 /*
-// TODO : Cette preview ne marche pas : Failed to instantiate a ViewModel
+// TODO Denis 2  : Cette preview ne marche pas : Failed to instantiate a ViewModel
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Preview(
     showBackground = true

@@ -45,9 +45,7 @@ fun NavGraph(
 
 
         // Fenêtre d'un article
-        composable("articleItem/{articleId}") { backStackEntry ->
-
-            // TODO : Revoir utilité du backStackEntry ici
+        composable("articleItem/{articleId}") { backStackEntry -> // BackStackEntry ici permet de récupérer les paramètres
 
             StructureComposable(
 

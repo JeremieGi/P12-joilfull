@@ -113,7 +113,7 @@ class ArticleRepository @Inject constructor (
      */
     fun loadArticleByID(nIDArticle : Int)  : Flow<ResultCustom<Article>> = flow {
 
-        // TODO : J'aurai aimé stocké le Flow en tant que propriété du repository (pour ne pas avoir à rappeler le Ws à chaque fois)
+        // TODO Denis 2 : J'aurai aimé stocké le Flow en tant que propriété du repository (pour ne pas avoir à rappeler le Ws à chaque fois)
         // mais je n'arrive pas à réutiliser ce Flow dans cette méthode par exemple
 
         loadArticlesList().collect { resultAPI ->
