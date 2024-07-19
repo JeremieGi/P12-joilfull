@@ -35,6 +35,7 @@ import com.openclassrooms.joilfull.R
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.ErrorComposable
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.LoadingComposable
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.bTablet
+import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.getWindowsSize
 import com.openclassrooms.joilfull.model.Article
 import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
 
@@ -50,13 +51,7 @@ fun ArticleScreen(
 
 ) {
 
-    val context = LocalContext.current
-    val activity = context as? Activity
-
-    var windowSizeClass : WindowSizeClass? = null
-    activity?.let {
-        windowSizeClass = calculateWindowSizeClass(activity)
-    }
+    var windowSize = getWindowsSize()
 
     // Trigger loading article details when articleId changes
     // Premier lancement
@@ -75,7 +70,7 @@ fun ArticleScreen(
             modifier = Modifier,
             uiState = uiState,
             navController = navController,
-            bModeTablet = bTablet(windowSizeClass),
+            bModeTablet = bTablet(windowSize),
             nIDRessourceAvatar = viewModelArticle.getCurrentUserAvatar(),
             onClickSendNote = viewModelArticle::sendNoteAndComment
         )

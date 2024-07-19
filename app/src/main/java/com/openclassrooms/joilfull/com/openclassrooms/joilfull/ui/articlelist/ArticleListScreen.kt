@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -28,6 +29,7 @@ import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.Ar
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.ArticleScreen
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.ArticleUIState
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.ArticleViewModel
+import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.getWindowsSize
 import com.openclassrooms.joilfull.model.Article
 
 
@@ -41,7 +43,6 @@ import com.openclassrooms.joilfull.model.Article
 
 @Composable
 fun ArticleListScreen(
-    windowSize: WindowSizeClass,
     navController: NavController,
     modifier: Modifier = Modifier,
     viewModelList : ArticleListViewModel = hiltViewModel(), // Par défaut, Hilt utilise la portée @ActivityRetainedScoped pour les ViewModels, ce qui signifie que le même ViewModel est partagé pour toute la durée de vie de l'activité.
@@ -52,8 +53,7 @@ fun ArticleListScreen(
     // la recomposition a lieu pour les composables utilisant la valeur uiState.
     val uiStateList by viewModelList.uiState.collectAsState()
 
-
-
+    var windowSize = getWindowsSize()
 
     // En fonction de l'état du viewModel
     when (uiStateList) {

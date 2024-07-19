@@ -1,7 +1,13 @@
 package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui
 
+import android.app.Activity
+import android.content.Context
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import java.text.DecimalFormat
 
 fun bTablet( windowSize: WindowSizeClass? ) : Boolean {
@@ -49,5 +55,21 @@ fun sDisplayPrice(dPrice : Double) : String {
     }
 
     return sPrice
+
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+fun getWindowsSize() : WindowSizeClass? {
+
+    val context = LocalContext.current
+    val activity = context as? Activity
+
+    var windowSizeClass : WindowSizeClass? = null
+    activity?.let {
+        windowSizeClass = calculateWindowSizeClass(activity)
+    }
+
+    return windowSizeClass
 
 }
