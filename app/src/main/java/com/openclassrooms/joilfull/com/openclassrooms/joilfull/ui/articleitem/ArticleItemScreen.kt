@@ -1,21 +1,29 @@
 package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem
 
+import android.app.Activity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -25,11 +33,13 @@ import androidx.navigation.compose.rememberNavController
 import com.openclassrooms.joilfull.R
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.ErrorComposable
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.LoadingComposable
+import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.bTablet
 import com.openclassrooms.joilfull.model.Article
 import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
 
 
 // Ce point d'entrée est utilisé uniquement pour les petits écrans
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
 fun ArticleScreen(
     modifier: Modifier = Modifier,
@@ -38,6 +48,14 @@ fun ArticleScreen(
     viewModel: ArticleViewModel = hiltViewModel(), // View Model depuis le graph de navigation
 
 ) {
+
+    val context = LocalContext.current
+    val activity = context as? Activity
+
+    var windowSizeClass : WindowSizeClass? = null
+    activity?.let {
+        windowSizeClass = calculateWindowSizeClass(activity)
+    }
 
     // Trigger loading article details when articleId changes
     // Premier lancement
@@ -55,22 +73,28 @@ fun ArticleScreen(
         ArticleItemContent(
             //modifier = Modifier,
             uiState = uiState,
-            navController = navController
+            navController = navController,
+            bModeTablet = bTablet(windowSizeClass),
         )
-
-
 
     }
 
 
 
+
+
+
 }
 
+/**
+ * Composant affichant le détails d'un article
+ */
 @Composable
 fun ArticleItemContent(
+    modifier: Modifier = Modifier,
     uiState: ArticleUIState,
     navController: NavController,
-    modifier: Modifier = Modifier
+    bModeTablet : Boolean
 ){
 
     // En fonction de l'état du viewModel
@@ -94,11 +118,13 @@ fun ArticleItemContent(
             Column(
                 modifier = modifier
             ){
+                
                 Box(
                     modifier = modifier
-                        .fillMaxSize()
+                        .weight(8f)
                 ) {
 
+          
                     ArticleItemComposable(
                         article = article,
                         bModeDetail = true,
@@ -106,27 +132,36 @@ fun ArticleItemContent(
                     )
 
                     // Bouton visible uniquement lors de l'appel à ArticleScreen (c'est à dire utilisation de navController)
-                    IconButton(
-                        modifier = Modifier
-                            .align(Alignment.TopStart)
-                            .padding(10.dp)
-                        //.background(Color.Red)
-                        ,
-                        onClick = {
-                            navController.popBackStack()
+                    if (!bModeTablet){
+
+                        IconButton(
+                            modifier = Modifier
+                                .align(Alignment.TopStart)
+                                .padding(10.dp)
+                            //.background(Color.Red)
+                            ,
+                            onClick = {
+                                navController.popBackStack()
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = stringResource(R.string.retour),
+                                tint = MaterialTheme.colorScheme.onSurface // Utilise la couleur du thème
+                            )
                         }
-                    ) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.retour),
-                            tint = MaterialTheme.colorScheme.onSurface // Utilise la couleur du thème
-                        )
+                        
                     }
-
-
-
-
                 }
+
+
+                Text(
+                    modifier = modifier
+                        .wrapContentSize()
+                        .padding(horizontal = 10.dp), // TODO Denis 2 : Gestion des modifiers (bonnes pratiques ?) pour mettre à un seul endroit le padding à 10
+                    text = article.sDescriptionArticle
+                )
+
 
 
             }
@@ -193,7 +228,8 @@ fun ArticleScreenPreview(){
 
         ArticleItemContent(
             uiState = uiStateSuccess,
-            navController = navController
+            navController = navController,
+            bModeTablet = false
         )
 
 

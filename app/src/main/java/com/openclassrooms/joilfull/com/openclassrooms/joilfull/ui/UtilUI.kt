@@ -4,21 +4,28 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import java.text.DecimalFormat
 
-fun bTablet( windowSize: WindowSizeClass ) : Boolean {
+fun bTablet( windowSize: WindowSizeClass? ) : Boolean {
 
     val bModeTablet : Boolean
 
-    when (windowSize.widthSizeClass) {
+    if (windowSize==null){
+        bModeTablet = false
+    }
+    else{
 
-        WindowWidthSizeClass.Expanded/*, WindowWidthSizeClass.Medium*/ -> {
-            // Affiche la fiche article dans la même fenêtre uniquement pour un tablette en mode portrait
-            // Si j'ajoute Medium => Ca affiche la fiche Article aussi en tablette mode paysage, mais aussi en téléphone mode paysage
-            bModeTablet = true
+        when (windowSize.widthSizeClass) {
+
+            WindowWidthSizeClass.Expanded/*, WindowWidthSizeClass.Medium*/ -> {
+                // Affiche la fiche article dans la même fenêtre uniquement pour un tablette en mode portrait
+                // Si j'ajoute Medium => Ca affiche la fiche Article aussi en tablette mode paysage, mais aussi en téléphone mode paysage
+                bModeTablet = true
+            }
+
+            else -> {
+                bModeTablet = false
+            }
         }
 
-        else -> {
-            bModeTablet = false
-        }
     }
 
     return bModeTablet

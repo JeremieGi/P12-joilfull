@@ -11,4 +11,7 @@ class Article (
     val dOriginalPrice : Double,
     val bFavorite : Boolean
 
-)
+){
+    // TODO Denis consigne : Où je récupère cette donnée ?
+    val sDescriptionArticle = "$sName - Description non présente dans le WS : Pull vert forêt à motif torsadé élégant, tricot finement travaillé avec manches bouffantes et col montant; doux et chaleureux."
+}
