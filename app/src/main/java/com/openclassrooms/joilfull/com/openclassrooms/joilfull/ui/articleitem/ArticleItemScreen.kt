@@ -118,14 +118,14 @@ fun ArticleItemContent(
         is ArticleUIState.Success -> {
 
             //val article = (uiState as ArticleUIState.Success).article
-            val article = uiState.article
+            val article = uiState.article // Kotlin sait que ArticleUIState est un success à cet endroit
 
             Column(
                 modifier = modifier
             ){
                 
                 Box(
-                    modifier = modifier
+                    modifier = Modifier
                         .weight(8f)
                 ) {
 
@@ -160,7 +160,7 @@ fun ArticleItemContent(
 
 
                 Text(
-                    modifier = modifier
+                    modifier = Modifier
                         .wrapContentSize()
                         .padding(horizontal = 10.dp), // TODO Denis 2 : Gestion des modifiers (bonnes pratiques ?) pour mettre à un seul endroit le padding à 10
                     text = article.sDescriptionArticle

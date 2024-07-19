@@ -34,12 +34,7 @@ fun ArticleListComposable(
 ) {
 
     LazyColumn (
-  //      modifier = modifier
-/*
-            .background(
-                color = Color.Blue
-            )
-  */
+       modifier = modifier
     ) {
 
         /*

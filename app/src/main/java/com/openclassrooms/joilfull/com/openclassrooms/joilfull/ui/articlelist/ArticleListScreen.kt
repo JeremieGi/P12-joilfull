@@ -1,12 +1,17 @@
 package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articlelist
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
@@ -24,6 +29,7 @@ import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.Ar
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.ArticleUIState
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.ArticleViewModel
 import com.openclassrooms.joilfull.model.Article
+
 
 
 /**
@@ -88,38 +94,50 @@ fun ArticleListScreen(
                     }
                 }
 
+                Row(){
 
-                ArticleListComposable(
-                    modifier=modifier,
-                    onArticleClickP = onArticleClickP,
-                    listCategoryAndArticles = listCategoryAndArticles
-                )
+                    ArticleListComposable(
+                        modifier=modifier
+                            .weight(2f),
+                        onArticleClickP = onArticleClickP,
+                        listCategoryAndArticles = listCategoryAndArticles
+                    )
 
-                // En mode tablette
-                // Et un article est sélectionné
 
-                if (bTablet(windowSize)) {
+                    // En mode tablette
+                    // Et un article est sélectionné
 
-                    if (uiStateArticle is ArticleUIState.NoSelectedArticle) {
-                        // Aucun article n'est sélectionné
-                        // Rien ne s'affiche
+                    if (bTablet(windowSize)) {
+
+                        if (uiStateArticle is ArticleUIState.NoSelectedArticle) {
+                            // Aucun article n'est sélectionné
+                            // Rien ne s'affiche
+                        }
+                        else{
+
+                            ArticleItemContent(
+                                modifier = modifier
+                                    .weight(1f),
+
+                                uiState = uiStateArticle,
+                                navController = navController, // Ne sera pas utilisé en mode tablette
+                                bModeTablet = true,
+                                nIDRessourceAvatar = viewModelArticle.getCurrentUserAvatar(),
+                                onClickSendNote = viewModelArticle::sendNoteAndComment
+                            )
+
+                        }
+
                     }
                     else{
+                        // Ouverture dans une autre fenêtre via navController.navigate
 
-                        ArticleItemContent(
-                            modifier = modifier,
-                            uiState = uiStateArticle,
-                            navController = navController, // Ne sera pas utilisé en mode tablette
-                            bModeTablet = true,
-                            nIDRessourceAvatar = viewModelArticle.getCurrentUserAvatar(),
-                            onClickSendNote = viewModelArticle::sendNoteAndComment
-                        )
                     }
 
+
                 }
-                else{
-                    // Ouverture dans une autre fenêtre via navController.navigate
-                }
+
+
 
             }
 

@@ -75,6 +75,9 @@ class ArticleViewModel @Inject constructor(
         return userRepository.getCurrentUserAvatar()
     }
 
+    /**
+     * Enregistrer la note et le commentaire saisi par l'utilisateur
+     */
     fun sendNoteAndComment(fNote:Float , sComment : String) {
 
         currentArticle.let {
