@@ -25,14 +25,10 @@ class MainActivity : ComponentActivity() {
         // https://stackoverflow.com/questions/72301445/why-is-setcontent-being-called-twice
         setContent {
 
-            // Détermine la taille de la fenêtre
-            val windowSizeClass = calculateWindowSizeClass(this)
-
             // On appelle le NavController
             val navController = rememberNavController()
             NavGraph(
-                navController = navController,
-                windowSizeClass = windowSizeClass
+                navController = navController
             )
 
 

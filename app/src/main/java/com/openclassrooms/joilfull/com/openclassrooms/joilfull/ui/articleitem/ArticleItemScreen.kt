@@ -1,13 +1,16 @@
 package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem
 
 import android.app.Activity
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.twotone.ArrowBack
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -51,7 +54,7 @@ fun ArticleScreen(
 
 ) {
 
-    var windowSize = getWindowsSize()
+    val windowSize = getWindowsSize()
 
     // Trigger loading article details when articleId changes
     // Premier lancement
@@ -140,15 +143,20 @@ fun ArticleItemContent(
                         IconButton(
                             modifier = Modifier
                                 .align(Alignment.TopStart)
-                                .padding(10.dp) // padding dans la Box
+                                .padding(10.dp)
+                                .background(
+                                    color = MaterialTheme.colorScheme.inverseOnSurface,
+                                    shape = RoundedCornerShape(12.dp)
+                                ),
+
                             //.background(Color.Red)
-                            ,
+
                             onClick = {
                                 navController.popBackStack()
                             }
                         ) {
                             Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                imageVector = Icons.AutoMirrored.TwoTone.ArrowBack,
                                 contentDescription = stringResource(R.string.retour),
                                 tint = MaterialTheme.colorScheme.onSurface // Utilise la couleur du thème
                             )
@@ -241,7 +249,7 @@ fun ArticleScreenPreview(){
             navController = navController,
             bModeTablet = false,
             nIDRessourceAvatar = R.drawable.currentuseravatar,
-            onClickSendNote = {_,_ -> Unit}
+            onClickSendNote = {_,_ -> } // 2 paramètres et retour Unit
         )
 
 

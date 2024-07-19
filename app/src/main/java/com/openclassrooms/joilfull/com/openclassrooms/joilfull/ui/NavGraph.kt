@@ -19,8 +19,7 @@ import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
 
 @Composable
 fun NavGraph(
-    navController: NavHostController,
-    windowSizeClass: WindowSizeClass
+    navController: NavHostController
 ) {
 
     NavHost(
@@ -36,7 +35,6 @@ fun NavGraph(
             ){ modifier ->
                 ArticleListScreen(
                     navController = navController,
-                    windowSize = windowSizeClass,
                     modifier = modifier
                 )
             }

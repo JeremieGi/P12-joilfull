@@ -19,6 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.twotone.Share
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -97,14 +98,6 @@ fun ArticleItemComposable(
                         model = article.sURLPicture,
                         contentDescription = article.sDescriptionPicture,
                         contentScale = ContentScale.FillWidth, // FillBounds = Etiré / Fit = Toute la photo rentre sans déformation
-
-                        /*
-                        .border(
-                            // Juste pour la preview (A commenter)
-                            width = 10.dp,
-                            color = Color.Blue,
-                        )
-                        */
                     )
 
                 }
@@ -135,21 +128,29 @@ fun ArticleItemComposable(
 
                 if (bModeDetail){
 
-                    IconButton(
+
+                    // Box pour l'IconButton sinon impossible de mettre un padding
+                    // (vu que le padding de la Box fait référence à la Box parente - Ecart avec le coin haut / Droit)
+                    Box(
                         modifier = Modifier
                             .align(Alignment.TopEnd)
-                            .padding(10.dp)
-                        //.background(Color.Red)
-                        ,
-                        onClick = {
-                            // TODO JG : Partage sur les réseaux
-                        }
+                            .padding(10.dp) //  Ecart avec le coin haut / Droit
+                            .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(12.dp)) // Fond avec coins arrondis
                     ) {
-                        Icon(
-                            imageVector = Icons.Filled.Share,
-                            contentDescription = stringResource(R.string.partager),
-                            tint = MaterialTheme.colorScheme.onSurface // Utilise la couleur du thème
-                        )
+                        IconButton(
+                            onClick = {
+                                // TODO JG : Partage sur les réseaux
+                            },
+
+                        ) {
+                            Icon(
+                                modifier = Modifier
+                                    .padding(10.dp),
+                                imageVector = Icons.Filled.Share,
+                                contentDescription = "Share",
+                                tint = MaterialTheme.colorScheme.onSurface // Couleur de l'icône
+                            )
+                        }
                     }
 
                 }
