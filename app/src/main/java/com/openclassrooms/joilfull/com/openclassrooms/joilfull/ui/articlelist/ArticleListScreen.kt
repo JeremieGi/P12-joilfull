@@ -97,7 +97,7 @@ fun ArticleListScreen(
                 Row(){
 
                     ArticleListComposable(
-                        modifier=modifier
+                        modifier=Modifier
                             .weight(2f),
                         onArticleClickP = onArticleClickP,
                         listCategoryAndArticles = listCategoryAndArticles
@@ -116,7 +116,7 @@ fun ArticleListScreen(
                         else{
 
                             ArticleItemContent(
-                                modifier = modifier
+                                modifier = Modifier
                                     .weight(1f),
 
                                 uiState = uiStateArticle,

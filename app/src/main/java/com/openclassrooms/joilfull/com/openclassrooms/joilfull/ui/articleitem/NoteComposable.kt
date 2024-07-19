@@ -34,19 +34,20 @@ fun NoteComposable(
     modifier: Modifier = Modifier,
     sNote : String,
     textStyle : TextStyle,
+
 ) {
 
     // Affichage de la note moyenne
     Row (
-        modifier = modifier,    // Répercution de la taille choisie
+        modifier = modifier
+            .wrapContentWidth(),    // Répercution de la taille choisie
         verticalAlignment = Alignment.CenterVertically
     ){
 
-
         Icon(
             imageVector = Icons.Filled.Star,
-            modifier = modifier
-                .weight(0.5f) // Utilise la largeur de la moitié du composant Row
+            modifier = Modifier
+                .wrapContentSize() // Utilise la largeur de la moitié du composant Row
             ,
             contentDescription = stringResource(R.string.etoile),
             tint = colorStar // TODO Denis 2 : J'ai 2 fichiers de couleurs Color.kt et colors.xml : lequel utiliser ?
@@ -58,7 +59,7 @@ fun NoteComposable(
             text = sNote,
             style = textStyle,
             modifier = Modifier
-                .weight(0.5f)
+                .wrapContentSize()
 
 
         )

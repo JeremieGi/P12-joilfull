@@ -7,11 +7,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -64,42 +66,37 @@ fun ArticleItemComposable(
 
     Card(
         modifier = modifier
-            .padding(horizontal = 10.dp, vertical = 10.dp)
             .clickable {
                 onArticleClickP(article)
             }
-            .fillMaxSize()
 
         //color = MaterialTheme.colorScheme.background
     ) {
         Column (
-            modifier = modifier
-                .fillMaxSize()
-            //.height(IntrinsicSize.Min)
+            modifier = Modifier
+                //.fillMaxSize()
         ) {
 
             Box(
-                modifier = modifier
+                modifier = Modifier
                     .weight(1f) // Prend tout l'espace disponible en laissant afficher les colonnes dessous
-                    .fillMaxSize()
+                    //.fillMaxSize()
             ) {
 
                 // Surface spécialement dédié pour arrondir les coins de la GlideImage
                 Surface(
-                    modifier = Modifier
-                        .fillMaxSize(),
-
+                    modifier = Modifier,
                     shape = RoundedCornerShape(16.dp),  // Coins arrondis
 
                 ){
 
                     GlideImage(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(Color.Gray) ,      // Pour les photos plus petites (comble l'espace)
                         model = article.sURLPicture,
                         contentDescription = article.sDescriptionPicture,
                         contentScale = ContentScale.FillWidth, // FillBounds = Etiré / Fit = Toute la photo rentre sans déformation
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(Color.Gray)       // Pour les photos plus petites (comble l'espace)
 
                         /*
                         .border(
@@ -111,8 +108,6 @@ fun ArticleItemComposable(
                     )
 
                 }
-
-
 
 
                 // TODO Denis 1 - Pas sur que çà soit très académique
@@ -175,7 +170,7 @@ fun ArticleItemComposable(
                 Text(
                     text = article.sName,
                     modifier = Modifier
-                        .weight(0.7f),
+                        .weight(0.65f),
                     style =  typo,
                     //maxLines = 1,                       // une ligne
                     //overflow = TextOverflow.Ellipsis    // avec ellipse ...
@@ -183,7 +178,10 @@ fun ArticleItemComposable(
 
                 NoteComposable(
                     modifier = Modifier
-                        .weight(0.3f),
+                        .wrapContentWidth()
+                        .weight(0.35f),
+
+
                     sNote = "X.XX", // TODO JG : Moyenne des notes
                     textStyle = typo
                 )

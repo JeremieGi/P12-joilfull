@@ -72,7 +72,7 @@ fun ArticleScreen(
     ) {
 
         ArticleItemContent(
-            //modifier = Modifier,
+            modifier = Modifier,
             uiState = uiState,
             navController = navController,
             bModeTablet = bTablet(windowSizeClass),
@@ -122,6 +122,9 @@ fun ArticleItemContent(
 
             Column(
                 modifier = modifier
+                    .padding(
+                        horizontal = 10.dp
+                    )
             ){
                 
                 Box(
@@ -130,6 +133,7 @@ fun ArticleItemContent(
                 ) {
 
                     ArticleItemComposable(
+                        modifier = modifier,
                         article = article,
                         bModeDetail = true,
                         onArticleClickP = {} // On Click neutralisé
@@ -141,7 +145,7 @@ fun ArticleItemContent(
                         IconButton(
                             modifier = Modifier
                                 .align(Alignment.TopStart)
-                                .padding(10.dp)
+                                .padding(10.dp) // padding dans la Box
                             //.background(Color.Red)
                             ,
                             onClick = {
@@ -161,15 +165,13 @@ fun ArticleItemContent(
 
                 Text(
                     modifier = Modifier
-                        .wrapContentSize()
-                        .padding(horizontal = 10.dp), // TODO Denis 2 : Gestion des modifiers (bonnes pratiques ?) pour mettre à un seul endroit le padding à 10
+                        .wrapContentSize(),
                     text = article.sDescriptionArticle
                 )
 
                 NotationInputComposable(
                     modifier = Modifier
                         .padding(
-                            horizontal = 10.dp, // TODO Denis 2 : Gestion des modifiers (bonnes pratiques ?) pour mettre à un seul endroit le padding à 10
                             vertical = 10.dp
                         ),
                     nIDUser = 0,    // TODO JG :ID User
