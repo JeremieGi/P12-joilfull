@@ -28,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.openclassrooms.joilfull.R
@@ -45,7 +46,7 @@ fun ArticleScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
     articleId: Int,
-    viewModel: ArticleViewModel = hiltViewModel(), // View Model depuis le graph de navigation
+    viewModelArticle: ArticleViewModel = hiltViewModel(), // View Model depuis le graph de navigation
 
 ) {
 
@@ -60,10 +61,10 @@ fun ArticleScreen(
     // Trigger loading article details when articleId changes
     // Premier lancement
     LaunchedEffect(articleId) {
-        viewModel.loadArticleByID(articleId)
+        viewModelArticle.loadArticleByID(articleId)
     }
 
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModelArticle.uiState.collectAsState()
 
     Box(
         modifier = modifier
@@ -75,6 +76,8 @@ fun ArticleScreen(
             uiState = uiState,
             navController = navController,
             bModeTablet = bTablet(windowSizeClass),
+            nIDRessourceAvatar = viewModelArticle.getCurrentUserAvatar(),
+            onClickSendNote = viewModelArticle::sendNoteAndComment
         )
 
     }
@@ -94,7 +97,9 @@ fun ArticleItemContent(
     modifier: Modifier = Modifier,
     uiState: ArticleUIState,
     navController: NavController,
-    bModeTablet : Boolean
+    bModeTablet : Boolean,
+    nIDRessourceAvatar : Int,
+    onClickSendNote : (fNote:Float , sComment : String) -> Unit
 ){
 
     // En fonction de l'état du viewModel
@@ -168,7 +173,9 @@ fun ArticleItemContent(
                             vertical = 10.dp
                         ),
                     nIDUser = 0,    // TODO JG :ID User
-                    nIDArticle = article.nIDArticle)
+                    nIDArticle = article.nIDArticle,
+                    nIDRessourceAvatar = nIDRessourceAvatar,
+                    onClickSendNote = onClickSendNote)
 
             }
 
@@ -235,7 +242,9 @@ fun ArticleScreenPreview(){
         ArticleItemContent(
             uiState = uiStateSuccess,
             navController = navController,
-            bModeTablet = false
+            bModeTablet = false,
+            nIDRessourceAvatar = R.drawable.currentuseravatar,
+            onClickSendNote = {_,_ -> Unit}
         )
 
 

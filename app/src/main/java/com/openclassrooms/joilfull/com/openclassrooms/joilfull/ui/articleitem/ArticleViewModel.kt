@@ -2,10 +2,12 @@ package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.openclassrooms.joilfull.R
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articlelist.ArticleListUIState
 import com.openclassrooms.joilfull.model.Article
 import com.openclassrooms.joilfull.repository.ArticleRepository
 import com.openclassrooms.joilfull.repository.ResultCustom
+import com.openclassrooms.joilfull.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,7 +19,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ArticleViewModel @Inject constructor(
 
-    private val articleRepository : ArticleRepository
+    private val articleRepository : ArticleRepository,
+    private val userRepository : UserRepository
 
 ) : ViewModel() {
 
@@ -26,7 +29,8 @@ class ArticleViewModel @Inject constructor(
     // Backing property to avoid state updates from other classes
     val uiState: StateFlow<ArticleUIState> = _uiState.asStateFlow() // Accès en lecture seule de l'extérieur
 
-
+    // Par simplicité de gestion, je stocke l'article chargé
+    private var currentArticle : Article? = null
 
     // Renvoie un article par son ID
     fun loadArticleByID(articleId: Int) {
@@ -50,6 +54,10 @@ class ArticleViewModel @Inject constructor(
 
                 // Succès
                 is ResultCustom.Success -> {
+
+                    // On conserve l'article chargé dans le viewModel
+                    currentArticle = resultAPI.value
+
                     _uiState.value = ArticleUIState.Success(resultAPI.value)
 
                 }
@@ -60,7 +68,24 @@ class ArticleViewModel @Inject constructor(
 
     }
 
+    /**
+     * Récupère l'avatar de l'utilisateur courant
+     */
+    fun getCurrentUserAvatar() : Int {
+        return userRepository.getCurrentUserAvatar()
+    }
 
+    fun sendNoteAndComment(fNote:Float , sComment : String) {
+
+        currentArticle.let {
+
+            val nIDCurrentUser = userRepository.getCurrentUserID()
+            // TODO Denis consigne : Où enregistrer la note et le commentaire ?
+
+        }
+
+
+    }
 
 
 }

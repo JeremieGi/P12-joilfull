@@ -10,4 +10,5 @@
     <string name="retour">Retour</string>
     <string name="partager">Partager l\'article sur les réseaux</string>
     <string name="votre_avatar_utilisateur">Votre avatar utilisateur</string>
+    <string name="envoyer_le_commentaire_et_la_note">Envoyer le commentaire et la note</string>
 </resources>

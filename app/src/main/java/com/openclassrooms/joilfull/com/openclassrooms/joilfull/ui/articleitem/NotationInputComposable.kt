@@ -20,6 +20,8 @@ import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.twotone.Send
+import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Star
@@ -53,7 +55,9 @@ import com.openclassrooms.joilfull.ui.theme.colorStar
 fun NotationInputComposable(
     modifier: Modifier = Modifier,
     nIDUser : Int,
-    nIDArticle : Int
+    nIDArticle : Int,
+    nIDRessourceAvatar : Int,
+    onClickSendNote : (fNote:Float , sComment : String) -> Unit
 ){
 
     Column(
@@ -61,13 +65,15 @@ fun NotationInputComposable(
     )
     {
 
+        var rating by remember { mutableFloatStateOf(0f) }
+
         Row(
             modifier = Modifier,
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
-                painter = painterResource(id = R.drawable.currentuseravatar),
+                painter = painterResource(id = nIDRessourceAvatar),
                 contentDescription = stringResource(R.string.votre_avatar_utilisateur),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -80,7 +86,6 @@ fun NotationInputComposable(
             )
 
             // Champ de notation à 5 étoiles
-            var rating by remember { mutableFloatStateOf(0f) }
             StarRatingBar(
                 modifier = Modifier.weight(1f),
                 ratingP = rating,
@@ -94,27 +99,51 @@ fun NotationInputComposable(
             .height(10.dp)
         )
 
-        // Champ de saisie de texte qui conserve sa valeur lors de la roation
-        var text by remember { mutableStateOf("") }
-        BasicTextField(
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .border(1.dp, Color.Gray, RoundedCornerShape(8.dp))
-                .padding(5.dp)
-                .defaultMinSize(
-                    minHeight = 50.dp
-                ),
-            value = text,
-            onValueChange = { text = it },
-            textStyle = LocalTextStyle.current.copy(fontSize = 16.sp),
-            maxLines = 2
-        )
+        ){
+
+            // Champ de saisie de texte qui conserve sa valeur lors de la rotation
+            var textComment by remember { mutableStateOf("") }
+            BasicTextField(
+                modifier = Modifier
+                    .weight(1f)
+                    .border(1.dp, Color.Gray, RoundedCornerShape(8.dp))
+                    .padding(5.dp)
+                    .defaultMinSize(
+                        minHeight = 50.dp
+                    ),
+                value = textComment,
+                onValueChange = { textComment = it },
+                textStyle = LocalTextStyle.current.copy(fontSize = 16.sp),
+                maxLines = 2
+            )
+
+            IconButton(
+                onClick = {
+                    onClickSendNote(
+                        /*fNote = */rating,
+                        /*sComment = */textComment
+                    )
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.TwoTone.Send,
+                    contentDescription = stringResource(R.string.envoyer_le_commentaire_et_la_note)
+                )
+            }
+
+        }
+
+
 
 
     }
 
 
 }
+
 
 
 @Composable
@@ -155,7 +184,8 @@ fun StarRatingBar(
                             onRatingChanged(i.toFloat())
                         }
                     )
-                    .width(starSize).height(starSize),
+                    .width(starSize)
+                    .height(starSize),
                 imageVector = icon,
                 contentDescription = stringResource(R.string.partager),
                 tint = iconTintColor
@@ -178,7 +208,9 @@ fun NotationInputComposablePreview() {
             width = 300.dp
         ),
         nIDUser = 1,
-        nIDArticle = 1
+        nIDArticle = 1,
+        nIDRessourceAvatar = R.drawable.currentuseravatar,
+        onClickSendNote = { _, _ -> } // 2 paramètres vides
     )
 
 }

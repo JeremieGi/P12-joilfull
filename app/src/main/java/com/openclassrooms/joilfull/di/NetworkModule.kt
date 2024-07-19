@@ -59,14 +59,14 @@ class NetworkModule {
             // .setLevel(HttpLoggingInterceptor.Level.BODY) configure le niveau de logging de l'intercepteur. Level.BODY signifie que le corps des requêtes et des réponses sera logué, en plus des en-têtes et des autres informations.
         }.build()
     }
-
+/*
     /**
-     * Constructeur du repository
+     * Constructeur du repository => inutile si on met des annotations dans le Repo lui-même
      */
     @Provides
     @Singleton
     fun provideArticleRepository(dataService : IArticlesAPI): ArticleRepository {
         return ArticleRepository(dataService)
     }
-
+*/
 }

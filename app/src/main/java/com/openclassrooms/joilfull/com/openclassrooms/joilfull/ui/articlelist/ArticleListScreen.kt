@@ -110,7 +110,9 @@ fun ArticleListScreen(
                             modifier = modifier,
                             uiState = uiStateArticle,
                             navController = navController, // Ne sera pas utilisé en mode tablette
-                            bModeTablet = true
+                            bModeTablet = true,
+                            nIDRessourceAvatar = viewModelArticle.getCurrentUserAvatar(),
+                            onClickSendNote = viewModelArticle::sendNoteAndComment
                         )
                     }
 
