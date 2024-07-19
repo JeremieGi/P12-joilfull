@@ -124,7 +124,6 @@ fun ArticleItemContent(
                         .weight(8f)
                 ) {
 
-          
                     ArticleItemComposable(
                         article = article,
                         bModeDetail = true,
@@ -162,7 +161,14 @@ fun ArticleItemContent(
                     text = article.sDescriptionArticle
                 )
 
-
+                NotationInputComposable(
+                    modifier = Modifier
+                        .padding(
+                            horizontal = 10.dp, // TODO Denis 2 : Gestion des modifiers (bonnes pratiques ?) pour mettre à un seul endroit le padding à 10
+                            vertical = 10.dp
+                        ),
+                    nIDUser = 0,    // TODO JG :ID User
+                    nIDArticle = article.nIDArticle)
 
             }
 

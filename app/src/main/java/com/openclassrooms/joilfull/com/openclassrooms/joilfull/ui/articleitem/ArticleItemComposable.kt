@@ -40,7 +40,7 @@ import com.openclassrooms.joilfull.R
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.sDisplayPrice
 import com.openclassrooms.joilfull.model.Article
 import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
-import com.openclassrooms.joilfull.ui.theme.colorStar
+
 
 
 @OptIn(ExperimentalGlideComposeApi::class)

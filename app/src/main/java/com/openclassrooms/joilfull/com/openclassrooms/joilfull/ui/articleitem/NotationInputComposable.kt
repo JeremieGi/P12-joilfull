@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -20,12 +22,15 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.Star
+import androidx.compose.material.icons.twotone.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -33,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
@@ -41,11 +47,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.openclassrooms.joilfull.R
+import com.openclassrooms.joilfull.ui.theme.colorStar
 
 @Composable
 fun NotationInputComposable(
     modifier: Modifier = Modifier,
-    fInitialNote : Float,
     nIDUser : Int,
     nIDArticle : Int
 ){
@@ -65,33 +71,43 @@ fun NotationInputComposable(
                 contentDescription = stringResource(R.string.votre_avatar_utilisateur),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(64.dp)
+                    .size(50.dp)
                     .clip(RoundedCornerShape(percent = 100))
             )
 
+            Spacer(modifier = Modifier
+                .size(5.dp)
+            )
+
             // Champ de notation à 5 étoiles
+            var rating by remember { mutableFloatStateOf(0f) }
             StarRatingBar(
-                modifier = Modifier.wrapContentWidth(),
-                rating = fInitialNote,
-                onRatingChanged = {}
+                modifier = Modifier.weight(1f),
+                ratingP = rating,
+                onRatingChanged = {
+                    rating = it
+                }
             )
         }
 
         Spacer(modifier = Modifier
-            .height(16.dp)
-            .width(15.dp)
+            .height(10.dp)
         )
 
-        // Deuxième ligne : Champ de saisie de texte
+        // Champ de saisie de texte qui conserve sa valeur lors de la roation
         var text by remember { mutableStateOf("") }
         BasicTextField(
-            value = text,
-            onValueChange = { text = it },
             modifier = Modifier
                 .fillMaxWidth()
                 .border(1.dp, Color.Gray, RoundedCornerShape(8.dp))
-                .padding(16.dp),
-            textStyle = LocalTextStyle.current.copy(fontSize = 16.sp)
+                .padding(5.dp)
+                .defaultMinSize(
+                    minHeight = 50.dp
+                ),
+            value = text,
+            onValueChange = { text = it },
+            textStyle = LocalTextStyle.current.copy(fontSize = 16.sp),
+            maxLines = 2
         )
 
 
@@ -105,7 +121,7 @@ fun NotationInputComposable(
 fun StarRatingBar(
     modifier: Modifier = Modifier,
     maxStars: Int = 5,
-    rating: Float,
+    ratingP: Float,
     onRatingChanged: (Float) -> Unit
 ) {
     val density = LocalDensity.current.density
@@ -117,10 +133,19 @@ fun StarRatingBar(
         verticalAlignment = Alignment.CenterVertically
     ) {
         for (i in 1..maxStars) {
-            val isSelected = i <= rating
-            val icon = if (isSelected) Icons.Filled.Star else Icons.Default.Star
 
-            val iconTintColor = if (isSelected) Color(0xFFFFC700) else Color(0x20FFFFFF)
+            val isSelected = i <= ratingP
+
+            val icon : ImageVector
+            val iconTintColor : Color
+
+            if (isSelected) {
+                icon = Icons.TwoTone.Star
+                iconTintColor = colorStar
+            } else {
+                icon = Icons.TwoTone.Star
+                iconTintColor = Color(0x20000000)
+            }
 
             Icon(
                 modifier = Modifier
@@ -150,11 +175,26 @@ fun NotationInputComposablePreview() {
 
     NotationInputComposable(
         modifier = Modifier.width(
-            width = 200.dp
+            width = 300.dp
         ),
         nIDUser = 1,
-        nIDArticle = 1,
-        fInitialNote = 3f
+        nIDArticle = 1
     )
 
 }
+
+@Preview(name = "Light Mode")
+@Composable
+fun StarRatingBarPreview() {
+
+    StarRatingBar(
+        modifier = Modifier.width(
+            width = 300.dp
+        ),
+        maxStars = 5,
+        ratingP = 3.5f,
+        onRatingChanged = {}
+    )
+
+}
+
