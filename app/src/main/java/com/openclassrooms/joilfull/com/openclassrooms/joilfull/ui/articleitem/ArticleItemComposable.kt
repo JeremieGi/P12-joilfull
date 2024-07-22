@@ -36,10 +36,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -100,6 +105,8 @@ fun ArticleItemSimpleComposable(
         Column ()
         {
 
+            var imageHeight by remember { mutableStateOf(0) }
+
             // Box pour superposition
             Box(
                 modifier = Modifier
@@ -116,7 +123,11 @@ fun ArticleItemSimpleComposable(
                     GlideImage(
                         modifier = Modifier
                             .fillMaxSize()
-                            .background(Color.Gray) ,      // Pour les photos plus petites (comble l'espace)
+                            .background(Color.Gray)       // Pour les photos plus petites (comble l'espace)
+                            .onGloballyPositioned { coordinates ->
+                                // Obtenez la hauteur de l'image
+                                imageHeight = coordinates.size.height
+                            },
                         model = article.sURLPicture,
                         contentDescription = article.sDescriptionPicture,
                         contentScale = ContentScale.FillWidth, // FillBounds = Etiré / Fit = Toute la photo rentre sans déformation
@@ -125,22 +136,12 @@ fun ArticleItemSimpleComposable(
                 }
 
 
-                // TODO Denis 1 - Pas sur que çà soit très académique
-                // J'aimerais faire quelque chose de proportionnel au contenant
-                val nHeight : Int
-                if (bModeDetail){
-                    nHeight = 50
-                }
-                else{
-                    nHeight = 40
-                }
-
                 // Superposition du picto cœur avec un nombre entier
                 LikeComposable(
                     modifier = Modifier
-                        .align(Alignment.BottomEnd) // Aligner en bas à droite de l'image,
-                        .padding(10.dp)       // Ecart avec le bas droit
-                        .height(nHeight.dp)
+                        .align(Alignment.BottomEnd)         // Aligner en bas à droite de l'image,
+                        .padding(10.dp)                     // Ecart avec le bas droit
+                        .height((imageHeight / 14f).dp)     // TODO Denis : comment afficher une hauteur proportionnelle à un autre élément ? + ici le ratio ne semble pas correct
                     ,
                     sNbLikeP = article.nNbLikes.toString(),
                     bInitLike = false, // TODO : JG à implémenter
