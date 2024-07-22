@@ -55,42 +55,50 @@ fun ArticleScreen(
 ) {
 
     val windowSize = getWindowsSize()
-/*
+
     // Si l'article n'est pas chargé
     if (viewModelArticle.currentArticle==null){
 
+        // Trigger loading article details when articleId changes
+        // Premier lancement
+        LaunchedEffect(articleId) {
+            viewModelArticle.loadArticleByID(articleId)
+        }
+
+        val uiState by viewModelArticle.uiState.collectAsState()
+
+        Box(
+            modifier = modifier
+                .fillMaxSize()
+        ) {
+
+            ArticleItemContent(
+                modifier = Modifier,
+                uiState = uiState,
+                //bModeTablet = bTablet(windowSize),
+                nIDRessourceAvatarP = viewModelArticle.getCurrentUserAvatar(),
+                onClicBackP = { navController.popBackStack() },
+                onClickSendNoteP = viewModelArticle::sendNoteAndComment,
+                onClickLikeP = viewModelArticle::setLike
+            )
+
+        }
 
 
     }
-*/
-    // Trigger loading article details when articleId changes
-    // Premier lancement
-    LaunchedEffect(articleId) {
-        viewModelArticle.loadArticleByID(articleId)
-    }
+    else{
+        // Cas d'une rotation par exemple
+        // Pas besoin de recharger l'article qu'on a déjà dans le viewModel
 
-    val uiState by viewModelArticle.uiState.collectAsState()
-
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-    ) {
-
-        ArticleItemContent(
-            modifier = Modifier,
-            uiState = uiState,
-            navController = navController,
-            bModeTablet = bTablet(windowSize),
-            nIDRessourceAvatar = viewModelArticle.getCurrentUserAvatar(),
+        ArticleItemDetailComposable(
+            articleP = viewModelArticle.currentArticle!!, // TODO Question Denis : test nullité plus haut mais il faut quand même !!
+            onClickLikeP = viewModelArticle::setLike,
+            onClicBackP = { navController.popBackStack() },
             onClickSendNoteP = viewModelArticle::sendNoteAndComment,
-            onClickLikeP = viewModelArticle::setLike
+            nIDRessourceAvatarP = viewModelArticle.getCurrentUserAvatar(),
         )
 
     }
-
-
-
-
 
 
 }
@@ -102,9 +110,8 @@ fun ArticleScreen(
 fun ArticleItemContent(
     modifier: Modifier = Modifier,
     uiState: ArticleUIState,
-    navController: NavController,
-    bModeTablet : Boolean,
-    nIDRessourceAvatar : Int,
+    nIDRessourceAvatarP : Int,
+    onClicBackP : () -> Unit,
     onClickSendNoteP : (fNote:Float , sComment : String) -> Unit,
     onClickLikeP : (bValLike : Boolean) -> Unit
 ){
@@ -129,74 +136,14 @@ fun ArticleItemContent(
             //val article = (uiState as ArticleUIState.Success).article
             val article = uiState.article // Kotlin sait que ArticleUIState est un success à cet endroit
 
-            Column(
-                modifier = modifier
-                    .padding(
-                        horizontal = 10.dp
-                    )
-            ){
-                
-                Box(
-                    modifier = Modifier
-                        .weight(8f)
-                ) {
-
-                    ArticleItemComposable(
-                        modifier = modifier,
-                        article = article,
-                        bModeDetail = true,
-                        onArticleClickP = {}, // On Click neutralisé
-                        onClickLikeP = onClickLikeP
-                    )
-
-                    // Bouton visible uniquement lors de l'appel à ArticleScreen (c'est à dire utilisation de navController)
-                    if (!bModeTablet){
-
-                        IconButton(
-                            modifier = Modifier
-                                .align(Alignment.TopStart)
-                                .padding(10.dp)
-                                .background(
-                                    color = MaterialTheme.colorScheme.inverseOnSurface,
-                                    shape = RoundedCornerShape(12.dp)
-                                ),
-
-                            //.background(Color.Red)
-
-                            onClick = {
-                                navController.popBackStack()
-                            }
-                        ) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.TwoTone.ArrowBack,
-                                contentDescription = stringResource(R.string.retour),
-                                tint = MaterialTheme.colorScheme.onSurface // Utilise la couleur du thème
-                            )
-                        }
-                        
-                    }
-                }
-
-
-                Text(
-                    modifier = Modifier
-                        .padding(top = 5.dp)
-                        .wrapContentSize(),
-                    text = article.sDescriptionArticle
-                )
-
-                NotationInputComposable(
-                    modifier = Modifier
-                        .padding(
-                            vertical = 10.dp
-                        ),
-                    nIDUser = 0,    // TODO JG :ID User
-                    nIDArticle = article.nIDArticle,
-                    nIDRessourceAvatar = nIDRessourceAvatar,
-                    onClickSendNote = onClickSendNoteP)
-
-            }
-
+            ArticleItemDetailComposable(
+                modifier = modifier,
+                articleP = article,
+                nIDRessourceAvatarP = nIDRessourceAvatarP,
+                onClickLikeP = onClickLikeP,
+                onClicBackP = onClicBackP,
+                onClickSendNoteP = onClickSendNoteP
+            )
         }
 
         // Exception
@@ -215,7 +162,86 @@ fun ArticleItemContent(
     }
 }
 
+@Composable
+fun ArticleItemDetailComposable(
+    modifier: Modifier = Modifier,
+    articleP : Article,
+    nIDRessourceAvatarP : Int,
+    onClickLikeP : (bValLike : Boolean) -> Unit,
+    onClicBackP : () -> Unit,
+    onClickSendNoteP : (fNote:Float , sComment : String) -> Unit
+){
 
+    Column(
+        modifier = modifier
+            .padding(
+                horizontal = 10.dp
+            )
+    ){
+
+        Box(
+            modifier = Modifier
+                .weight(8f)
+        ) {
+
+            ArticleItemSimpleComposable(
+                modifier = modifier,
+                article = articleP,
+                bModeDetail = true,
+                onArticleClickP = {}, // OnClick neutralisé
+                onClickLikeP = onClickLikeP
+            )
+
+            // Bouton visible uniquement lors de l'appel à ArticleScreen (c'est à dire utilisation de navController)
+            //if (!bModeTablet){
+            // Si la lambda onClicBackP est définie
+            if (onClicBackP!={}){
+
+                IconButton(
+                    modifier = Modifier
+                        .align(Alignment.TopStart)
+                        .padding(10.dp)
+                        .background(
+                            color = MaterialTheme.colorScheme.inverseOnSurface,
+                            shape = RoundedCornerShape(12.dp)
+                        ),
+
+                    //.background(Color.Red)
+
+                    onClick = onClicBackP
+
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.TwoTone.ArrowBack,
+                        contentDescription = stringResource(R.string.retour),
+                        tint = MaterialTheme.colorScheme.onSurface // Utilise la couleur du thème
+                    )
+                }
+
+            }
+        }
+
+
+        Text(
+            modifier = Modifier
+                .padding(top = 5.dp)
+                .wrapContentSize(),
+            text = articleP.sDescriptionArticle
+        )
+
+        NotationInputComposable(
+            modifier = Modifier
+                .padding(
+                    vertical = 10.dp
+                ),
+            nIDUser = 0,    // TODO JG :ID User
+            nIDArticle = articleP.nIDArticle,
+            nIDRessourceAvatarP = nIDRessourceAvatarP,
+            onClickSendNoteP = onClickSendNoteP)
+
+    }
+
+}
 
 // Preview ne marche pas avec Hilt et les ViewModel
 @Preview(name = "Item Mode",showBackground = true, showSystemUi = true)
@@ -259,9 +285,8 @@ fun ArticleScreenPreview(){
 
         ArticleItemContent(
             uiState = uiStateSuccess,
-            navController = navController,
-            bModeTablet = false,
-            nIDRessourceAvatar = R.drawable.currentuseravatar,
+            nIDRessourceAvatarP = R.drawable.currentuseravatar,
+            onClicBackP = { navController.popBackStack() },
             onClickSendNoteP = {_,_ -> }, // 2 paramètres et retour Unit
             onClickLikeP = {}
         )

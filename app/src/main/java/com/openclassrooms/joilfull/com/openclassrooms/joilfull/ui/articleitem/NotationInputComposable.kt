@@ -63,8 +63,8 @@ fun NotationInputComposable(
     modifier: Modifier = Modifier,
     nIDUser : Int,
     nIDArticle : Int,
-    nIDRessourceAvatar : Int,
-    onClickSendNote : (fNote:Float , sComment : String) -> Unit
+    nIDRessourceAvatarP : Int,
+    onClickSendNoteP : (fNote:Float , sComment : String) -> Unit
 ){
 
     val context = LocalContext.current
@@ -83,7 +83,7 @@ fun NotationInputComposable(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
-                painter = painterResource(id = nIDRessourceAvatar),
+                painter = painterResource(id = nIDRessourceAvatarP),
                 contentDescription = stringResource(R.string.votre_avatar_utilisateur),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -151,7 +151,7 @@ fun NotationInputComposable(
                     }
 
                     if (bInputOK){
-                        onClickSendNote(
+                        onClickSendNoteP(
                             /*fNote = */rating,
                             /*sComment = */textComment
                         )
@@ -244,8 +244,8 @@ fun NotationInputComposablePreview() {
             ,
         nIDUser = 1,
         nIDArticle = 1,
-        nIDRessourceAvatar = R.drawable.currentuseravatar,
-        onClickSendNote = { _, _ -> } // 2 paramètres vides
+        nIDRessourceAvatarP = R.drawable.currentuseravatar,
+        onClickSendNoteP = { _, _ -> } // 2 paramètres vides
     )
 
 }

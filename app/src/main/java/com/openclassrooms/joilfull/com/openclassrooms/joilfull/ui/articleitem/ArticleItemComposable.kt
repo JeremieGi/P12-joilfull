@@ -60,7 +60,7 @@ import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun ArticleItemComposable(
+fun ArticleItemSimpleComposable(
     modifier: Modifier = Modifier,
     article : Article,
     bModeDetail : Boolean,  // Vrai => Mode détails, faux => Mode Item
@@ -286,7 +286,7 @@ fun ArticleItemComposablePreview() {
 
 
     JoilfullTheme {
-        ArticleItemComposable(
+        ArticleItemSimpleComposable(
             article = article,
             bModeDetail = true,
             onArticleClickP = {},
@@ -315,7 +315,7 @@ fun ArticleItemComposablePreviewItemMode() {
 
 
     JoilfullTheme {
-        ArticleItemComposable(
+        ArticleItemSimpleComposable(
             article = article,
             bModeDetail = false,
             onArticleClickP = {},

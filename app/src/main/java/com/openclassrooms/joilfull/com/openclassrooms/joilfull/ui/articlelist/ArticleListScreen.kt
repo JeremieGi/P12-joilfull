@@ -121,11 +121,11 @@ fun ArticleListScreen(
                                     .weight(1f),
 
                                 uiState = uiStateArticle,
-                                navController = navController, // Ne sera pas utilisé en mode tablette
-                                bModeTablet = true,
-                                nIDRessourceAvatar = viewModelArticle.getCurrentUserAvatar(),
+                                nIDRessourceAvatarP = viewModelArticle.getCurrentUserAvatar(),
+                                onClicBackP = {}, // Pas de backstack en mode tablette
                                 onClickSendNoteP = viewModelArticle::sendNoteAndComment,
-                                onClickLikeP = viewModelArticle::setLike
+                                onClickLikeP = viewModelArticle::setLike,
+
                             )
 
                         }
