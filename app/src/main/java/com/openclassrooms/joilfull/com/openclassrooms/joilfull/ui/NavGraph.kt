@@ -8,6 +8,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navDeepLink
+import com.openclassrooms.joilfull.Links
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.ArticleScreen
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articlelist.ArticleListScreen
 import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
@@ -43,13 +45,19 @@ fun NavGraph(
 
 
         // Fenêtre d'un article
-        composable("articleItem/{articleId}") { backStackEntry -> // BackStackEntry ici permet de récupérer les paramètres
+        composable(
+
+            route = Links.routeWithArgs, // "articleItem/{articleId}"
+            deepLinks = Links.deepLinks, // "joiefull://articleItem/{articleId}"
+            arguments = Links.arguments
+
+        ) { backStackEntry -> // BackStackEntry ici permet de récupérer les paramètres
 
             StructureComposable(
 
             ){ modifier ->
 
-                val articleId = backStackEntry.arguments?.getString("articleId")
+                val articleId = backStackEntry.arguments?.getString(Links.articleIdArg)
                 ArticleScreen(
                     articleId = articleId?.toInt() ?: -1,
                     navController = navController,

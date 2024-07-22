@@ -1,7 +1,9 @@
 package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem
 
+import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.openclassrooms.joilfull.Links
 import com.openclassrooms.joilfull.R
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articlelist.ArticleListUIState
 import com.openclassrooms.joilfull.model.Article
@@ -45,7 +47,7 @@ class ArticleViewModel @Inject constructor(
                     _uiState.value = ArticleUIState.Error(Exception(resultAPI.errorMessage))
 
                 // En chargement
-                ResultCustom.Loading -> {
+                is ResultCustom.Loading -> {
                     if (_uiState.value != ArticleUIState.IsLoading){
                         _uiState.value = ArticleUIState.IsLoading
                     }
@@ -89,6 +91,7 @@ class ArticleViewModel @Inject constructor(
 
 
     }
+
 
 
 }

@@ -1,5 +1,8 @@
 package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -31,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -39,6 +43,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.openclassrooms.joilfull.Links
 import com.openclassrooms.joilfull.R
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.sDisplayPrice
 import com.openclassrooms.joilfull.model.Article
@@ -54,6 +59,8 @@ fun ArticleItemComposable(
     onArticleClickP : (Article) -> Unit,
     modifier: Modifier = Modifier
 ) {
+
+    val currentContext = LocalContext.current
 
     // Adaptation des polices si on est dans la fenêtre de détail ou de liste
     val typo : TextStyle
@@ -135,11 +142,14 @@ fun ArticleItemComposable(
                         modifier = Modifier
                             .align(Alignment.TopEnd)
                             .padding(10.dp) //  Ecart avec le coin haut / Droit
-                            .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(12.dp)) // Fond avec coins arrondis
+                            .background(
+                                MaterialTheme.colorScheme.surface,
+                                RoundedCornerShape(12.dp)
+                            ) // Fond avec coins arrondis
                     ) {
                         IconButton(
                             onClick = {
-                                // TODO JG : Partage sur les réseaux
+                                shareArticle(article.nIDArticle, currentContext)
                             },
 
                         ) {
@@ -219,9 +229,30 @@ fun ArticleItemComposable(
 }
 
 
+/**
+ * Partage l'article sur les réseaux sociaux
+ */
+fun shareArticle(nIDArticleP : Int, currentContext : Context) {
 
 
+    val sDeepLink = Links.createDeepLink(nIDArticleP)
 
+    val shareIntent = Intent().apply {
+        action = Intent.ACTION_SEND
+        putExtra(Intent.EXTRA_TEXT, currentContext.getString(R.string.je_partage_cet_article, sDeepLink))
+        type = "text/plain"
+    }
+
+    val currentActivity = (currentContext as Activity)
+
+    currentActivity.startActivity(
+        Intent.createChooser(
+            shareIntent,
+            currentContext.getString(R.string.partager_via)
+        )
+    )
+
+}
 
 
 @Preview(name = "Light Mode")
