@@ -18,6 +18,7 @@ import com.openclassrooms.joilfull.model.Article
 import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.ArticleItemComposable
 import com.openclassrooms.joilfull.model.CategoryAndArticles
@@ -83,7 +84,7 @@ fun CategoryAndArticlesItemScreen(
         LazyRow(
             //modifier = modifier,
             contentPadding = PaddingValues(horizontal = 2.dp),
-            horizontalArrangement = Arrangement.spacedBy(5.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
 
         ) {
             items(
@@ -93,7 +94,7 @@ fun CategoryAndArticlesItemScreen(
                 ArticleItemComposable(
                     modifier = Modifier
                         .size(width = 200.dp, height = 320.dp)                      // Taille définie dans l'appelant
-                        .background(MaterialTheme.colorScheme.surfaceContainer)     // Couleur de fond pour la liste
+                        //.background(MaterialTheme.colorScheme.surfaceContainer)   // Couleur de fond pour la liste
                     ,
                     article=article,
                     onArticleClickP=onArticleClickP,

@@ -24,6 +24,7 @@ import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.LoadingComposa
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.bTablet
 import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.openclassrooms.joilfull.Links
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.ArticleItemContent
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.ArticleScreen
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.ArticleUIState
@@ -89,7 +90,8 @@ fun ArticleListScreen(
                     // Phone => useNavHost
                     onArticleClickP = { article ->
                         // TODO Denis : pourquoi ArticleListScreen est recomposé après cet appel ?
-                        navController.navigate("articleItem/${article.nIDArticle}")
+                        navController.navigate("${Links.route}/${article.nIDArticle}")
+
                     }
                 }
 

@@ -55,7 +55,14 @@ fun ArticleScreen(
 ) {
 
     val windowSize = getWindowsSize()
+/*
+    // Si l'article n'est pas chargé
+    if (viewModelArticle.currentArticle==null){
 
+
+
+    }
+*/
     // Trigger loading article details when articleId changes
     // Premier lancement
     LaunchedEffect(articleId) {
@@ -101,6 +108,8 @@ fun ArticleItemContent(
     onClickSendNoteP : (fNote:Float , sComment : String) -> Unit,
     onClickLikeP : (bValLike : Boolean) -> Unit
 ){
+
+
 
     // En fonction de l'état du viewModel
     when (uiState) {
@@ -171,6 +180,7 @@ fun ArticleItemContent(
 
                 Text(
                     modifier = Modifier
+                        .padding(top = 5.dp)
                         .wrapContentSize(),
                     text = article.sDescriptionArticle
                 )

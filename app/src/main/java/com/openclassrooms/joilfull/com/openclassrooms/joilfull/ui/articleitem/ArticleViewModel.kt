@@ -32,7 +32,10 @@ class ArticleViewModel @Inject constructor(
     val uiState: StateFlow<ArticleUIState> = _uiState.asStateFlow() // Accès en lecture seule de l'extérieur
 
     // Par simplicité de gestion, je stocke l'article chargé
-    private var currentArticle : Article? = null
+    private var _currentArticle : Article? = null
+    val currentArticle: Article?
+        get() = _currentArticle
+
 
     // Renvoie un article par son ID
     fun loadArticleByID(articleId: Int) {
@@ -58,7 +61,7 @@ class ArticleViewModel @Inject constructor(
                 is ResultCustom.Success -> {
 
                     // On conserve l'article chargé dans le viewModel
-                    currentArticle = resultAPI.value
+                    _currentArticle = resultAPI.value
 
                     _uiState.value = ArticleUIState.Success(resultAPI.value)
 
@@ -82,7 +85,7 @@ class ArticleViewModel @Inject constructor(
      */
     fun sendNoteAndComment(fNote:Float , sComment : String) {
 
-        currentArticle.let {
+        _currentArticle.let {
 
             val nIDCurrentUser = userRepository.getCurrentUserID()
             // TODO Denis consigne : Où enregistrer la note et le commentaire ?
@@ -97,7 +100,7 @@ class ArticleViewModel @Inject constructor(
      */
     fun setLike(bValLikeP : Boolean){
 
-        currentArticle.let {
+        _currentArticle.let {
 
             val nIDCurrentUser = userRepository.getCurrentUserID()
             // TODO Denis consigne : Où enregistrer les likes ?

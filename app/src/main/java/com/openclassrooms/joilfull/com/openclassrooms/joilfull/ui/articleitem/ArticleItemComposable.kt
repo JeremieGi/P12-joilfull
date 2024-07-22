@@ -29,6 +29,7 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.twotone.Share
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -44,6 +45,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -88,16 +90,17 @@ fun ArticleItemComposable(
                 } else {
                     Modifier
                 }
-            )
+            ),
 
+        colors = CardDefaults.cardColors(
+            containerColor = Color.Transparent // sinon pardéfaut MaterialTheme.colorScheme.surfaceContainer
+        )
 
-        //color = MaterialTheme.colorScheme.background
     ) {
-        Column (
-            modifier = Modifier
-                //.fillMaxSize()
-        ) {
+        Column ()
+        {
 
+            // Box pour superposition
             Box(
                 modifier = Modifier
                     .weight(1f) // Prend tout l'espace disponible en laissant afficher les colonnes dessous
@@ -106,7 +109,6 @@ fun ArticleItemComposable(
 
                 // Surface spécialement dédié pour arrondir les coins de la GlideImage
                 Surface(
-                    modifier = Modifier,
                     shape = RoundedCornerShape(16.dp),  // Coins arrondis
 
                 ){
@@ -126,21 +128,18 @@ fun ArticleItemComposable(
                 // TODO Denis 1 - Pas sur que çà soit très académique
                 // J'aimerais faire quelque chose de proportionnel au contenant
                 val nHeight : Int
-                val nPadding : Int
                 if (bModeDetail){
                     nHeight = 50
-                    nPadding = 30
                 }
                 else{
                     nHeight = 40
-                    nPadding = 15
                 }
 
                 // Superposition du picto cœur avec un nombre entier
                 LikeComposable(
                     modifier = Modifier
                         .align(Alignment.BottomEnd) // Aligner en bas à droite de l'image,
-                        .padding(nPadding.dp)       // Ecart avec le bas droit
+                        .padding(10.dp)       // Ecart avec le bas droit
                         .height(nHeight.dp)
                     ,
                     sNbLikeP = article.nNbLikes.toString(),
@@ -184,32 +183,25 @@ fun ArticleItemComposable(
 
             }
 
-
-
-
-
-
             Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                //verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier.padding(
+                    top = 5.dp
+                ),
+                horizontalArrangement = Arrangement.SpaceBetween
             ){
                 Text(
                     modifier = Modifier.weight(1f),
                     text = article.sName,
                     style =  typo,
-                    //maxLines = 1,                       // une ligne
-                    //overflow = TextOverflow.Ellipsis    // avec ellipse ...
+                    maxLines = 1,                       // une ligne
+                    overflow = TextOverflow.Ellipsis    // avec ellipse ...
                 )
-
 
                 NoteComposable(
                     modifier = Modifier.wrapContentWidth(),
                     sNote = "X.XX", // TODO JG : Moyenne des notes
                     textStyle = typo
                 )
-
 
             }
 
@@ -229,6 +221,7 @@ fun ArticleItemComposable(
                     style =  typo,
                     textDecoration = TextDecoration.LineThrough,
                     textAlign = TextAlign.Right,
+                    color = MaterialTheme.colorScheme.outline // Un peu plus grisé que le prix
                 )
             }
 

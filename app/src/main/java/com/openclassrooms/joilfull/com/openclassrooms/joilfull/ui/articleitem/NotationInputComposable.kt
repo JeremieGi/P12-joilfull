@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.res.Configuration
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -39,6 +40,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -73,7 +75,7 @@ fun NotationInputComposable(
     )
     {
 
-        var rating by remember { mutableFloatStateOf(0f) }
+        var rating by rememberSaveable { mutableFloatStateOf(0f) }
 
         Row(
             modifier = Modifier,
@@ -113,7 +115,7 @@ fun NotationInputComposable(
         ){
 
             // Champ de saisie de texte qui conserve sa valeur lors de la rotation
-            var textComment by remember { mutableStateOf("") }
+            var textComment by rememberSaveable { mutableStateOf("") }
             TextField (
                 modifier = Modifier
                     .weight(1f)
@@ -203,7 +205,7 @@ fun StarRatingBar(
                 iconTintColor = colorStar
             } else {
                 icon = Icons.TwoTone.Star
-                iconTintColor = Color(0x20000000)
+                iconTintColor = MaterialTheme.colorScheme.secondary
             }
 
             Icon(
@@ -229,14 +231,17 @@ fun StarRatingBar(
 }
 
 @Preview(name = "Light Mode")
-@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES/*, showBackground = true*/)
+@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
 fun NotationInputComposablePreview() {
 
     NotationInputComposable(
-        modifier = Modifier.width(
-            width = 300.dp
-        ),
+        modifier = Modifier
+            .width(
+                width = 300.dp
+            )
+           // .background(Color.Black /*MaterialTheme.colorScheme.surfaceDim*/)
+            ,
         nIDUser = 1,
         nIDArticle = 1,
         nIDRessourceAvatar = R.drawable.currentuseravatar,
@@ -246,13 +251,17 @@ fun NotationInputComposablePreview() {
 }
 
 @Preview(name = "Light Mode")
+@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
 fun StarRatingBarPreview() {
 
     StarRatingBar(
-        modifier = Modifier.width(
-            width = 300.dp
-        ),
+        modifier = Modifier
+            .width(
+                width = 300.dp
+            )
+        ,
+            //.background(Color.Black),
         maxStars = 5,
         ratingP = 3.5f,
         onRatingChanged = {}
