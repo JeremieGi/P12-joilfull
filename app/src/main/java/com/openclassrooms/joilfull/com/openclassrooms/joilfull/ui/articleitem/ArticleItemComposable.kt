@@ -37,6 +37,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -105,7 +106,7 @@ fun ArticleItemSimpleComposable(
         Column ()
         {
 
-            var imageHeight by remember { mutableStateOf(0) }
+            var imageHeight by remember { mutableIntStateOf(0) }
 
             // Box pour superposition
             Box(
@@ -141,7 +142,7 @@ fun ArticleItemSimpleComposable(
                     modifier = Modifier
                         .align(Alignment.BottomEnd)         // Aligner en bas à droite de l'image,
                         .padding(10.dp)                     // Ecart avec le bas droit
-                        .height((imageHeight / 14f).dp)     // TODO Denis : comment afficher une hauteur proportionnelle à un autre élément ? + ici le ratio ne semble pas correct
+                        .height((imageHeight / 17f).dp)     // TODO Denis : comment afficher une hauteur proportionnelle à un autre élément ? + ici le ratio ne semble pas correct
                     ,
                     sNbLikeP = article.nNbLikes.toString(),
                     bInitLike = false, // TODO : JG à implémenter

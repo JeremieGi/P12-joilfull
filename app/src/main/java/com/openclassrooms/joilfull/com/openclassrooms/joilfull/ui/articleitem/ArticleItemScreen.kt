@@ -188,7 +188,7 @@ fun ArticleItemDetailComposable(
         ) {
 
             ArticleItemSimpleComposable(
-                modifier = modifier,
+                modifier = Modifier,
                 article = articleP,
                 bModeDetail = true,
                 onArticleClickP = {}, // OnClick neutralisé
@@ -203,7 +203,7 @@ fun ArticleItemDetailComposable(
                 IconButton(
                     modifier = Modifier
                         .align(Alignment.TopStart)
-                        .padding(10.dp)
+                        .padding(10.dp) // Décalage de 10dp du coin supérieur gauche
                         .background(
                             color = MaterialTheme.colorScheme.inverseOnSurface,
                             shape = RoundedCornerShape(12.dp)

@@ -90,7 +90,7 @@ fun ArticleListScreen(
                     // Phone => useNavHost
                     onArticleClickP = { article ->
                         // TODO Denis : pourquoi ArticleListScreen est recomposé après cet appel ?
-                        navController.navigate("${Links.route}/${article.nIDArticle}")
+                        navController.navigate("${Links.CTE_ROUTE}/${article.nIDArticle}")
 
                     }
                 }

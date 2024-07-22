@@ -57,7 +57,7 @@ fun NavGraph(
 
             ){ modifier ->
 
-                val articleId = backStackEntry.arguments?.getString(Links.articleIdArg)
+                val articleId = backStackEntry.arguments?.getString(Links.CTE_PARAM_ID_ARTICLE)
                 ArticleScreen(
                     articleId = articleId?.toInt() ?: -1,
                     navController = navController,

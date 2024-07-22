@@ -9,20 +9,20 @@ object Links {
 
 
 
-    const val route = "article_item" // Reprend la chaine défini dans le Manifest.xml => <data android:scheme="joiefull" android:host="article_item" />
-    const val articleIdArg = "articleId"
+    const val CTE_ROUTE = "article_item" // Reprend la chaine défini dans le Manifest.xml => <data android:scheme="joiefull" android:host="article_item" />
+    const val CTE_PARAM_ID_ARTICLE = "articleId"
 
-    val deepLinkRoute = "joiefull://$route"
+    val deepLinkRoute = "joiefull://$CTE_ROUTE"
 
     val arguments = listOf(
-        navArgument(articleIdArg) { type = NavType.StringType }
+        navArgument(CTE_PARAM_ID_ARTICLE) { type = NavType.StringType }
     )
 
     val deepLinks = listOf(
-        navDeepLink { uriPattern = "$deepLinkRoute/{$articleIdArg}" }
+        navDeepLink { uriPattern = "$deepLinkRoute/{$CTE_PARAM_ID_ARTICLE}" }
     )
 
-    val routeWithArgs = "${route}/{${articleIdArg}}"
+    val routeWithArgs = "${CTE_ROUTE}/{${CTE_PARAM_ID_ARTICLE}}"
 
     // TODO Denis : Je n'arrive pas à tester 100% sur l'émulateur
     // Pour tester le deep link via adb : .\adb.exe shell am start -d "joiefull://article_item/2" -a android.intent.action.VIEW
