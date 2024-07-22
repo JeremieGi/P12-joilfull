@@ -13,4 +13,7 @@
     <string name="envoyer_le_commentaire_et_la_note">Envoyer le commentaire et la note</string>
     <string name="je_partage_cet_article">Je partage cet article : %1$s</string>
     <string name="partager_via">Partager via</string>
+    <string name="merci_de_saisir_une_note">Merci de saisir une note</string>
+    <string name="merci_de_saisir_un_commentaire">Merci de saisir un commentaire</string>
+    <string name="note_placeholder">Partager ici vos impressions sur cette pièce</string>
 </resources>

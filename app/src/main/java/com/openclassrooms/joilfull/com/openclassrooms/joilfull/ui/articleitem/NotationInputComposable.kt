@@ -1,6 +1,8 @@
 package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem
 
+import android.app.Activity
 import android.content.res.Configuration
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -30,6 +32,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -42,6 +46,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -59,6 +64,9 @@ fun NotationInputComposable(
     nIDRessourceAvatar : Int,
     onClickSendNote : (fNote:Float , sComment : String) -> Unit
 ){
+
+    val context = LocalContext.current
+    //val activity = context as? Activity
 
     Column(
         modifier = modifier
@@ -106,7 +114,7 @@ fun NotationInputComposable(
 
             // Champ de saisie de texte qui conserve sa valeur lors de la rotation
             var textComment by remember { mutableStateOf("") }
-            BasicTextField(
+            TextField (
                 modifier = Modifier
                     .weight(1f)
                     .border(1.dp, Color.Gray, RoundedCornerShape(8.dp))
@@ -117,15 +125,37 @@ fun NotationInputComposable(
                 value = textComment,
                 onValueChange = { textComment = it },
                 textStyle = LocalTextStyle.current.copy(fontSize = 16.sp),
-                maxLines = 2
+                maxLines = 2,
+                placeholder = {
+                    Text(stringResource(R.string.note_placeholder))
+                }
             )
 
             IconButton(
                 onClick = {
-                    onClickSendNote(
-                        /*fNote = */rating,
-                        /*sComment = */textComment
-                    )
+
+                    var bInputOK = true
+
+                    if (rating==0f){
+                        Toast.makeText(context,
+                            context.getString(R.string.merci_de_saisir_une_note), Toast.LENGTH_LONG).show()
+                        bInputOK = false
+                    }
+
+                    if (textComment.isNullOrBlank()){
+                        Toast.makeText(context,
+                            context.getString(R.string.merci_de_saisir_un_commentaire), Toast.LENGTH_LONG).show()
+                        bInputOK = false
+                    }
+
+                    if (bInputOK){
+                        onClickSendNote(
+                            /*fNote = */rating,
+                            /*sComment = */textComment
+                        )
+                    }
+
+
                 }
             ) {
                 Icon(
