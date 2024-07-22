@@ -54,8 +54,9 @@ fun ArticleScreen(
 
 ) {
 
-    val windowSize = getWindowsSize()
+    //val windowSize = getWindowsSize()
 
+    // TODO Denis : Voir ce cas de test : Est ce vraiment comme çà qu'il faut faire pour éviter de recharger l'article
     // Si l'article n'est pas chargé
     if (viewModelArticle.currentArticle==null){
 
@@ -77,7 +78,7 @@ fun ArticleScreen(
                 uiState = uiState,
                 //bModeTablet = bTablet(windowSize),
                 nIDRessourceAvatarP = viewModelArticle.getCurrentUserAvatar(),
-                onClicBackP = { navController.popBackStack() },
+                onClickBackP = { navController.popBackStack() },
                 onClickSendNoteP = viewModelArticle::sendNoteAndComment,
                 onClickLikeP = viewModelArticle::setLike
             )
@@ -86,14 +87,16 @@ fun ArticleScreen(
 
 
     }
+
     else{
         // Cas d'une rotation par exemple
         // Pas besoin de recharger l'article qu'on a déjà dans le viewModel
 
         ArticleItemDetailComposable(
+            modifier = modifier,
             articleP = viewModelArticle.currentArticle!!, // TODO Question Denis : test nullité plus haut mais il faut quand même !!
             onClickLikeP = viewModelArticle::setLike,
-            onClicBackP = { navController.popBackStack() },
+            onClickBackP = { navController.popBackStack() },
             onClickSendNoteP = viewModelArticle::sendNoteAndComment,
             nIDRessourceAvatarP = viewModelArticle.getCurrentUserAvatar(),
         )
@@ -111,7 +114,7 @@ fun ArticleItemContent(
     modifier: Modifier = Modifier,
     uiState: ArticleUIState,
     nIDRessourceAvatarP : Int,
-    onClicBackP : () -> Unit,
+    onClickBackP : (() -> Unit)?,
     onClickSendNoteP : (fNote:Float , sComment : String) -> Unit,
     onClickLikeP : (bValLike : Boolean) -> Unit
 ){
@@ -141,7 +144,7 @@ fun ArticleItemContent(
                 articleP = article,
                 nIDRessourceAvatarP = nIDRessourceAvatarP,
                 onClickLikeP = onClickLikeP,
-                onClicBackP = onClicBackP,
+                onClickBackP = onClickBackP,
                 onClickSendNoteP = onClickSendNoteP
             )
         }
@@ -168,7 +171,7 @@ fun ArticleItemDetailComposable(
     articleP : Article,
     nIDRessourceAvatarP : Int,
     onClickLikeP : (bValLike : Boolean) -> Unit,
-    onClicBackP : () -> Unit,
+    onClickBackP : (() -> Unit)?,
     onClickSendNoteP : (fNote:Float , sComment : String) -> Unit
 ){
 
@@ -195,7 +198,7 @@ fun ArticleItemDetailComposable(
             // Bouton visible uniquement lors de l'appel à ArticleScreen (c'est à dire utilisation de navController)
             //if (!bModeTablet){
             // Si la lambda onClicBackP est définie
-            if (onClicBackP!={}){
+            if (onClickBackP!=null){
 
                 IconButton(
                     modifier = Modifier
@@ -208,7 +211,7 @@ fun ArticleItemDetailComposable(
 
                     //.background(Color.Red)
 
-                    onClick = onClicBackP
+                    onClick = onClickBackP
 
                 ) {
                     Icon(
@@ -286,7 +289,7 @@ fun ArticleScreenPreview(){
         ArticleItemContent(
             uiState = uiStateSuccess,
             nIDRessourceAvatarP = R.drawable.currentuseravatar,
-            onClicBackP = { navController.popBackStack() },
+            onClickBackP = { navController.popBackStack() },
             onClickSendNoteP = {_,_ -> }, // 2 paramètres et retour Unit
             onClickLikeP = {}
         )

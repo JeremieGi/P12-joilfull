@@ -122,7 +122,7 @@ fun ArticleListScreen(
 
                                 uiState = uiStateArticle,
                                 nIDRessourceAvatarP = viewModelArticle.getCurrentUserAvatar(),
-                                onClicBackP = {}, // Pas de backstack en mode tablette
+                                onClickBackP = null, // Pas de backstack en mode tablette
                                 onClickSendNoteP = viewModelArticle::sendNoteAndComment,
                                 onClickLikeP = viewModelArticle::setLike,
 
