@@ -6,15 +6,19 @@ import android.content.Intent
 import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -23,6 +27,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.twotone.Share
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -186,24 +191,21 @@ fun ArticleItemComposable(
 
             Row(
                 modifier = Modifier
-                    .wrapContentHeight() // Adapte la hauteur de la Row à son contenu
-
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                //verticalAlignment = Alignment.CenterVertically
             ){
                 Text(
+                    modifier = Modifier.weight(1f),
                     text = article.sName,
-                    modifier = Modifier
-                        .weight(0.65f),
                     style =  typo,
                     //maxLines = 1,                       // une ligne
                     //overflow = TextOverflow.Ellipsis    // avec ellipse ...
                 )
 
+
                 NoteComposable(
-                    modifier = Modifier
-                        .wrapContentWidth()
-                        .weight(0.35f),
-
-
+                    modifier = Modifier.wrapContentWidth(),
                     sNote = "X.XX", // TODO JG : Moyenne des notes
                     textStyle = typo
                 )
@@ -280,7 +282,8 @@ fun ArticleItemComposablePreview() {
         sURLPicture = "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/D-velopper-une-interface-accessible-en-Jetpack-Compose/main/img/accessories/1.jpg",
         //sURLPicture = myURI.toString(),
         sDescriptionPicture = "Sac à main orange posé sur une poignée de porte",
-        sName = "Sac à main orange",
+        //sName = "Sac à main orange",
+        sName = "Sac à main orange très long pour tester largeur mini",
         sCategory = "ACCESSORIES", // Enumération ici : pas trop d'intéret si jamais le WS renvoie une nouvelle catégorie
         nNbLikes = 56,
         dPrice = 69.99,
