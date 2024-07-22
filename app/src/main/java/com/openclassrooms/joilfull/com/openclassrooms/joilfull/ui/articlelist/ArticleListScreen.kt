@@ -21,7 +21,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.ErrorComposable
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.LoadingComposable
-import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.ArticleItemComposable
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.bTablet
 import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -123,7 +122,8 @@ fun ArticleListScreen(
                                 navController = navController, // Ne sera pas utilisé en mode tablette
                                 bModeTablet = true,
                                 nIDRessourceAvatar = viewModelArticle.getCurrentUserAvatar(),
-                                onClickSendNote = viewModelArticle::sendNoteAndComment
+                                onClickSendNoteP = viewModelArticle::sendNoteAndComment,
+                                onClickLikeP = viewModelArticle::setLike
                             )
 
                         }

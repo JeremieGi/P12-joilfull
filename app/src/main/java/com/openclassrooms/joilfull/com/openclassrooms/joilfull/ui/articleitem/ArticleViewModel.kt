@@ -92,6 +92,20 @@ class ArticleViewModel @Inject constructor(
 
     }
 
+    /**
+     * Article liké par l'utisateur courant
+     */
+    fun setLike(bValLikeP : Boolean){
+
+        currentArticle.let {
+
+            val nIDCurrentUser = userRepository.getCurrentUserID()
+            // TODO Denis consigne : Où enregistrer les likes ?
+
+        }
+
+    }
+
 
 
 }

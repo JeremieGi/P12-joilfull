@@ -2,6 +2,7 @@ package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -11,14 +12,21 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,12 +40,30 @@ import com.openclassrooms.joilfull.ui.theme.colorHeart
 @Composable
 fun LikeComposable(
     modifier : Modifier,
-    sNbLikeP : String
+    sNbLikeP : String,
+    bInitLike : Boolean,
+    onClickLikeP : (bValLike : Boolean) -> Unit,
+    bIsClickableP : Boolean
 ){
+
+    var bLikeValue by rememberSaveable { mutableStateOf(bInitLike) }
 
     Surface(
         modifier = modifier
-            //.wrapContentSize()
+            // Then permet le remplace de Modifier
+            .then(
+                // Si l'émément est clickable
+                if (bIsClickableP) {
+                    Modifier.clickable {
+                        bLikeValue = !bLikeValue
+                        onClickLikeP(bLikeValue)
+                    }
+                } else {
+                    Modifier
+                }
+            )
+
+        //.wrapContentSize()
             //.height(nHeight.dp)
             //.heightIn(min = 40.dp, max = 200.dp) // marche pas quand height est forcé
 
@@ -48,6 +74,7 @@ fun LikeComposable(
         shape = RoundedCornerShape(8.dp),
         shadowElevation = 4.dp // Élévation de la Surface
     ){
+
 
         Row(
             modifier = Modifier
@@ -61,8 +88,13 @@ fun LikeComposable(
 
             ){
 
+
             Icon(
-                imageVector = Icons.Filled.Favorite,
+                imageVector = if (bLikeValue){
+                        Icons.Filled.Favorite
+                    } else{
+                        Icons.Filled.FavoriteBorder
+                    },
                 modifier = Modifier
                     .wrapContentSize(),
                 contentDescription = stringResource(R.string.icone_coeur),
@@ -100,7 +132,10 @@ fun LikeComposablePreviewItem() {
     LikeComposable(
         modifier = Modifier
             .height(40.dp),
-        sNbLikeP = "10"
+        sNbLikeP = "10",
+        bInitLike = true,
+        onClickLikeP = {},
+        bIsClickableP = true
     )
 
 }
@@ -113,7 +148,10 @@ fun LikeComposablePreviewTablet() {
     LikeComposable(
         modifier = Modifier
             .height(50.dp),
-        sNbLikeP = "1000"
+        sNbLikeP = "1000",
+        bInitLike = false,
+        onClickLikeP = {},
+        bIsClickableP = false
     )
 
 }

@@ -54,10 +54,11 @@ import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun ArticleItemComposable(
+    modifier: Modifier = Modifier,
     article : Article,
     bModeDetail : Boolean,  // Vrai => Mode détails, faux => Mode Item
     onArticleClickP : (Article) -> Unit,
-    modifier: Modifier = Modifier
+    onClickLikeP : (bValLike : Boolean) -> Unit
 ) {
 
     val currentContext = LocalContext.current
@@ -74,9 +75,16 @@ fun ArticleItemComposable(
 
     Card(
         modifier = modifier
-            .clickable {
-                onArticleClickP(article)
-            }
+            .then(
+                if (!bModeDetail) { // Clic sur l'article qu'en mode liste
+                    Modifier.clickable {
+                        onArticleClickP(article)
+                    }
+                } else {
+                    Modifier
+                }
+            )
+
 
         //color = MaterialTheme.colorScheme.background
     ) {
@@ -130,7 +138,10 @@ fun ArticleItemComposable(
                         .padding(nPadding.dp)       // Ecart avec le bas droit
                         .height(nHeight.dp)
                     ,
-                    sNbLikeP = article.nNbLikes.toString()
+                    sNbLikeP = article.nNbLikes.toString(),
+                    bInitLike = false, // TODO : JG à implémenter
+                    onClickLikeP = onClickLikeP,
+                    bIsClickableP = bModeDetail // Clickable qu'en mode détail
                 )
 
                 if (bModeDetail){
@@ -282,7 +293,8 @@ fun ArticleItemComposablePreview() {
         ArticleItemComposable(
             article = article,
             bModeDetail = true,
-            onArticleClickP = {}
+            onArticleClickP = {},
+            onClickLikeP = {}
         )
     }
 }
@@ -310,7 +322,8 @@ fun ArticleItemComposablePreviewItemMode() {
         ArticleItemComposable(
             article = article,
             bModeDetail = false,
-            onArticleClickP = {}
+            onArticleClickP = {},
+            onClickLikeP = {}
         )
     }
 }

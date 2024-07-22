@@ -75,7 +75,8 @@ fun ArticleScreen(
             navController = navController,
             bModeTablet = bTablet(windowSize),
             nIDRessourceAvatar = viewModelArticle.getCurrentUserAvatar(),
-            onClickSendNote = viewModelArticle::sendNoteAndComment
+            onClickSendNoteP = viewModelArticle::sendNoteAndComment,
+            onClickLikeP = viewModelArticle::setLike
         )
 
     }
@@ -97,7 +98,8 @@ fun ArticleItemContent(
     navController: NavController,
     bModeTablet : Boolean,
     nIDRessourceAvatar : Int,
-    onClickSendNote : (fNote:Float , sComment : String) -> Unit
+    onClickSendNoteP : (fNote:Float , sComment : String) -> Unit,
+    onClickLikeP : (bValLike : Boolean) -> Unit
 ){
 
     // En fonction de l'état du viewModel
@@ -134,7 +136,8 @@ fun ArticleItemContent(
                         modifier = modifier,
                         article = article,
                         bModeDetail = true,
-                        onArticleClickP = {} // On Click neutralisé
+                        onArticleClickP = {}, // On Click neutralisé
+                        onClickLikeP = onClickLikeP
                     )
 
                     // Bouton visible uniquement lors de l'appel à ArticleScreen (c'est à dire utilisation de navController)
@@ -180,7 +183,7 @@ fun ArticleItemContent(
                     nIDUser = 0,    // TODO JG :ID User
                     nIDArticle = article.nIDArticle,
                     nIDRessourceAvatar = nIDRessourceAvatar,
-                    onClickSendNote = onClickSendNote)
+                    onClickSendNote = onClickSendNoteP)
 
             }
 
@@ -249,7 +252,8 @@ fun ArticleScreenPreview(){
             navController = navController,
             bModeTablet = false,
             nIDRessourceAvatar = R.drawable.currentuseravatar,
-            onClickSendNote = {_,_ -> } // 2 paramètres et retour Unit
+            onClickSendNoteP = {_,_ -> }, // 2 paramètres et retour Unit
+            onClickLikeP = {}
         )
 
 
