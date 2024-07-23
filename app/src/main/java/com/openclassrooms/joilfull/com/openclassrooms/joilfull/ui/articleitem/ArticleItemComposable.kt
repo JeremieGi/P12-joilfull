@@ -128,7 +128,7 @@ fun ArticleItemSimpleComposable(
                         modifier = Modifier
                             .fillMaxSize()
                             .background(Color.Gray)       // Pour les photos plus petites (comble l'espace)
-                            .focusTarget()
+                            //.focusTarget()
                         ,
                         model = article.sURLPicture,
                         contentDescription = article.sDescriptionPicture,
@@ -232,7 +232,7 @@ fun ArticleItemSimpleComposable(
                     style =  typo,
                     textDecoration = TextDecoration.LineThrough,
                     textAlign = TextAlign.Right,
-                    color = MaterialTheme.colorScheme.outline // Un peu plus grisé que le prix
+                    color = MaterialTheme.colorScheme.onSurfaceVariant // Un peu plus grisé que le prix
                 )
             }
 

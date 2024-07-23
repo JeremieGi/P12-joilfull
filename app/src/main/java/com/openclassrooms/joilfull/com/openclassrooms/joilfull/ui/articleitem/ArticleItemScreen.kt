@@ -2,6 +2,7 @@ package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem
 
 import android.app.Activity
 import androidx.compose.foundation.background
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,20 +19,29 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusOrder
+import androidx.compose.ui.focus.focusProperties
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.focusTarget
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -39,10 +49,10 @@ import com.openclassrooms.joilfull.R
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.CTE_MIN_SIZE
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.ErrorComposable
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.LoadingComposable
-import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.bTablet
-import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.getWindowsSize
 import com.openclassrooms.joilfull.model.Article
 import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
+import androidx.compose.ui.focus.focusProperties
+import androidx.compose.ui.focus.focusRequester
 
 
 // Ce point d'entrée est utilisé uniquement pour les petits écrans
@@ -166,6 +176,7 @@ fun ArticleItemContent(
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ArticleItemDetailComposable(
     modifier: Modifier = Modifier,
@@ -175,6 +186,27 @@ fun ArticleItemDetailComposable(
     onClickBackP : (() -> Unit)?,
     onClickSendNoteP : (fNote:Float , sComment : String) -> Unit
 ){
+
+ //   val focusRequester = remember { FocusRequester() }
+ //   val lifecycleOwner = LocalLifecycleOwner.current
+
+    // TODO Denis : Je n'arrive pas à redéfinir correctement l'ordre de focus ici
+
+    /*
+    // Observer de cycle de vie pour demander le focus au onResume
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                // Demande le focus lorsque l'écran est visible
+                focusRequester.requestFocus()
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {F
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
+*/
 
     Column(
         modifier = modifier
@@ -186,10 +218,14 @@ fun ArticleItemDetailComposable(
         Box(
             modifier = Modifier
                 .weight(8f)
+                //.focusable()
+
         ) {
 
+
             ArticleItemSimpleComposable(
-                modifier = Modifier,
+                modifier = Modifier
+                    ,
                 article = articleP,
                 bModeDetail = true,
                 onArticleClickP = {}, // OnClick neutralisé
@@ -212,8 +248,10 @@ fun ArticleItemDetailComposable(
                         .sizeIn(
                             minWidth = CTE_MIN_SIZE,
                             minHeight = CTE_MIN_SIZE
-                        ),
-
+                        )
+                        //.focusRequester(focusRequester)
+                        .focusable()
+                    ,
                     //.background(Color.Red)
 
                     onClick = onClickBackP
@@ -227,6 +265,8 @@ fun ArticleItemDetailComposable(
                 }
 
             }
+
+
         }
 
 

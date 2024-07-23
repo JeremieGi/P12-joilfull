@@ -187,7 +187,7 @@ fun StarRatingBar(
     val starSpacing = (0.5f * density).dp
 
     Row(
-        modifier = modifier.selectableGroup(),
+        modifier = modifier,//.selectableGroup(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         for (i in 1..maxStars) {
@@ -196,6 +196,8 @@ fun StarRatingBar(
 
             val icon : ImageVector
             val iconTintColor : Color
+
+            val sContentDescription = "Note de $i sur 5"
 
             if (isSelected) {
                 icon = Icons.TwoTone.Star
@@ -213,14 +215,15 @@ fun StarRatingBar(
                             onRatingChanged(i.toFloat())
                         }
                     )
-                    .width(starSize)
-                    .height(starSize)
                     .sizeIn(
                         minWidth = CTE_MIN_SIZE,
                         minHeight = CTE_MIN_SIZE
-                    ),
+                    )
+                    .width(starSize)
+                    .height(starSize)
+                    ,
                 imageVector = icon,
-                contentDescription = null, //stringResource(R.string.noter), // Complexifie plus qu'aide l'utilisateur avec talkBack
+                contentDescription = sContentDescription,
                 tint = iconTintColor
             )
 
