@@ -1,6 +1,7 @@
 package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem
 
 import android.content.res.Configuration
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -28,7 +29,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -48,14 +53,16 @@ fun LikeComposable(
     bIsClickableP : Boolean
 ){
 
+    val currentContext = LocalContext.current
+
     var bLikeValue by rememberSaveable { mutableStateOf(bInitLike) }
 
-    var sAccessibilityMessage : String
+    var sAccessibilityMessage = "Cet article a $sNbLikeP cœurs"
     if (bInitLike){
-        sAccessibilityMessage = "Cliquer ici pour retirer votre like"
+        sAccessibilityMessage += "Cliquer ici pour retirer votre like"
     }
     else{
-        sAccessibilityMessage = "Cliquer ici pour liker cet article"
+        sAccessibilityMessage += "Cliquer ici pour liker cet article"
     }
 
     Surface(
@@ -65,16 +72,30 @@ fun LikeComposable(
                 // Si l'émément est clickable
                 if (bIsClickableP) {
 
-                    Modifier.clickable(
+                    modifier
+                        .clickable(
+                            onClick = {
+                                bLikeValue = !bLikeValue
 
-                        onClickLabel = sAccessibilityMessage,
-                        onClick = {
-                            bLikeValue = !bLikeValue
-                            onClickLikeP(bLikeValue)
+                                onClickLikeP(bLikeValue)
+
+                                val sMessageToast: String
+                                if (bLikeValue) {
+                                    sMessageToast = currentContext.getString(R.string.article_ajout_aux_favoris)
+                                } else {
+                                    sMessageToast = currentContext.getString(R.string.article_retir_des_favoris)
+                                }
+                                Toast
+                                    .makeText(currentContext, sMessageToast, Toast.LENGTH_LONG)
+                                    .show()
+                            }
+                        )
+                        .semantics(mergeDescendants = true) {}
+                        .clearAndSetSemantics {
+                            contentDescription = sAccessibilityMessage
                         }
-                    )
                 } else {
-                    Modifier
+                    modifier
                 }
             )
             .sizeIn(

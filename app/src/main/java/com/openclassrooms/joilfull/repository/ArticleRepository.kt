@@ -4,6 +4,7 @@ package com.openclassrooms.joilfull.repository
 import com.openclassrooms.joilfull.model.Article
 import com.openclassrooms.joilfull.model.CategoryAndArticles
 import com.openclassrooms.joilfull.network.IArticlesAPI
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow

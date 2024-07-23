@@ -220,7 +220,7 @@ fun StarRatingBar(
                         minHeight = CTE_MIN_SIZE
                     ),
                 imageVector = icon,
-                contentDescription = stringResource(R.string.partager),
+                contentDescription = null, //stringResource(R.string.noter), // Complexifie plus qu'aide l'utilisateur avec talkBack
                 tint = iconTintColor
             )
 

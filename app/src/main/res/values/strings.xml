@@ -17,4 +17,9 @@
     <string name="merci_de_saisir_un_commentaire">Merci de saisir un commentaire</string>
     <string name="note_placeholder">Partager ici vos impressions sur cette pièce</string>
     <string name="article_talkback">Article %1$s avec %2$s coeurs au prix de %3$s euros au lieu de %4$s euros. Double-cliquer pour ouvrir</string>
+    <string name="article_ajout_aux_favoris">Article ajouté aux favoris</string>
+    <string name="article_retir_des_favoris">Article retiré des favoris</string>
+    <string name="note_de_sur_5">Note de %1$s sur 5</string>
+    <string name="partager_l_article_sur_les_r_seaux">Partager l\'article sur les réseaux</string>
+    <string name="noter">Noter</string>
 </resources>

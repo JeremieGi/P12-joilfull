@@ -20,7 +20,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,10 +42,16 @@ fun NoteComposable(
 
 ) {
 
+    val currentContext = LocalContext.current
+
     // Affichage de la note moyenne
     Row (
         modifier = modifier
-            .wrapContentWidth(),    // Répercution de la taille choisie
+            .wrapContentWidth()    // Répercution de la taille choisie
+            .semantics(mergeDescendants = true) {}
+            .clearAndSetSemantics {
+                contentDescription = currentContext.getString(R.string.note_de_sur_5, sNote)
+            },
         verticalAlignment = Alignment.CenterVertically,
 
     ){

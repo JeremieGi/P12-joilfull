@@ -45,6 +45,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusTarget
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -93,11 +94,12 @@ fun ArticleItemSimpleComposable(
         modifier = modifier
             .then(
                 if (!bModeDetail) { // Clic sur l'article qu'en mode liste
-                    Modifier.clickable() {
+                    modifier.clickable()
+                    {
                         onArticleClickP(article)
                     }
                 } else {
-                    Modifier
+                    modifier
                 }
             ),
 
@@ -126,7 +128,8 @@ fun ArticleItemSimpleComposable(
                         modifier = Modifier
                             .fillMaxSize()
                             .background(Color.Gray)       // Pour les photos plus petites (comble l'espace)
-                            ,
+                            .focusTarget()
+                        ,
                         model = article.sURLPicture,
                         contentDescription = article.sDescriptionPicture,
                         contentScale = ContentScale.FillWidth, // FillBounds = Etiré / Fit = Toute la photo rentre sans déformation
@@ -140,8 +143,11 @@ fun ArticleItemSimpleComposable(
                     modifier = Modifier
                         .align(Alignment.BottomEnd)         // Aligner en bas à droite de l'image,
                         .padding(10.dp)                     // Ecart avec le bas droit
-                        .fillMaxHeight(0.15f)
-
+                        .sizeIn(
+                            minHeight = 60.dp,               // Hauteur minimale
+                            // maxHeight = 300.dp
+                        )
+                        .fillMaxHeight(0.1f)          // 1/10 de hauteur du contenant
                    ,
                     sNbLikeP = article.nNbLikes.toString(),
                     bInitLike = false, // TODO : JG à implémenter
@@ -177,7 +183,7 @@ fun ArticleItemSimpleComposable(
                                         minHeight = CTE_MIN_SIZE
                                     ),
                                 imageVector = Icons.Filled.Share,
-                                contentDescription = "Share",
+                                contentDescription = stringResource(R.string.partager_l_article_sur_les_r_seaux),
                                 tint = MaterialTheme.colorScheme.onSurface // Couleur de l'icône
                             )
                         }
