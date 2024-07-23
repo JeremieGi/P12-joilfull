@@ -78,7 +78,7 @@ fun ArticleItemSimpleComposable(
     onClickLikeP : (bValLike : Boolean) -> Unit
 ) {
 
-    val currentContext = LocalContext.current
+
 
     // Adaptation des polices si on est dans la fenêtre de détail ou de liste
     val typo : TextStyle
@@ -160,34 +160,15 @@ fun ArticleItemSimpleComposable(
 
                     // Box pour l'IconButton sinon impossible de mettre un padding
                     // (vu que le padding de la Box fait référence à la Box parente - Ecart avec le coin haut / Droit)
-                    Box(
+                    ShareButtonComposable(
                         modifier = Modifier
                             .align(Alignment.TopEnd)
                             .padding(10.dp) //  Ecart avec le coin haut / Droit
-                            .background(
-                                MaterialTheme.colorScheme.surface,
-                                RoundedCornerShape(12.dp)
-                            ) // Fond avec coins arrondis
-                    ) {
-                        IconButton(
-                            onClick = {
-                                shareArticle(article.nIDArticle, currentContext)
-                            },
+                        ,
+                        articleP = article
+                    )
 
-                        ) {
-                            Icon(
-                                modifier = Modifier
-                                    .padding(10.dp)
-                                    .sizeIn(
-                                        minWidth = CTE_MIN_SIZE,
-                                        minHeight = CTE_MIN_SIZE
-                                    ),
-                                imageVector = Icons.Filled.Share,
-                                contentDescription = stringResource(R.string.partager_l_article_sur_les_r_seaux),
-                                tint = MaterialTheme.colorScheme.onSurface // Couleur de l'icône
-                            )
-                        }
-                    }
+
 
                 }
 
@@ -246,30 +227,6 @@ fun ArticleItemSimpleComposable(
 }
 
 
-/**
- * Partage l'article sur les réseaux sociaux
- */
-fun shareArticle(nIDArticleP : Int, currentContext : Context) {
-
-
-    val sDeepLink = Links.createDeepLink(nIDArticleP)
-
-    val shareIntent = Intent().apply {
-        action = Intent.ACTION_SEND
-        putExtra(Intent.EXTRA_TEXT, currentContext.getString(R.string.je_partage_cet_article, sDeepLink))
-        type = "text/plain"
-    }
-
-    val currentActivity = (currentContext as Activity)
-
-    currentActivity.startActivity(
-        Intent.createChooser(
-            shareIntent,
-            currentContext.getString(R.string.partager_via)
-        )
-    )
-
-}
 
 
 @Preview(name = "Light Mode")
