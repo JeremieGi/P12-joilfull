@@ -27,7 +27,7 @@ object Links {
     // TODO Denis : Je n'arrive pas à tester 100% sur l'émulateur
     // Pour tester le deep link via adb : .\adb.exe shell am start -d "joiefull://article_item/2" -a android.intent.action.VIEW
 
-    fun createDeepLink(nIDArticleP : Int?): Any {
+    fun createDeepLink(nIDArticleP : Int?): String {
 
         return "${deepLinkRoute}/${nIDArticleP}"
 
