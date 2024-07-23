@@ -16,12 +16,11 @@ import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articlelist.Ar
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge() // permet à l'application de s'étendre sur toute la surface de l'écran, y compris sous les barres de statut et de navigation.
 
-        // TODO Info : Attention : Android studio peut se mettre à bugguer et exécuter plusieurs fois setContent
+        // Info : Attention : Android studio peut se mettre à bugguer et exécuter plusieurs fois setContent
         // https://stackoverflow.com/questions/72301445/why-is-setcontent-being-called-twice
         setContent {
 

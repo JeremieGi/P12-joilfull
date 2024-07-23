@@ -88,7 +88,6 @@ class ArticleViewModel @Inject constructor(
         _currentArticle.let {
 
             val nIDCurrentUser = userRepository.getCurrentUserID()
-            // TODO Denis consigne : Où enregistrer la note et le commentaire ?
 
         }
 
@@ -103,7 +102,7 @@ class ArticleViewModel @Inject constructor(
         _currentArticle.let {
 
             val nIDCurrentUser = userRepository.getCurrentUserID()
-            // TODO Denis consigne : Où enregistrer les likes ?
+            // TODO JG Où enregistrer les likes ?
 
         }
 

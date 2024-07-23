@@ -16,4 +16,5 @@
     <string name="merci_de_saisir_une_note">Merci de saisir une note</string>
     <string name="merci_de_saisir_un_commentaire">Merci de saisir un commentaire</string>
     <string name="note_placeholder">Partager ici vos impressions sur cette pièce</string>
+    <string name="article_talkback">Article %1$s avec %2$s coeurs au prix de %3$s euros au lieu de %4$s euros. Double-cliquer pour ouvrir</string>
 </resources>

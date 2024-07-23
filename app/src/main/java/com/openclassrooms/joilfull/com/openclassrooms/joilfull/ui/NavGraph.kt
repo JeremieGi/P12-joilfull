@@ -32,9 +32,7 @@ fun NavGraph(
         // Fenêtre de la liste des articles
         composable("articleList") {
 
-            StructureComposable(
-
-            ){ modifier ->
+            StructureComposable{ modifier ->
                 ArticleListScreen(
                     navController = navController,
                     modifier = modifier
@@ -53,9 +51,7 @@ fun NavGraph(
 
         ) { backStackEntry -> // BackStackEntry ici permet de récupérer les paramètres
 
-            StructureComposable(
-
-            ){ modifier ->
+            StructureComposable{ modifier ->
 
                 val articleId = backStackEntry.arguments?.getString(Links.CTE_PARAM_ID_ARTICLE)
                 ArticleScreen(

@@ -95,7 +95,7 @@ fun ArticleListScreen(
                     }
                 }
 
-                Row(){
+                Row{
 
                     ArticleListComposable(
                         modifier=Modifier

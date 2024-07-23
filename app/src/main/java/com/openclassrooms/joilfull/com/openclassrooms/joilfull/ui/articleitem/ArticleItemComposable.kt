@@ -12,12 +12,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
@@ -58,6 +60,7 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.openclassrooms.joilfull.Links
 import com.openclassrooms.joilfull.R
+import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.CTE_MIN_SIZE
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.sDisplayPrice
 import com.openclassrooms.joilfull.model.Article
 import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
@@ -90,7 +93,7 @@ fun ArticleItemSimpleComposable(
         modifier = modifier
             .then(
                 if (!bModeDetail) { // Clic sur l'article qu'en mode liste
-                    Modifier.clickable {
+                    Modifier.clickable() {
                         onArticleClickP(article)
                     }
                 } else {
@@ -105,8 +108,6 @@ fun ArticleItemSimpleComposable(
     ) {
         Column ()
         {
-
-            var imageHeight by remember { mutableIntStateOf(0) }
 
             // Box pour superposition
             Box(
@@ -125,10 +126,7 @@ fun ArticleItemSimpleComposable(
                         modifier = Modifier
                             .fillMaxSize()
                             .background(Color.Gray)       // Pour les photos plus petites (comble l'espace)
-                            .onGloballyPositioned { coordinates ->
-                                // Obtenez la hauteur de l'image
-                                imageHeight = coordinates.size.height
-                            },
+                            ,
                         model = article.sURLPicture,
                         contentDescription = article.sDescriptionPicture,
                         contentScale = ContentScale.FillWidth, // FillBounds = Etiré / Fit = Toute la photo rentre sans déformation
@@ -142,8 +140,9 @@ fun ArticleItemSimpleComposable(
                     modifier = Modifier
                         .align(Alignment.BottomEnd)         // Aligner en bas à droite de l'image,
                         .padding(10.dp)                     // Ecart avec le bas droit
-                        .height((imageHeight / 17f).dp)     // TODO Denis : comment afficher une hauteur proportionnelle à un autre élément ? + ici le ratio ne semble pas correct
-                    ,
+                        .fillMaxHeight(0.15f)
+
+                   ,
                     sNbLikeP = article.nNbLikes.toString(),
                     bInitLike = false, // TODO : JG à implémenter
                     onClickLikeP = onClickLikeP,
@@ -172,7 +171,11 @@ fun ArticleItemSimpleComposable(
                         ) {
                             Icon(
                                 modifier = Modifier
-                                    .padding(10.dp),
+                                    .padding(10.dp)
+                                    .sizeIn(
+                                        minWidth = CTE_MIN_SIZE,
+                                        minHeight = CTE_MIN_SIZE
+                                    ),
                                 imageVector = Icons.Filled.Share,
                                 contentDescription = "Share",
                                 tint = MaterialTheme.colorScheme.onSurface // Couleur de l'icône

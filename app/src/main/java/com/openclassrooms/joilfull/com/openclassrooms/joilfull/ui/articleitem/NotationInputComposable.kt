@@ -16,18 +16,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.twotone.Send
-import androidx.compose.material.icons.filled.Send
-import androidx.compose.material.icons.filled.Share
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.twotone.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -56,6 +52,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.openclassrooms.joilfull.R
+import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.CTE_MIN_SIZE
 import com.openclassrooms.joilfull.ui.theme.colorStar
 
 @Composable
@@ -144,7 +141,7 @@ fun NotationInputComposable(
                         bInputOK = false
                     }
 
-                    if (textComment.isNullOrBlank()){
+                    if (textComment.isBlank()){
                         Toast.makeText(context,
                             context.getString(R.string.merci_de_saisir_un_commentaire), Toast.LENGTH_LONG).show()
                         bInputOK = false
@@ -217,7 +214,11 @@ fun StarRatingBar(
                         }
                     )
                     .width(starSize)
-                    .height(starSize),
+                    .height(starSize)
+                    .sizeIn(
+                        minWidth = CTE_MIN_SIZE,
+                        minHeight = CTE_MIN_SIZE
+                    ),
                 imageVector = icon,
                 contentDescription = stringResource(R.string.partager),
                 tint = iconTintColor

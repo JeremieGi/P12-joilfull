@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -35,6 +36,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.openclassrooms.joilfull.R
+import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.CTE_MIN_SIZE
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.ErrorComposable
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.LoadingComposable
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.bTablet
@@ -44,7 +46,6 @@ import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
 
 
 // Ce point d'entrée est utilisé uniquement pour les petits écrans
-@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
 fun ArticleScreen(
     modifier: Modifier = Modifier,
@@ -207,6 +208,10 @@ fun ArticleItemDetailComposable(
                         .background(
                             color = MaterialTheme.colorScheme.inverseOnSurface,
                             shape = RoundedCornerShape(12.dp)
+                        )
+                        .sizeIn(
+                            minWidth = CTE_MIN_SIZE,
+                            minHeight = CTE_MIN_SIZE
                         ),
 
                     //.background(Color.Red)
@@ -228,7 +233,11 @@ fun ArticleItemDetailComposable(
         Text(
             modifier = Modifier
                 .padding(top = 5.dp)
-                .wrapContentSize(),
+                .wrapContentSize()
+                .sizeIn(
+                    minWidth = CTE_MIN_SIZE,
+                    minHeight = CTE_MIN_SIZE
+                ),
             text = articleP.sDescriptionArticle
         )
 

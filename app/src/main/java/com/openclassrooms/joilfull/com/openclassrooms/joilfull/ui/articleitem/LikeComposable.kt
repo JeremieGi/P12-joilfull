@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -32,6 +33,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.openclassrooms.joilfull.R
+import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.CTE_MIN_SIZE
 import com.openclassrooms.joilfull.ui.theme.colorHeart
 
 /**
@@ -48,19 +50,36 @@ fun LikeComposable(
 
     var bLikeValue by rememberSaveable { mutableStateOf(bInitLike) }
 
+    var sAccessibilityMessage : String
+    if (bInitLike){
+        sAccessibilityMessage = "Cliquer ici pour retirer votre like"
+    }
+    else{
+        sAccessibilityMessage = "Cliquer ici pour liker cet article"
+    }
+
     Surface(
         modifier = modifier
             // Then permet le remplace de Modifier
             .then(
                 // Si l'émément est clickable
                 if (bIsClickableP) {
-                    Modifier.clickable {
-                        bLikeValue = !bLikeValue
-                        onClickLikeP(bLikeValue)
-                    }
+
+                    Modifier.clickable(
+
+                        onClickLabel = sAccessibilityMessage,
+                        onClick = {
+                            bLikeValue = !bLikeValue
+                            onClickLikeP(bLikeValue)
+                        }
+                    )
                 } else {
                     Modifier
                 }
+            )
+            .sizeIn(
+                minWidth = CTE_MIN_SIZE,
+                minHeight = CTE_MIN_SIZE
             )
 
         //.wrapContentSize()
