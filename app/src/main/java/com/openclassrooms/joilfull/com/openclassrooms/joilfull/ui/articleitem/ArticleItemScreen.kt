@@ -301,7 +301,7 @@ fun ArticleScreenPreview(){
             sDescriptionPicture = "Sac à main orange posé sur une poignée de porte",
             sName = "Sac à main orange",
             sCategory = "ACCESSORIES", // Enumération ici : pas trop d'intéret si jamais le WS renvoie une nouvelle catégorie
-            nNbLikes = 56,
+            nNbLikesInit = 56,
             dPrice = 69.99,
             dOriginalPrice = 99.00
         )

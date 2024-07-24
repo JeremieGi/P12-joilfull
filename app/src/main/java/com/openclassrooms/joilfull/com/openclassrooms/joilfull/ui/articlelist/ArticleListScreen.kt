@@ -2,6 +2,7 @@ package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articlelist
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -32,6 +33,11 @@ fun ArticleListScreen(
     viewModelList : ArticleListViewModel = hiltViewModel(), // Par défaut, Hilt utilise la portée @ActivityRetainedScoped pour les ViewModels, ce qui signifie que le même ViewModel est partagé pour toute la durée de vie de l'activité.
     viewModelArticle : ArticleViewModel = hiltViewModel()
 ) {
+
+    // Recharger les articles quand l'écran est visible
+    LaunchedEffect(Unit) {
+        viewModelList.loadArticlesList()
+    }
 
     // lorsque la valeur uiState est modifiée,
     // la recomposition a lieu pour les composables utilisant la valeur uiState.

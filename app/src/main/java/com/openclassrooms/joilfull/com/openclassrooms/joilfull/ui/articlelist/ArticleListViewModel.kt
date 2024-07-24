@@ -25,9 +25,6 @@ class ArticleListViewModel  @Inject constructor(
     // Backing property to avoid state updates from other classes
     val uiState: StateFlow<ArticleListUIState> = _uiState.asStateFlow() // Accès en lecture seule de l'extérieur
 
-    init {
-        loadArticlesList()
-    }
 
     /**
      * Chargement des articles depuis le repository

@@ -119,7 +119,7 @@ fun ArticleItemSimpleComposable(
                         )
                         .fillMaxHeight(0.1f)          // 1/10 de hauteur du contenant
                    ,
-                    sNbLikeP = article.nNbLikes.toString(),
+                    nNbLikeInitP = article.getNbLikes(),
                     bInitLike = article.bFavorite,
                     onClickLikeP = onClickLikeP,
                     bIsClickableP = bModeDetail // Clickable qu'en mode détail
@@ -216,7 +216,7 @@ fun ArticleItemComposablePreview() {
         //sName = "Sac à main orange",
         sName = "Sac à main orange très long pour tester largeur mini",
         sCategory = "ACCESSORIES", // Enumération ici : pas trop d'intéret si jamais le WS renvoie une nouvelle catégorie
-        nNbLikes = 56,
+        nNbLikesInit = 56,
         dPrice = 69.99,
         dOriginalPrice = 99.00
     )
@@ -244,7 +244,7 @@ fun ArticleItemComposablePreviewItemMode() {
         sDescriptionPicture = "Sac à main orange posé sur une poignée de porte",
         sName = "Sac à main orange",
         sCategory = "ACCESSORIES", // Enumération ici : pas trop d'intéret si jamais le WS renvoie une nouvelle catégorie
-        nNbLikes = 56,
+        nNbLikesInit = 56,
         dPrice = 69.99,
         dOriginalPrice = 99.00
     )

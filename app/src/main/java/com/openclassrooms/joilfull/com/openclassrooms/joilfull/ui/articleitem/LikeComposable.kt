@@ -21,12 +21,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
@@ -45,7 +44,7 @@ import com.openclassrooms.joilfull.ui.theme.colorHeart
 @Composable
 fun LikeComposable(
     modifier : Modifier,
-    sNbLikeP : String,
+    nNbLikeInitP : Int,
     bInitLike : Boolean,
     onClickLikeP : (bValLike : Boolean) -> Unit,
     bIsClickableP : Boolean
@@ -53,10 +52,11 @@ fun LikeComposable(
 
     val currentContext = LocalContext.current
 
-    var bLikeValue by rememberSaveable { mutableStateOf(bInitLike) }
+    var bLikeValue by remember { mutableStateOf(bInitLike) }
+    var nNbLikeValue by remember { mutableStateOf(nNbLikeInitP) }
 
-    var sAccessibilityMessage = stringResource(R.string.cet_article_a_c_urs, sNbLikeP)
-    if (bInitLike){
+    var sAccessibilityMessage = stringResource(R.string.cet_article_a_c_urs, nNbLikeValue.toString())
+    if (bLikeValue){
         sAccessibilityMessage += stringResource(R.string.cliquer_ici_pour_retirer_votre_like)
     }
     else{
@@ -79,11 +79,11 @@ fun LikeComposable(
 
                                 val sMessageToast: String
                                 if (bLikeValue) {
-                                    sMessageToast =
-                                        currentContext.getString(R.string.article_ajout_aux_favoris)
+                                    sMessageToast = currentContext.getString(R.string.article_ajout_aux_favoris)
+                                    nNbLikeValue++
                                 } else {
-                                    sMessageToast =
-                                        currentContext.getString(R.string.article_retir_des_favoris)
+                                    sMessageToast = currentContext.getString(R.string.article_retir_des_favoris)
+                                    nNbLikeValue--
                                 }
                                 Toast
                                     .makeText(currentContext, sMessageToast, Toast.LENGTH_LONG)
@@ -148,7 +148,7 @@ fun LikeComposable(
                 modifier = Modifier
                     .wrapContentSize()
                 ,
-                text = sNbLikeP,
+                text = nNbLikeValue.toString(),
                 color = Color.Black, //MaterialTheme.colorScheme.onSurface, // Sinon problème de contraste en theme Dark
                 textAlign = TextAlign.Center
             )
@@ -172,7 +172,7 @@ fun LikeComposablePreviewItem() {
     LikeComposable(
         modifier = Modifier
             .height(40.dp),
-        sNbLikeP = "10",
+        nNbLikeInitP = 10,
         bInitLike = true,
         onClickLikeP = {},
         bIsClickableP = true
@@ -188,7 +188,7 @@ fun LikeComposablePreviewTablet() {
     LikeComposable(
         modifier = Modifier
             .height(50.dp),
-        sNbLikeP = "1000",
+        nNbLikeInitP = 1000,
         bInitLike = false,
         onClickLikeP = {},
         bIsClickableP = false

@@ -10,7 +10,7 @@ class Article (
     val sDescriptionPicture : String,
     val sName : String,
     val sCategory : String, // Enumération ici : pas trop d'intéret si jamais le WS renvoie une nouvelle catégorie
-    val nNbLikes : Int,
+    val nNbLikesInit : Int, // Nombre de like renvoyé par WS
     val dPrice : Double,
     val dOriginalPrice : Double
 
@@ -35,7 +35,7 @@ class Article (
      * Chaine transmise à TalkBack pour annonce un item Article
      */
     fun sTalkBackSimpleDescription(context : Context): String {
-        return context.getString(R.string.article_talkback, sName, nNbLikes.toString(), dPrice.toString(), dOriginalPrice.toString())
+        return context.getString(R.string.article_talkback, sName, getNbLikes().toString(), dPrice.toString(), dOriginalPrice.toString())
     }
 
     /**
@@ -79,9 +79,24 @@ class Article (
 
     }
 
+    /**
+     * Accesseur à _bFavorite
+     */
     fun setFavorite(bFavoriteP : Boolean){
         this._bFavorite = bFavoriteP
     }
+
+    /**
+     *
+     */
+    fun getNbLikes() : Int {
+
+        var nbLike = this.nNbLikesInit
+        if (this._bFavorite) nbLike++
+        return  nbLike
+
+    }
+
 
 
 }

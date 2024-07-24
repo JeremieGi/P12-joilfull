@@ -12,14 +12,14 @@ object Links {
     const val CTE_ROUTE = "article_item" // Reprend la chaine défini dans le Manifest.xml => <data android:scheme="joiefull" android:host="article_item" />
     const val CTE_PARAM_ID_ARTICLE = "articleId"
 
-    val deepLinkRoute = "joiefull://$CTE_ROUTE"
+    private const val CTE_DEEP_LINK = "joiefull://$CTE_ROUTE"
 
     val arguments = listOf(
         navArgument(CTE_PARAM_ID_ARTICLE) { type = NavType.StringType }
     )
 
     val deepLinks = listOf(
-        navDeepLink { uriPattern = "$deepLinkRoute/{$CTE_PARAM_ID_ARTICLE}" }
+        navDeepLink { uriPattern = "$CTE_DEEP_LINK/{$CTE_PARAM_ID_ARTICLE}" }
     )
 
     val routeWithArgs = "${CTE_ROUTE}/{${CTE_PARAM_ID_ARTICLE}}"
@@ -29,7 +29,7 @@ object Links {
 
     fun createDeepLink(nIDArticleP : Int?): String {
 
-        return "${deepLinkRoute}/${nIDArticleP}"
+        return "${CTE_DEEP_LINK}/${nIDArticleP}"
 
     }
 

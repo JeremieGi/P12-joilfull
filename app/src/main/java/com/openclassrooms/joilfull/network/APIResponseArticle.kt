@@ -77,7 +77,7 @@ data class APIResponseArticle(
             sDescriptionPicture = this.picture.description,
             sName = this.name,
             sCategory = this.category,
-            nNbLikes = this.likes,
+            nNbLikesInit = this.likes,
             dPrice = this.price,
             dOriginalPrice = this.originalPrice
         )

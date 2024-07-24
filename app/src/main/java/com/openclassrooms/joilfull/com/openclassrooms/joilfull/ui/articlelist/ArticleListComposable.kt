@@ -9,21 +9,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.openclassrooms.joilfull.model.Article
-import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.ArticleItemSimpleComposable
+import com.openclassrooms.joilfull.model.Article
 import com.openclassrooms.joilfull.model.CategoryAndArticles
+import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
 
 /**
  * Ecran affichant une liste d'article
@@ -133,7 +133,7 @@ fun CategoryAndArticlesItemScreenPreview() {
             sDescriptionPicture = "Sac à main orange posé sur une poignée de porte",
             sName = "Sac$i à main orange",
             sCategory = "ACCESSORIES", // Enumération ici : pas trop d'intéret si jamais le WS renvoie une nouvelle catégorie
-            nNbLikes = 56+i,
+            nNbLikesInit = 56+i,
             dPrice = 69.99+i,
             dOriginalPrice = 99.00)
         listArticlesMut.add(art)
