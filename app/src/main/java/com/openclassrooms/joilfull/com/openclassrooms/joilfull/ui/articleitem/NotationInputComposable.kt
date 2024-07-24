@@ -54,7 +54,8 @@ fun NotationInputComposable(
     modifier: Modifier = Modifier,
     nIDRessourceAvatarP : Int,
     onClickBackP : (() -> Unit)?,
-    onClickSendNoteP : (nNote:Int , sComment:String) -> Unit
+    onClickSendNoteP : (nNote:Int , sComment:String) -> Unit,
+    unselectArticle : (() -> Unit)
 ){
 
     val context = LocalContext.current
@@ -150,7 +151,7 @@ fun NotationInputComposable(
                         onClickSendNoteP(/*nNote = */nRating,/*sComment = */textComment)
 
                         if (onClickBackP==null){
-                            // TODO JG : Redessiner ArticleListScreen
+                            unselectArticle()
                         }
                         else{
                             // On ferme la fenêtre fiche Article
@@ -253,7 +254,8 @@ fun NotationInputComposablePreview() {
             ,
         nIDRessourceAvatarP = R.drawable.currentuseravatar,
         onClickBackP = {},
-        onClickSendNoteP = { _, _ -> } // 2 paramètres vides
+        onClickSendNoteP = { _, _ -> } ,// 2 paramètres vides,
+        unselectArticle = {}
     )
 
 }

@@ -2,8 +2,11 @@ package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articlelist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.ArticleUIState
+import com.openclassrooms.joilfull.model.Article
 import com.openclassrooms.joilfull.repository.ArticleRepository
 import com.openclassrooms.joilfull.repository.ResultCustom
+import com.openclassrooms.joilfull.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,7 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ArticleListViewModel  @Inject constructor(
 
-    private val articleRepository : ArticleRepository
+    private val articleRepository : ArticleRepository,
+    private val userRepository : UserRepository
 
 ) : ViewModel() {
 
@@ -47,7 +51,10 @@ class ArticleListViewModel  @Inject constructor(
 
                 // Succès
                 is ResultCustom.Success -> {
-                   _uiState.value = ArticleListUIState.Success(resultAPI.value)
+                   _uiState.value = ArticleListUIState.Success(
+                       categoryAndArticles = resultAPI.value,
+                       uiStateArticleSelect = null
+                   )
 
                 }
 
@@ -58,5 +65,132 @@ class ArticleListViewModel  @Inject constructor(
     }
 
 
+    // Renvoie un article par son ID
+    fun loadArticleByID(articleId: Int) {
+
+        val successState = _uiState.value as ArticleListUIState.Success
+
+        articleRepository.loadArticleByID(articleId).onEach { resultAPI ->
+
+            // En fonction du résultat de l'API
+            when (resultAPI) {
+
+                // Echec
+                is ResultCustom.Failure ->
+                    _uiState.value = ArticleListUIState.Success(
+                        categoryAndArticles = successState.categoryAndArticles,
+                        uiStateArticleSelect = ArticleUIState.ErrorArticle(Exception(resultAPI.errorMessage))
+                    )
+
+                // En chargement
+                is ResultCustom.Loading -> {
+                    _uiState.value = ArticleListUIState.Success(
+                        categoryAndArticles = successState.categoryAndArticles,
+                        uiStateArticleSelect = ArticleUIState.IsLoadingArticle
+                    )
+                }
+
+                // Succès
+                is ResultCustom.Success -> {
+
+                    val selectedArticle = resultAPI.value
+
+                    // On change juste l'article sélectionné
+                    _uiState.value = ArticleListUIState.Success(
+                        categoryAndArticles = successState.categoryAndArticles,
+                        uiStateArticleSelect = ArticleUIState.SuccessArticle(selectedArticle)
+                    )
+
+                }
+
+            }
+
+        }.launchIn(viewModelScope)
+
+    }
+
+    /**
+     * Désélectionne un article
+     */
+    fun unselectArticle(){
+
+        val successState = _uiState.value as ArticleListUIState.Success
+
+        _uiState.value = ArticleListUIState.Success(
+            categoryAndArticles = successState.categoryAndArticles,
+            uiStateArticleSelect = null
+        )
+
+    }
+
+    /**
+     * Récupère l'avatar de l'utilisateur courant
+     */
+    fun getCurrentUserAvatar() : Int {
+        return userRepository.getCurrentUserAvatar()
+    }
+
+    /**
+     * Enregistrer la note et le commentaire saisi par l'utilisateur
+     */
+    fun sendNoteAndComment(nNoteP :Int , sCommentP : String) {
+
+        val selectedArticle = selectedArticle()
+
+        selectedArticle?.let { article ->
+
+            val nIDCurrentUser = userRepository.getCurrentUserID()
+
+            articleRepository.addFeedback(
+                nIDArticleP = article.nIDArticle,
+                nNoteP = nNoteP,
+                sCommentP = sCommentP,
+                nIDCurrentUser = nIDCurrentUser
+            )
+
+        }
+
+    }
+
+    /**
+     * Article liké par l'utisateur courant
+     */
+    fun setLike(bValLikeP : Boolean){
+
+        val selectedArticle = selectedArticle()
+
+        selectedArticle?.let { article ->
+
+            //val nIDCurrentUser = userRepository.getCurrentUserID()
+            articleRepository.setLike(article.nIDArticle,bValLikeP)
+
+        }
+
+    }
+
+    /**
+     * Renvoie l'article sélectionné et null si il n'y en a pas
+     */
+    private fun selectedArticle() : Article? {
+
+        var articleResult : Article? = null
+
+        if (_uiState.value is ArticleListUIState.Success){
+
+            val successListState = _uiState.value as ArticleListUIState.Success
+
+            if (successListState.uiStateArticleSelect is ArticleUIState.SuccessArticle) {
+
+                val successArticleState = successListState.uiStateArticleSelect as ArticleUIState.SuccessArticle
+
+                articleResult =successArticleState.article
+
+            }
+
+        }
+
+        return articleResult
+
+    }
 
 }

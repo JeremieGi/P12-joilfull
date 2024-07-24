@@ -12,8 +12,6 @@ import com.openclassrooms.joilfull.Links
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.ErrorComposable
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.LoadingComposable
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.ArticleItemContent
-import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.ArticleUIState
-import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.ArticleViewModel
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.bTablet
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.getWindowsSize
 import com.openclassrooms.joilfull.model.Article
@@ -30,8 +28,7 @@ import com.openclassrooms.joilfull.model.Article
 fun ArticleListScreen(
     navController: NavController,
     modifier: Modifier = Modifier,
-    viewModelList : ArticleListViewModel = hiltViewModel(), // Par défaut, Hilt utilise la portée @ActivityRetainedScoped pour les ViewModels, ce qui signifie que le même ViewModel est partagé pour toute la durée de vie de l'activité.
-    viewModelArticle : ArticleViewModel = hiltViewModel()
+    viewModelList : ArticleListViewModel = hiltViewModel() // Par défaut, Hilt utilise la portée @ActivityRetainedScoped pour les ViewModels, ce qui signifie que le même ViewModel est partagé pour toute la durée de vie de l'activité.
 ) {
 
     // Recharger les articles quand l'écran est visible
@@ -61,8 +58,8 @@ fun ArticleListScreen(
             ){
 
                 val listCategoryAndArticles = (uiStateList as ArticleListUIState.Success).categoryAndArticles
+                val uiStateArticle = (uiStateList as ArticleListUIState.Success).uiStateArticleSelect
 
-                val uiStateArticle by viewModelArticle.uiState.collectAsState()
 
                 val onArticleClickP : (Article) -> Unit
 
@@ -72,7 +69,7 @@ fun ArticleListScreen(
                     //  - charge l'article depuis le viewModel
                     //  - va recomposer ce composant avec l'article sélectionné
                     onArticleClickP = { article ->
-                        viewModelArticle.loadArticleByID(article.nIDArticle)
+                        viewModelList.loadArticleByID(article.nIDArticle)
                     }
 
                 }
@@ -100,9 +97,9 @@ fun ArticleListScreen(
 
                     if (bTablet(windowSize)) {
 
-                        if (uiStateArticle is ArticleUIState.NoSelectedArticle) {
+                        if (uiStateArticle==null) {
                             // Aucun article n'est sélectionné
-                            // Rien ne s'affiche
+                            // Rien ne s'affiche à droite
                         }
                         else{
 
@@ -110,11 +107,11 @@ fun ArticleListScreen(
                                 modifier = Modifier
                                     .weight(1f),
                                 uiState = uiStateArticle,
-                                nIDRessourceAvatarP = viewModelArticle.getCurrentUserAvatar(),
+                                nIDRessourceAvatarP = viewModelList.getCurrentUserAvatar(),
                                 onClickBackP = null, // Pas de backstack en mode tablette
-                                onClickSendNoteP = viewModelArticle::sendNoteAndComment,
-                                onClickLikeP = viewModelArticle::setLike,
-
+                                onClickSendNoteP = viewModelList::sendNoteAndComment,
+                                onClickLikeP = viewModelList::setLike,
+                                unselectArticle = viewModelList::unselectArticle
                             )
 
                         }

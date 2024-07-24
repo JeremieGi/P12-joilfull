@@ -24,7 +24,7 @@ class ArticleViewModel @Inject constructor(
 ) : ViewModel() {
 
     // UI state - Chargement par défaut
-    private val _uiState = MutableStateFlow<ArticleUIState>(ArticleUIState.NoSelectedArticle)
+    private val _uiState = MutableStateFlow<ArticleUIState>(ArticleUIState.IsLoadingArticle)
     // Backing property to avoid state updates from other classes
     val uiState: StateFlow<ArticleUIState> = _uiState.asStateFlow() // Accès en lecture seule de l'extérieur
 
@@ -44,15 +44,12 @@ class ArticleViewModel @Inject constructor(
 
                 // Echec
                 is ResultCustom.Failure ->
-                    _uiState.value = ArticleUIState.Error(Exception(resultAPI.errorMessage))
+                    _uiState.value = ArticleUIState.ErrorArticle(Exception(resultAPI.errorMessage))
 
                 // En chargement
                 is ResultCustom.Loading -> {
-                    if (_uiState.value != ArticleUIState.IsLoading){
-                        _uiState.value = ArticleUIState.IsLoading
-                    }
-
-                }
+                     _uiState.value = ArticleUIState.IsLoadingArticle
+                  }
 
                 // Succès
                 is ResultCustom.Success -> {
@@ -60,7 +57,7 @@ class ArticleViewModel @Inject constructor(
                     // On conserve l'article chargé dans le viewModel
                     _currentArticle = resultAPI.value
 
-                    _uiState.value = ArticleUIState.Success(resultAPI.value)
+                    _uiState.value = ArticleUIState.SuccessArticle(resultAPI.value)
 
                 }
 

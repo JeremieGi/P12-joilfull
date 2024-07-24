@@ -70,7 +70,8 @@ fun ArticleScreen(
                 nIDRessourceAvatarP = viewModelArticle.getCurrentUserAvatar(),
                 onClickBackP = { navController.popBackStack() },
                 onClickSendNoteP = viewModelArticle::sendNoteAndComment,
-                onClickLikeP = viewModelArticle::setLike
+                onClickLikeP = viewModelArticle::setLike,
+                unselectArticle = {} // Depuis ArticleScreen, on a ouvert la fenêtre via le NavControler
             )
 
         }
@@ -89,6 +90,7 @@ fun ArticleScreen(
             onClickBackP = { navController.popBackStack() },
             onClickSendNoteP = viewModelArticle::sendNoteAndComment,
             nIDRessourceAvatarP = viewModelArticle.getCurrentUserAvatar(),
+            unselectArticle = {} // Depuis ArticleScreen, on a ouvert la fenêtre via le NavControler
         )
 
     }
@@ -106,7 +108,8 @@ fun ArticleItemContent(
     nIDRessourceAvatarP : Int,
     onClickBackP : (() -> Unit)?,
     onClickSendNoteP : (nNote:Int , sComment:String) -> Unit,
-    onClickLikeP : (bValLike : Boolean) -> Unit
+    onClickLikeP : (bValLike : Boolean) -> Unit,
+    unselectArticle : (() -> Unit)
 ){
 
 
@@ -114,17 +117,13 @@ fun ArticleItemContent(
     // En fonction de l'état du viewModel
     when (uiState) {
 
-        is ArticleUIState.NoSelectedArticle -> {
-            // Normalement la fenêtre ne doit pas être affichée du tout dans cet état
-        }
-
         // Chargement
-        is ArticleUIState.IsLoading -> {
+        is ArticleUIState.IsLoadingArticle -> {
             LoadingComposable(modifier)
         }
 
         // Récupération des données avec succès
-        is ArticleUIState.Success -> {
+        is ArticleUIState.SuccessArticle -> {
 
             //val article = (uiState as ArticleUIState.Success).article
             val article = uiState.article // Kotlin sait que ArticleUIState est un success à cet endroit
@@ -135,12 +134,13 @@ fun ArticleItemContent(
                 nIDRessourceAvatarP = nIDRessourceAvatarP,
                 onClickLikeP = onClickLikeP,
                 onClickBackP = onClickBackP,
-                onClickSendNoteP = onClickSendNoteP
+                onClickSendNoteP = onClickSendNoteP,
+                unselectArticle = unselectArticle
             )
         }
 
         // Exception
-        is ArticleUIState.Error -> {
+        is ArticleUIState.ErrorArticle -> {
 
             val error = uiState.exception.message ?: "Unknown error"
             ErrorComposable(
@@ -162,7 +162,8 @@ fun ArticleItemDetailComposable(
     nIDRessourceAvatarP : Int,
     onClickLikeP : (bValLike : Boolean) -> Unit,
     onClickBackP : (() -> Unit)?,
-    onClickSendNoteP : (nNote:Int , sComment:String) -> Unit
+    onClickSendNoteP : (nNote:Int , sComment:String) -> Unit,
+    unselectArticle : (() -> Unit)
 ){
 
  //   val focusRequester = remember { FocusRequester() }
@@ -264,7 +265,8 @@ fun ArticleItemDetailComposable(
                 ),
             nIDRessourceAvatarP = nIDRessourceAvatarP,
             onClickSendNoteP = onClickSendNoteP,
-            onClickBackP = onClickBackP)
+            onClickBackP = onClickBackP,
+            unselectArticle = unselectArticle)
 
     }
 
@@ -307,7 +309,7 @@ fun ArticleScreenPreview(){
 
 
 
-        val uiStateSuccess = ArticleUIState.Success(article)
+        val uiStateSuccess = ArticleUIState.SuccessArticle(article)
 
         val navController = rememberNavController() // factice
 
@@ -316,7 +318,8 @@ fun ArticleScreenPreview(){
             nIDRessourceAvatarP = R.drawable.currentuseravatar,
             onClickBackP = { navController.popBackStack() },
             onClickSendNoteP = {_,_ -> }, // 2 paramètres et retour Unit
-            onClickLikeP = {}
+            onClickLikeP = {},
+            unselectArticle = {} // Depuis ArticleScreen, on a ouvert la fenêtre via le NavControler
         )
 
 
