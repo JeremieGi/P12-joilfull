@@ -202,8 +202,6 @@ fun ArticleItemDetailComposable(
 
 
             ArticleItemSimpleComposable(
-                modifier = Modifier
-                    ,
                 article = articleP,
                 bModeDetail = true,
                 onArticleClickP = {}, // OnClick neutralisé
@@ -265,7 +263,8 @@ fun ArticleItemDetailComposable(
                     vertical = 10.dp
                 ),
             nIDRessourceAvatarP = nIDRessourceAvatarP,
-            onClickSendNoteP = onClickSendNoteP)
+            onClickSendNoteP = onClickSendNoteP,
+            onClickBackP = onClickBackP)
 
     }
 

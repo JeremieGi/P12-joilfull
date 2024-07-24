@@ -53,6 +53,7 @@ import com.openclassrooms.joilfull.ui.theme.colorStar
 fun NotationInputComposable(
     modifier: Modifier = Modifier,
     nIDRessourceAvatarP : Int,
+    onClickBackP : (() -> Unit)?,
     onClickSendNoteP : (nNote:Int , sComment:String) -> Unit
 ){
 
@@ -125,6 +126,8 @@ fun NotationInputComposable(
             IconButton(
                 onClick = {
 
+                    // Contrôle des saisies
+
                     var bInputOK = true
 
                     if (nRating==0){
@@ -139,11 +142,21 @@ fun NotationInputComposable(
                         bInputOK = false
                     }
 
+
+                    // Si les saisies sont ok
                     if (bInputOK){
-                        onClickSendNoteP(
-                            /*nNote = */nRating,
-                            /*sComment = */textComment
-                        )
+
+                        // Enregistre la note via le viewModel
+                        onClickSendNoteP(/*nNote = */nRating,/*sComment = */textComment)
+
+                        if (onClickBackP==null){
+                            // TODO JG : Redessiner ArticleListScreen
+                        }
+                        else{
+                            // On ferme la fenêtre fiche Article
+                            onClickBackP()
+                        }
+
                     }
 
 
@@ -239,6 +252,7 @@ fun NotationInputComposablePreview() {
            // .background(Color.Black /*MaterialTheme.colorScheme.surfaceDim*/)
             ,
         nIDRessourceAvatarP = R.drawable.currentuseravatar,
+        onClickBackP = {},
         onClickSendNoteP = { _, _ -> } // 2 paramètres vides
     )
 
