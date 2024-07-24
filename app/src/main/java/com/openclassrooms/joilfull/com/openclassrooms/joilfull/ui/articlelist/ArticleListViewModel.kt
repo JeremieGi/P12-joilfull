@@ -2,7 +2,6 @@ package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articlelist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.openclassrooms.joilfull.model.Article
 import com.openclassrooms.joilfull.repository.ArticleRepository
 import com.openclassrooms.joilfull.repository.ResultCustom
 import dagger.hilt.android.lifecycle.HiltViewModel

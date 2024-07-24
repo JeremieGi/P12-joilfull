@@ -2,8 +2,6 @@ package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articlelist
 
 
 import android.content.res.Configuration
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,7 +17,6 @@ import com.openclassrooms.joilfull.model.Article
 import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
@@ -138,8 +135,7 @@ fun CategoryAndArticlesItemScreenPreview() {
             sCategory = "ACCESSORIES", // Enumération ici : pas trop d'intéret si jamais le WS renvoie une nouvelle catégorie
             nNbLikes = 56+i,
             dPrice = 69.99+i,
-            dOriginalPrice = 99.00,
-            bFavorite = false)
+            dOriginalPrice = 99.00)
         listArticlesMut.add(art)
     }
 

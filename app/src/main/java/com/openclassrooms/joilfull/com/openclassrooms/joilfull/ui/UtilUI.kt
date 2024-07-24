@@ -1,7 +1,6 @@
 package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui
 
 import android.app.Activity
-import android.content.Context
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass

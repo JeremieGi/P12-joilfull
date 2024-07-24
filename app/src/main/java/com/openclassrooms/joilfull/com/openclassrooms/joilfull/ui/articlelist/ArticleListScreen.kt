@@ -1,37 +1,21 @@
 package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articlelist
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.DpSize
-import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import com.openclassrooms.joilfull.Links
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.ErrorComposable
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.LoadingComposable
-import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.bTablet
-import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.openclassrooms.joilfull.Links
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.ArticleItemContent
-import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.ArticleScreen
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.ArticleUIState
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.ArticleViewModel
+import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.bTablet
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.getWindowsSize
 import com.openclassrooms.joilfull.model.Article
-
 
 
 /**
@@ -53,7 +37,7 @@ fun ArticleListScreen(
     // la recomposition a lieu pour les composables utilisant la valeur uiState.
     val uiStateList by viewModelList.uiState.collectAsState()
 
-    var windowSize = getWindowsSize()
+    val windowSize = getWindowsSize()
 
     // En fonction de l'état du viewModel
     when (uiStateList) {
@@ -119,7 +103,6 @@ fun ArticleListScreen(
                             ArticleItemContent(
                                 modifier = Modifier
                                     .weight(1f),
-
                                 uiState = uiStateArticle,
                                 nIDRessourceAvatarP = viewModelArticle.getCurrentUserAvatar(),
                                 onClickBackP = null, // Pas de backstack en mode tablette

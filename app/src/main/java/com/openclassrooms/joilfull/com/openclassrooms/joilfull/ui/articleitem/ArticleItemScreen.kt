@@ -1,6 +1,5 @@
 package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem
 
-import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Box
@@ -11,38 +10,21 @@ import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.twotone.ArrowBack
-import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusOrder
-import androidx.compose.ui.focus.focusProperties
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.focusTarget
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.openclassrooms.joilfull.R
@@ -51,8 +33,6 @@ import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.ErrorComposabl
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.LoadingComposable
 import com.openclassrooms.joilfull.model.Article
 import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
-import androidx.compose.ui.focus.focusProperties
-import androidx.compose.ui.focus.focusRequester
 
 
 // Ce point d'entrée est utilisé uniquement pour les petits écrans
@@ -87,7 +67,6 @@ fun ArticleScreen(
             ArticleItemContent(
                 modifier = Modifier,
                 uiState = uiState,
-                //bModeTablet = bTablet(windowSize),
                 nIDRessourceAvatarP = viewModelArticle.getCurrentUserAvatar(),
                 onClickBackP = { navController.popBackStack() },
                 onClickSendNoteP = viewModelArticle::sendNoteAndComment,
@@ -126,7 +105,7 @@ fun ArticleItemContent(
     uiState: ArticleUIState,
     nIDRessourceAvatarP : Int,
     onClickBackP : (() -> Unit)?,
-    onClickSendNoteP : (fNote:Float , sComment : String) -> Unit,
+    onClickSendNoteP : (nNote:Int , sComment:String) -> Unit,
     onClickLikeP : (bValLike : Boolean) -> Unit
 ){
 
@@ -176,7 +155,6 @@ fun ArticleItemContent(
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ArticleItemDetailComposable(
     modifier: Modifier = Modifier,
@@ -184,7 +162,7 @@ fun ArticleItemDetailComposable(
     nIDRessourceAvatarP : Int,
     onClickLikeP : (bValLike : Boolean) -> Unit,
     onClickBackP : (() -> Unit)?,
-    onClickSendNoteP : (fNote:Float , sComment : String) -> Unit
+    onClickSendNoteP : (nNote:Int , sComment:String) -> Unit
 ){
 
  //   val focusRequester = remember { FocusRequester() }
@@ -286,8 +264,6 @@ fun ArticleItemDetailComposable(
                 .padding(
                     vertical = 10.dp
                 ),
-            nIDUser = 0,    // TODO JG :ID User
-            nIDArticle = articleP.nIDArticle,
             nIDRessourceAvatarP = nIDRessourceAvatarP,
             onClickSendNoteP = onClickSendNoteP)
 
@@ -327,9 +303,10 @@ fun ArticleScreenPreview(){
             sCategory = "ACCESSORIES", // Enumération ici : pas trop d'intéret si jamais le WS renvoie une nouvelle catégorie
             nNbLikes = 56,
             dPrice = 69.99,
-            dOriginalPrice = 99.00,
-            bFavorite = false
+            dOriginalPrice = 99.00
         )
+
+
 
         val uiStateSuccess = ArticleUIState.Success(article)
 

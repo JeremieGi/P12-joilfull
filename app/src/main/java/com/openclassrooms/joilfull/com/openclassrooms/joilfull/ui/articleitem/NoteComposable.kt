@@ -66,8 +66,6 @@ fun NoteComposable(
             modifier = Modifier
                 .wrapContentSize()
             ,
-
-
         )
 
     }

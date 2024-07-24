@@ -2,13 +2,11 @@ package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navDeepLink
 import com.openclassrooms.joilfull.Links
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.ArticleScreen
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articlelist.ArticleListScreen
@@ -81,7 +79,7 @@ fun StructureComposable(
             content = { innerPadding -> // 24dp top and bottom
 
                 functionComposableParam(
-                    modifier = Modifier.padding(innerPadding)
+                    /*modifier = */Modifier.padding(innerPadding) // Named arguments in composable function types are deprecated. This will become an error in Kotlin 2.0
                 )
             }
 

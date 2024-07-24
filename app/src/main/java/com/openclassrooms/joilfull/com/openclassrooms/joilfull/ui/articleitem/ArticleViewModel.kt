@@ -1,11 +1,8 @@
 package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem
 
-import android.content.Intent
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.openclassrooms.joilfull.Links
-import com.openclassrooms.joilfull.R
-import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articlelist.ArticleListUIState
 import com.openclassrooms.joilfull.model.Article
 import com.openclassrooms.joilfull.repository.ArticleRepository
 import com.openclassrooms.joilfull.repository.ResultCustom
@@ -80,17 +77,24 @@ class ArticleViewModel @Inject constructor(
         return userRepository.getCurrentUserAvatar()
     }
 
+
     /**
      * Enregistrer la note et le commentaire saisi par l'utilisateur
      */
-    fun sendNoteAndComment(fNote:Float , sComment : String) {
+    fun sendNoteAndComment(nNoteP :Int , sCommentP : String) {
 
-        _currentArticle.let {
+        _currentArticle?.let { article ->
 
             val nIDCurrentUser = userRepository.getCurrentUserID()
 
-        }
+            articleRepository.addFeedback(
+                nIDArticleP = article.nIDArticle,
+                nNoteP = nNoteP,
+                sCommentP = sCommentP,
+                nIDCurrentUser = nIDCurrentUser
+            )
 
+        }
 
     }
 
@@ -99,10 +103,10 @@ class ArticleViewModel @Inject constructor(
      */
     fun setLike(bValLikeP : Boolean){
 
-        _currentArticle.let {
+        _currentArticle?.let { article ->
 
-            val nIDCurrentUser = userRepository.getCurrentUserID()
-            // TODO JG Où enregistrer les likes ?
+            //val nIDCurrentUser = userRepository.getCurrentUserID()
+            articleRepository.setLike(article.nIDArticle,bValLikeP)
 
         }
 

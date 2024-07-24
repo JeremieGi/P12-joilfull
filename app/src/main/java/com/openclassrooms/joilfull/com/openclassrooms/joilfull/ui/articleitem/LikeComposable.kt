@@ -16,8 +16,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,7 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
+
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
@@ -57,12 +55,12 @@ fun LikeComposable(
 
     var bLikeValue by rememberSaveable { mutableStateOf(bInitLike) }
 
-    var sAccessibilityMessage = "Cet article a $sNbLikeP cœurs"
+    var sAccessibilityMessage = stringResource(R.string.cet_article_a_c_urs, sNbLikeP)
     if (bInitLike){
-        sAccessibilityMessage += "Cliquer ici pour retirer votre like"
+        sAccessibilityMessage += stringResource(R.string.cliquer_ici_pour_retirer_votre_like)
     }
     else{
-        sAccessibilityMessage += "Cliquer ici pour liker cet article"
+        sAccessibilityMessage += stringResource(R.string.cliquer_ici_pour_liker_cet_article)
     }
 
     Surface(
@@ -81,9 +79,11 @@ fun LikeComposable(
 
                                 val sMessageToast: String
                                 if (bLikeValue) {
-                                    sMessageToast = currentContext.getString(R.string.article_ajout_aux_favoris)
+                                    sMessageToast =
+                                        currentContext.getString(R.string.article_ajout_aux_favoris)
                                 } else {
-                                    sMessageToast = currentContext.getString(R.string.article_retir_des_favoris)
+                                    sMessageToast =
+                                        currentContext.getString(R.string.article_retir_des_favoris)
                                 }
                                 Toast
                                     .makeText(currentContext, sMessageToast, Toast.LENGTH_LONG)

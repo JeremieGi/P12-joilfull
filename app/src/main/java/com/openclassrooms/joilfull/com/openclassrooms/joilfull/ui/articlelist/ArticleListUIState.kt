@@ -1,6 +1,5 @@
 package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articlelist
 
-import com.openclassrooms.joilfull.model.Article
 import com.openclassrooms.joilfull.model.CategoryAndArticles
 
 

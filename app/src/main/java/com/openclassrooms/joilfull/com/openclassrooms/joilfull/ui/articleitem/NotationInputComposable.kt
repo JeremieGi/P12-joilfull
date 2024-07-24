@@ -1,26 +1,21 @@
 package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem
 
-import android.app.Activity
 import android.content.res.Configuration
 import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.twotone.Send
@@ -33,9 +28,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -58,10 +52,8 @@ import com.openclassrooms.joilfull.ui.theme.colorStar
 @Composable
 fun NotationInputComposable(
     modifier: Modifier = Modifier,
-    nIDUser : Int,
-    nIDArticle : Int,
     nIDRessourceAvatarP : Int,
-    onClickSendNoteP : (fNote:Float , sComment : String) -> Unit
+    onClickSendNoteP : (nNote:Int , sComment:String) -> Unit
 ){
 
     val context = LocalContext.current
@@ -72,7 +64,7 @@ fun NotationInputComposable(
     )
     {
 
-        var rating by rememberSaveable { mutableFloatStateOf(0f) }
+        var nRating by rememberSaveable { mutableIntStateOf(0) }
 
         Row(
             modifier = Modifier,
@@ -95,9 +87,9 @@ fun NotationInputComposable(
             // Champ de notation à 5 étoiles
             StarRatingBar(
                 modifier = Modifier.weight(1f),
-                ratingP = rating,
+                ratingP = nRating.toFloat(),
                 onRatingChanged = {
-                    rating = it
+                    nRating = it.toInt()
                 }
             )
         }
@@ -135,7 +127,7 @@ fun NotationInputComposable(
 
                     var bInputOK = true
 
-                    if (rating==0f){
+                    if (nRating==0){
                         Toast.makeText(context,
                             context.getString(R.string.merci_de_saisir_une_note), Toast.LENGTH_LONG).show()
                         bInputOK = false
@@ -149,7 +141,7 @@ fun NotationInputComposable(
 
                     if (bInputOK){
                         onClickSendNoteP(
-                            /*fNote = */rating,
+                            /*nNote = */nRating,
                             /*sComment = */textComment
                         )
                     }
@@ -246,8 +238,6 @@ fun NotationInputComposablePreview() {
             )
            // .background(Color.Black /*MaterialTheme.colorScheme.surfaceDim*/)
             ,
-        nIDUser = 1,
-        nIDArticle = 1,
         nIDRessourceAvatarP = R.drawable.currentuseravatar,
         onClickSendNoteP = { _, _ -> } // 2 paramètres vides
     )

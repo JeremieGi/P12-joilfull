@@ -79,8 +79,7 @@ data class APIResponseArticle(
             sCategory = this.category,
             nNbLikes = this.likes,
             dPrice = this.price,
-            dOriginalPrice = this.originalPrice,
-            bFavorite = false // Hors API
+            dOriginalPrice = this.originalPrice
         )
 
     }

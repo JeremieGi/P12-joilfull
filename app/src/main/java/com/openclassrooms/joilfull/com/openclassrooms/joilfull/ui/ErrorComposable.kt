@@ -19,18 +19,16 @@ import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
  */
 @Composable
 fun ErrorComposable(
-    sMessage: String,
     modifier: Modifier = Modifier,
+    sMessage: String,
     onClickRetryP: () -> Unit
 ) {
 
     val activity = (LocalContext.current as Activity)
 
-    // if (bShowDialog){
     AlertDialog(
         onDismissRequest = {
             // Dismiss the dialog when the user clicks outside the dialog or on the back button.
-            //bShowDialog = false
             activity.finish()
         },
         title = { Text(text = stringResource(R.string.erreur)) },
@@ -64,14 +62,14 @@ fun ErrorComposable(
 
 }
 
-// TODO : Denis 2 => Preview simple qui échoue
+// TODO Denis 2 => Preview simple qui échoue
 @Preview(showBackground = true)
 @Composable
 fun ErrorDialogPreview() {
 
     JoilfullTheme {
         ErrorComposable(
-            stringResource(R.string.erreur_pr_visualis_e),
+            sMessage = stringResource(R.string.erreur_pr_visualis_e),
             onClickRetryP = { }
         )
     }

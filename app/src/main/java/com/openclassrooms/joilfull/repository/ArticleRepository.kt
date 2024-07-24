@@ -2,9 +2,10 @@ package com.openclassrooms.joilfull.repository
 
 
 import com.openclassrooms.joilfull.model.Article
+import com.openclassrooms.joilfull.model.ArticleFeedback
 import com.openclassrooms.joilfull.model.CategoryAndArticles
+import com.openclassrooms.joilfull.network.FakeAPIFeedback
 import com.openclassrooms.joilfull.network.IArticlesAPI
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -13,7 +14,8 @@ import javax.inject.Singleton
 
 @Singleton
 class ArticleRepository @Inject constructor (
-    private val dataService: IArticlesAPI
+    private val dataService: IArticlesAPI,
+    private val fakeAPIFeedback: FakeAPIFeedback
 )
 {
 
@@ -23,7 +25,7 @@ class ArticleRepository @Inject constructor (
     /**
      * Renvoie la liste des articles dans un Flow en appelant le WebService
      */
-    fun loadArticlesList() : Flow<ResultCustom<List<Article>>> = flow {
+    private fun loadArticlesList() : Flow<ResultCustom<List<Article>>> = flow {
 
         emit(ResultCustom.Loading)
 
@@ -53,12 +55,17 @@ class ArticleRepository @Inject constructor (
             }
             else{
 
-                // On convertit en list modèle
+                // On convertit en list modèle (List<Article>)
                 resultListCandidate = listAPIResponseArticle
                     .map {
                         it.toModelArticle()
-
                     }
+
+                // On charge aussi les feedbacks
+                resultListCandidate.forEach {
+                    // TODO Denis Question : Comment faire si le chargement de fakeAPIFeedback était asynchrone (un autre WS par exemple)
+                    it.initFeedback(fakeAPIFeedback.getArticleFeedback(it.nIDArticle))
+                }
 
                 // Remplissage du Map du repository
                 resultListCandidate.forEach {
@@ -216,6 +223,30 @@ class ArticleRepository @Inject constructor (
         }
 
 
+
+    }
+
+    /**
+     * Ajout une note et un commentaire à un article
+     */
+    fun addFeedback(nIDArticleP : Int, nNoteP : Int, sCommentP : String, nIDCurrentUser: Int){
+
+        _mapArticles[nIDArticleP]?.addFeedback(
+            ArticleFeedback(
+                nIdArticle = nIDArticleP,
+                nNote = nNoteP,
+                sComment = sCommentP,
+                nIDUser = nIDCurrentUser
+            )
+        )
+    }
+
+    /**
+     *  Ajoute / Retire un article des favoris pour l'article courant
+     */
+    fun setLike(nIDArticleP: Int, bValLikeP: Boolean) {
+
+        _mapArticles[nIDArticleP]?.setFavorite(bValLikeP)
 
     }
 

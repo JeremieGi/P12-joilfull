@@ -25,4 +25,7 @@
     <string name="personnalise_ton_message_de_partage">Personnalise ton message de partage</string>
     <string name="partager">Partager</string>
     <string name="annuler">Annuler</string>
+    <string name="cliquer_ici_pour_retirer_votre_like">Cliquer ici pour retirer votre like</string>
+    <string name="cliquer_ici_pour_liker_cet_article">Cliquer ici pour liker cet article</string>
+    <string name="cet_article_a_c_urs">Cet article a %1$s cœurs</string>
 </resources>
