@@ -17,6 +17,9 @@ class ArticleRepository @Inject constructor (
 )
 {
 
+    // Tableau associatif d'article indicé par ID
+    private val _mapArticles: MutableMap<Int, Article> = mutableMapOf()
+
     /**
      * Renvoie la liste des articles dans un Flow en appelant le WebService
      */
@@ -38,17 +41,31 @@ class ArticleRepository @Inject constructor (
             val listAPIResponseArticle = responseRetrofit.body()
 
             // transform in model object
+
             val resultListCandidate : List<Article>
 
-            // Si le Ws renvoie aucune list => on renvoie une liste vide
+            // Réinitialise la liste du répository
+            _mapArticles.clear()
+
+            // Si le WS renvoie aucune list => on renvoie une liste vide
             if (listAPIResponseArticle.isNullOrEmpty()){
                 resultListCandidate = emptyList()
             }
             else{
+
                 // On convertit en list modèle
-                resultListCandidate = listAPIResponseArticle.map {
-                    it.toModelArticle()
+                resultListCandidate = listAPIResponseArticle
+                    .map {
+                        it.toModelArticle()
+
+                    }
+
+                // Remplissage du Map du repository
+                resultListCandidate.forEach {
+                    _mapArticles[it.nIDArticle] = it
                 }
+
+
             }
 
             // Ajout au flow
@@ -73,39 +90,58 @@ class ArticleRepository @Inject constructor (
      */
     fun loadArticlesListSortByCategory()  : Flow<ResultCustom<List<CategoryAndArticles>>> = flow {
 
-        // Transforme le flow renvoyer par loadArticlesList()
-        loadArticlesList().collect { resultAPI ->
+        // Si la liste d'articles du répository est vide
+        if (_mapArticles.isEmpty()){
 
-            // En fonction du résultat de l'API
-            when (resultAPI) {
+            // Appel au WebService
+            // Transforme le flow renvoyer par loadArticlesList()
+            loadArticlesList().collect { resultAPI ->
 
-                // Echec
-                is ResultCustom.Failure ->
-                    // Propagation du message d'erreur
-                    emit(ResultCustom.Failure(resultAPI.errorMessage))
+                // En fonction du résultat de l'API
+                when (resultAPI) {
 
-                // En chargement
-                ResultCustom.Loading -> {
-                    // Propagation du chargement
-                    emit(ResultCustom.Loading)
+                    // Echec
+                    is ResultCustom.Failure ->
+                        // Propagation du message d'erreur
+                        emit(ResultCustom.Failure(resultAPI.errorMessage))
+
+                    // En chargement
+                    ResultCustom.Loading -> {
+                        // Propagation du chargement
+                        emit(ResultCustom.Loading)
+                    }
+
+                    // Succès
+                    is ResultCustom.Success -> {
+
+                        val listArticles = resultAPI.value
+
+                        // Il faut regrouper les articles par catégorie et les mettre sous la forme d'une liste de CategoryAndArticles
+                        val listArticlesByCategory = CategoryAndArticles.createWithArticle(listArticles)
+
+                        emit(ResultCustom.Success(listArticlesByCategory))
+
+                    }
+
+
                 }
-
-                // Succès
-                is ResultCustom.Success -> {
-
-                    val listArticles = resultAPI.value
-
-                    // Il faut regrouper les articles par catégorie et les mettre sous la forme d'une liste de CategoryAndArticles
-                    val listArticlesByCategory = CategoryAndArticles.createWithArticle(listArticles)
-
-                    emit(ResultCustom.Success(listArticlesByCategory))
-
-                }
-
 
             }
 
+
         }
+        else{
+
+            // On renvoie la liste en mémoire
+
+            // Il faut regrouper les articles par catégorie et les mettre sous la forme d'une liste de CategoryAndArticles
+            val listArticlesByCategory = CategoryAndArticles.createWithArticle(_mapArticles.values.toList())
+            emit(ResultCustom.Success(listArticlesByCategory))
+
+        }
+
+
+
 
     }
 
@@ -113,57 +149,73 @@ class ArticleRepository @Inject constructor (
      * Renvoie un article par son ID (Normalement le WD devrait me proposer un point d'entrée pour faire çà)
      * @param : Identifiant de l'article
      */
-    fun loadArticleByID(nIDArticle : Int)  : Flow<ResultCustom<Article>> = flow {
+    fun loadArticleByID(nIDArticleP : Int)  : Flow<ResultCustom<Article>> = flow {
 
-        // TODO Denis 2 : J'aurai aimé stocké le Flow en tant que propriété du repository (pour ne pas avoir à rappeler le Ws à chaque fois)
-        // mais je n'arrive pas à réutiliser ce Flow dans cette méthode par exemple
 
-        loadArticlesList().collect { resultAPI ->
+        // Si la liste d'articles du répository est vide
+        if (_mapArticles.isEmpty()){
 
-            // En fonction du résultat de l'API
-            when (resultAPI) {
+            loadArticlesList().collect { resultAPI ->
 
-                // Echec
-                is ResultCustom.Failure ->
-                    // Propagation du message d'erreur
-                    emit(ResultCustom.Failure(resultAPI.errorMessage))
+                // En fonction du résultat de l'API
+                when (resultAPI) {
 
-                // En chargement
-                ResultCustom.Loading -> {
-                    // Propagation du chargement
-                    emit(ResultCustom.Loading)
-                }
+                    // Echec
+                    is ResultCustom.Failure ->
+                        // Propagation du message d'erreur
+                        emit(ResultCustom.Failure(resultAPI.errorMessage))
 
-                // Succès
-                is ResultCustom.Success -> {
-
-                    // Tous les articles
-                    val listArticles = resultAPI.value
-
-                    // Recherche de l'article avec l'ID passé en paramètre
-                    val listArticleFilter = listArticles.filter {
-                        it.nIDArticle == nIDArticle
+                    // En chargement
+                    ResultCustom.Loading -> {
+                        // Propagation du chargement
+                        emit(ResultCustom.Loading)
                     }
 
-                    // Normalement un seul article
-                    if (listArticleFilter.size == 1){
-                        emit(ResultCustom.Success(listArticleFilter[0]))
-                    }
-                    when (listArticleFilter.size){
-                        1 ->
+                    // Succès
+                    is ResultCustom.Success -> {
+
+                        // Tous les articles
+                        val listArticles = resultAPI.value
+
+                        // Recherche de l'article avec l'ID passé en paramètre
+                        val listArticleFilter = listArticles.filter {
+                            it.nIDArticle == nIDArticleP
+                        }
+
+                        // Normalement un seul article
+                        if (listArticleFilter.size == 1){
                             emit(ResultCustom.Success(listArticleFilter[0]))
-                        0 ->
-                            emit(ResultCustom.Failure("Article ID $nIDArticle non trouvé"))
-                        else ->
-                            emit(ResultCustom.Failure("Plusieurs articles ID $nIDArticle"))
+                        }
+                        when (listArticleFilter.size){
+                            1 ->
+                                emit(ResultCustom.Success(listArticleFilter[0]))
+                            0 ->
+                                emit(ResultCustom.Failure("Article ID $nIDArticleP non trouvé"))
+                            else ->
+                                emit(ResultCustom.Failure("Plusieurs articles ID $nIDArticleP"))
+                        }
+
                     }
 
-                }
 
+                }
 
             }
 
         }
+        else{
+
+            // Article trouvé en mémoire
+            if (_mapArticles.containsKey(nIDArticleP)){
+                emit(ResultCustom.Success(_mapArticles[nIDArticleP]!!)) // TODO Denis 2 : Encore des !!
+            }
+            else{
+                emit(ResultCustom.Failure("Article ID $nIDArticleP non trouvé"))
+            }
+
+        }
+
+
 
     }
 
