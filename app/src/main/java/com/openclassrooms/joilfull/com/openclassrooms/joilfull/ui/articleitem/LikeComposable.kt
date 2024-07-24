@@ -19,10 +19,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -52,13 +48,9 @@ fun LikeComposable(
 
     val currentContext = LocalContext.current
 
-    // Durée de vie de ces valeurs = recomposition du composable
-    var bLikeValue by remember { mutableStateOf(bInitLike) }
-    var nNbLikeValue by remember { mutableStateOf(nNbLikeInitP) }
 
-
-    var sAccessibilityMessage = stringResource(R.string.cet_article_a_c_urs, nNbLikeValue.toString())
-    if (bLikeValue){
+    var sAccessibilityMessage = stringResource(R.string.cet_article_a_c_urs, nNbLikeInitP.toString())
+    if (bInitLike){
         sAccessibilityMessage += stringResource(R.string.cliquer_ici_pour_retirer_votre_like)
     }
     else{
@@ -75,19 +67,18 @@ fun LikeComposable(
                     modifier
                         .clickable(
                             onClick = {
-                                bLikeValue = !bLikeValue
 
-                                // Appel au ViewModel mais on ne rafraichit pas tout l'écran
-                                // juste le Composable à l'aide des variables by remember
-                                onClickLikeP(bLikeValue)
+                                val bNewValLike = !bInitLike
+
+                                // Appel au ViewModel on rafraichit tout l'écran
+                                // => Pour faire un comportement identique en tablette et en téléphone
+                                onClickLikeP(bNewValLike)
 
                                 val sMessageToast: String
-                                if (bLikeValue) {
+                                if (bNewValLike) {
                                     sMessageToast = currentContext.getString(R.string.article_ajout_aux_favoris)
-                                    nNbLikeValue++
                                 } else {
                                     sMessageToast = currentContext.getString(R.string.article_retir_des_favoris)
-                                    nNbLikeValue--
                                 }
                                 Toast
                                     .makeText(currentContext, sMessageToast, Toast.LENGTH_LONG)
@@ -134,7 +125,7 @@ fun LikeComposable(
 
 
             Icon(
-                imageVector = if (bLikeValue){
+                imageVector = if (bInitLike){
                         Icons.Filled.Favorite
                     } else{
                         Icons.Filled.FavoriteBorder
@@ -152,7 +143,7 @@ fun LikeComposable(
                 modifier = Modifier
                     .wrapContentSize()
                 ,
-                text = nNbLikeValue.toString(),
+                text = nNbLikeInitP.toString(),
                 color = Color.Black, //MaterialTheme.colorScheme.onSurface, // Sinon problème de contraste en theme Dark
                 textAlign = TextAlign.Center
             )

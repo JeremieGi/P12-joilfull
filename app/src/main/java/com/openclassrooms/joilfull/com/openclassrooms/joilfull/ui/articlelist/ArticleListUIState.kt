@@ -14,6 +14,7 @@ sealed class ArticleListUIState  {
 
         val uiStateArticleSelect : ArticleUIState? // TODO Denis : Un UIState dans un Autre..
 
+
     ) : ArticleListUIState()
 
     data class Error(val exception: Throwable) : ArticleListUIState() // Error = sous-classe de ArticleListUIState

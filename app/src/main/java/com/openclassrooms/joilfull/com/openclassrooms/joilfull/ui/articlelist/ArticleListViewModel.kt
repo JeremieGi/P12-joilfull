@@ -35,6 +35,8 @@ class ArticleListViewModel  @Inject constructor(
      */
     fun loadArticlesList() {
 
+
+
         articleRepository.loadArticlesListSortByCategory().onEach { resultAPI ->
 
             // En fonction du résultat de l'API
@@ -51,10 +53,28 @@ class ArticleListViewModel  @Inject constructor(
 
                 // Succès
                 is ResultCustom.Success -> {
-                   _uiState.value = ArticleListUIState.Success(
-                       categoryAndArticles = resultAPI.value,
-                       uiStateArticleSelect = null
-                   )
+
+                    // Y avait-il un article préalablement sélectionné ?
+                    val selectedArticle = selectedArticle()
+                    if (selectedArticle==null){
+                        // Pas de sélection
+                        _uiState.value = ArticleListUIState.Success(
+                            categoryAndArticles = resultAPI.value,
+                            uiStateArticleSelect = null
+                        )
+                    }
+                    else{
+
+                        // Article à sélectionner
+                        val uiArticleState = ArticleUIState.SuccessArticle(article = selectedArticle)
+
+                        _uiState.value = ArticleListUIState.Success(
+                            categoryAndArticles = resultAPI.value,
+                            uiStateArticleSelect = uiArticleState
+                        )
+                    }
+
+
 
                 }
 
@@ -97,9 +117,15 @@ class ArticleListViewModel  @Inject constructor(
 
                     // On change juste l'article sélectionné
                     _uiState.value = ArticleListUIState.Success(
+
                         categoryAndArticles = successState.categoryAndArticles,
-                        uiStateArticleSelect = ArticleUIState.SuccessArticle(selectedArticle)
+                        uiStateArticleSelect = ArticleUIState.SuccessArticle(
+                            article = selectedArticle
+                        )
+
                     )
+
+
 
                 }
 
@@ -120,6 +146,7 @@ class ArticleListViewModel  @Inject constructor(
             categoryAndArticles = successState.categoryAndArticles,
             uiStateArticleSelect = null
         )
+
 
     }
 
@@ -164,6 +191,9 @@ class ArticleListViewModel  @Inject constructor(
             //val nIDCurrentUser = userRepository.getCurrentUserID()
             articleRepository.setLike(article.nIDArticle,bValLikeP)
 
+            // Redéclenche un chargement de toute la liste pour la mettre à jour
+            loadArticlesList()
+
         }
 
     }
@@ -192,5 +222,7 @@ class ArticleListViewModel  @Inject constructor(
         return articleResult
 
     }
+
+
 
 }

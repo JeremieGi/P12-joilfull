@@ -105,6 +105,12 @@ class ArticleViewModel @Inject constructor(
             //val nIDCurrentUser = userRepository.getCurrentUserID()
             articleRepository.setLike(article.nIDArticle,bValLikeP)
 
+            _currentArticle?.setFavorite(bValLikeP)
+
+            // Redéclenche un chargement de la fiche
+            // TODO JG : Ne recharge pas l'article car il ne change pas..
+            loadArticleByID(article.nIDArticle)
+
         }
 
     }
