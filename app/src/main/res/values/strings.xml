@@ -28,4 +28,5 @@
     <string name="cliquer_ici_pour_retirer_votre_like">Cliquer ici pour retirer votre like</string>
     <string name="cliquer_ici_pour_liker_cet_article">Cliquer ici pour liker cet article</string>
     <string name="cet_article_a_c_urs">Cet article a %1$s cœurs</string>
+    <string name="aucune">Aucune</string>
 </resources>

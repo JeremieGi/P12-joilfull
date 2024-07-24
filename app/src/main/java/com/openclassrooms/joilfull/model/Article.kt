@@ -66,10 +66,17 @@ class Article (
     /**
      * Note moyenne sous forme de chaine arrondie à 2 décimales
      */
-    fun sAverageNote(): String {
+    fun sAverageNote(context : Context): String {
         val number = dNotesAverage()
-        val locale = Locale.getDefault()
-        return String.format(locale, "%.2f", number)
+        if (number.isNaN()){ // NaN = Not a number
+            // La moyenne ne peut pas être calculée (car pas de note)
+            return context.getString(R.string.aucune)
+        }
+        else{
+            val locale = Locale.getDefault()
+            return String.format(locale, "%.2f", number)
+        }
+
     }
 
     fun setFavorite(bFavoriteP : Boolean){
