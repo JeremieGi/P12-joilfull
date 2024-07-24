@@ -31,6 +31,7 @@ fun ArticleListScreen(
     viewModelList : ArticleListViewModel = hiltViewModel() // Par défaut, Hilt utilise la portée @ActivityRetainedScoped pour les ViewModels, ce qui signifie que le même ViewModel est partagé pour toute la durée de vie de l'activité.
 ) {
 
+
     // Recharger les articles quand l'écran est visible
     LaunchedEffect(Unit) {
         viewModelList.loadArticlesList()

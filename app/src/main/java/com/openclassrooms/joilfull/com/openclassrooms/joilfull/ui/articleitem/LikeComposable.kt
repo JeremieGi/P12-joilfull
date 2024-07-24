@@ -52,8 +52,10 @@ fun LikeComposable(
 
     val currentContext = LocalContext.current
 
+    // Durée de vie de ces valeurs = recomposition du composable
     var bLikeValue by remember { mutableStateOf(bInitLike) }
     var nNbLikeValue by remember { mutableStateOf(nNbLikeInitP) }
+
 
     var sAccessibilityMessage = stringResource(R.string.cet_article_a_c_urs, nNbLikeValue.toString())
     if (bLikeValue){
@@ -75,6 +77,8 @@ fun LikeComposable(
                             onClick = {
                                 bLikeValue = !bLikeValue
 
+                                // Appel au ViewModel mais on ne rafraichit pas tout l'écran
+                                // juste le Composable à l'aide des variables by remember
                                 onClickLikeP(bLikeValue)
 
                                 val sMessageToast: String
