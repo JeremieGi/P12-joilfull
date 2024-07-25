@@ -45,6 +45,7 @@ fun ArticleItemSimpleComposable(
     modifier: Modifier = Modifier,
     article : Article,
     bModeDetail : Boolean,  // Vrai => Mode détails, faux => Mode Item
+    bTablet : Boolean,
     onArticleClickP : (Article) -> Unit,
     onClickLikeP : (bValLike : Boolean) -> Unit
 ) {
@@ -119,10 +120,11 @@ fun ArticleItemSimpleComposable(
                         )
                         .fillMaxHeight(0.1f)          // 1/10 de hauteur du contenant
                    ,
-                    nNbLikeInitP = article.getNbLikes(),
-                    bInitLike = article.bFavorite,
+                    nNbLikeP = article.getNbLikes(),
+                    bInitLikeP = article.bFavorite,
                     onClickLikeP = onClickLikeP,
-                    bIsClickableP = bModeDetail // Clickable qu'en mode détail
+                    bIsClickableP = bModeDetail, // Clickable qu'en mode détail
+                    bTablet = bTablet
                 )
 
                 if (bModeDetail){
@@ -226,6 +228,7 @@ fun ArticleItemComposablePreview() {
         ArticleItemSimpleComposable(
             article = article,
             bModeDetail = true,
+            bTablet = true,
             onArticleClickP = {},
             onClickLikeP = {}
         )
@@ -256,6 +259,7 @@ fun ArticleItemComposablePreviewItemMode() {
         ArticleItemSimpleComposable(
             article = article,
             bModeDetail = false,
+            bTablet = false,
             onArticleClickP = {},
             onClickLikeP = {}
         )

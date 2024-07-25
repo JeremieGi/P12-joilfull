@@ -211,7 +211,7 @@ class ArticleListViewModel  @Inject constructor(
 
             if (successListState.uiStateArticleSelect is ArticleUIState.SuccessArticle) {
 
-                val successArticleState = successListState.uiStateArticleSelect as ArticleUIState.SuccessArticle
+                val successArticleState = successListState.uiStateArticleSelect
 
                 articleResult =successArticleState.article
 

@@ -89,7 +89,8 @@ fun ArticleListScreen(
                         modifier=Modifier
                             .weight(2f),
                         onArticleClickP = onArticleClickP,
-                        listCategoryAndArticles = listCategoryAndArticles
+                        listCategoryAndArticles = listCategoryAndArticles,
+                        bTablet = bTablet(windowSize)
                     )
 
 

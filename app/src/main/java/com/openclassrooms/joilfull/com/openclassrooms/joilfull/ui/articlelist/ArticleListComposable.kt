@@ -32,6 +32,7 @@ import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
 @Composable
 fun ArticleListComposable(
     listCategoryAndArticles : List<CategoryAndArticles>,
+    bTablet : Boolean,
     onArticleClickP : (Article) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -55,7 +56,8 @@ fun ArticleListComposable(
                     bottom = 5.dp   // Pour mettre un espace bien visible entre les catégories
                 ),
                 onArticleClickP = onArticleClickP,
-                categoryAndArticles = categoryAndArticles)
+                categoryAndArticles = categoryAndArticles,
+                bTablet = bTablet)
         }
 
     }
@@ -66,11 +68,14 @@ fun ArticleListComposable(
 @Composable
 fun CategoryAndArticlesItemScreen(
     modifier: Modifier = Modifier,
+    bTablet : Boolean,
     onArticleClickP : (Article) -> Unit,
     categoryAndArticles : CategoryAndArticles
 ) {
 
     val context = LocalContext.current
+
+
 
     Column (
         modifier = modifier // Récupération du padding passé en paramètre du LazyColumn (appelant) -> espace en fin d'item
@@ -110,6 +115,7 @@ fun CategoryAndArticlesItemScreen(
                     article=article,
                     onArticleClickP=onArticleClickP,
                     bModeDetail = false,
+                    bTablet = bTablet,
                     onClickLikeP = {}
                 )
 
@@ -148,6 +154,7 @@ fun CategoryAndArticlesItemScreenPreview() {
     JoilfullTheme {
         CategoryAndArticlesItemScreen(
             categoryAndArticles = categ,
+            bTablet = true,
             onArticleClickP = {}
         )
     }

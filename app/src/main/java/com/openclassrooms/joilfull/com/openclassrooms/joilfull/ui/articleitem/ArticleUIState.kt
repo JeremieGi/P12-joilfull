@@ -10,9 +10,6 @@ sealed class ArticleUIState {
         val article : Article,
     ) : ArticleUIState()
 
-
-
-
     data class ErrorArticle(val exception: Throwable) : ArticleUIState() // Error = sous-classe de ArticleListUIState
 
 }

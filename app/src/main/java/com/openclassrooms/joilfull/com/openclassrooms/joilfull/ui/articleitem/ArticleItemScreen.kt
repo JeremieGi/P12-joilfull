@@ -189,6 +189,9 @@ fun ArticleItemDetailComposable(
     }
 */
 
+    // On est en mode tablette si pas de backstack
+    val bTablet = (onClickBackP==null)
+
     Column(
         modifier = modifier
             .padding(
@@ -207,6 +210,7 @@ fun ArticleItemDetailComposable(
             ArticleItemSimpleComposable(
                 article = articleP,
                 bModeDetail = true,
+                bTablet = bTablet,
                 onArticleClickP = {}, // OnClick neutralisé
                 onClickLikeP = onClickLikeP
             )

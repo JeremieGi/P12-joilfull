@@ -1,7 +1,6 @@
 package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem
 
 import android.content.res.Configuration
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -19,10 +18,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
@@ -40,21 +43,71 @@ import com.openclassrooms.joilfull.ui.theme.colorHeart
 @Composable
 fun LikeComposable(
     modifier : Modifier,
-    nNbLikeInitP : Int,
-    bInitLike : Boolean,
+    bTablet : Boolean,
+    nNbLikeP : Int,
+    bInitLikeP : Boolean,
     onClickLikeP : (bValLike : Boolean) -> Unit,
     bIsClickableP : Boolean
 ){
 
-    val currentContext = LocalContext.current
+    //val currentContext = LocalContext.current
 
 
-    var sAccessibilityMessage = stringResource(R.string.cet_article_a_c_urs, nNbLikeInitP.toString())
-    if (bInitLike){
+    // Durée de vie de ces valeurs = recomposition du composable
+    var bLikeRemember by remember { mutableStateOf(bInitLikeP) }
+    var nNbLikeRemember by remember { mutableIntStateOf(nNbLikeP) }
+
+
+    var sAccessibilityMessage = stringResource(R.string.cet_article_a_c_urs, nNbLikeRemember.toString())
+    if (bLikeRemember){
         sAccessibilityMessage += stringResource(R.string.cliquer_ici_pour_retirer_votre_like)
     }
     else{
         sAccessibilityMessage += stringResource(R.string.cliquer_ici_pour_liker_cet_article)
+    }
+
+    // Variables affichées à l'écran
+    val bLikeDisplay : Boolean
+    val nNbLikeDisplay : Int
+
+    // TODO Denis à montrer : 2 façons de gérer le click sur le like (code complexe je trouve)
+    val onClickLikeFinal : () -> Unit
+    if (bTablet){
+        // En tablette, on appelle le viewModel qui va reclencher un Ui State et redessiner toute la fenêtre (car la liste doit se mettre à jour aussi)
+        onClickLikeFinal = {
+
+            val bNewValLike = !bInitLikeP
+
+            // Appel au ViewModel on rafraichit tout l'écran
+            onClickLikeP(bNewValLike)
+
+        }
+        bLikeDisplay = bInitLikeP
+        nNbLikeDisplay = nNbLikeP
+    }
+    else{
+        // Sur téléphone, on appelle le viewModel qui va enregitrer le like en mémoire mais ne va pas déclencher de revomposition via le UI State
+        // On utilisera les variables remember pour mettre à jour l'interface
+
+        onClickLikeFinal = {
+
+            // Déclenchera une recomposition
+            bLikeRemember = !bLikeRemember
+
+            // Appel au ViewModel sans rafraichissement
+            onClickLikeP(bLikeRemember)
+
+            if (bLikeRemember){
+                nNbLikeRemember++
+            }
+            else{
+                nNbLikeRemember--
+            }
+        }
+
+        bLikeDisplay = bLikeRemember
+        nNbLikeDisplay = nNbLikeRemember
+
     }
 
     Surface(
@@ -66,24 +119,7 @@ fun LikeComposable(
 
                     modifier
                         .clickable(
-                            onClick = {
-
-                                val bNewValLike = !bInitLike
-
-                                // Appel au ViewModel on rafraichit tout l'écran
-                                // => Pour faire un comportement identique en tablette et en téléphone
-                                onClickLikeP(bNewValLike)
-
-                                val sMessageToast: String
-                                if (bNewValLike) {
-                                    sMessageToast = currentContext.getString(R.string.article_ajout_aux_favoris)
-                                } else {
-                                    sMessageToast = currentContext.getString(R.string.article_retir_des_favoris)
-                                }
-                                Toast
-                                    .makeText(currentContext, sMessageToast, Toast.LENGTH_LONG)
-                                    .show()
-                            }
+                            onClick = onClickLikeFinal
                         )
                         .semantics(mergeDescendants = true) {}
                         .clearAndSetSemantics {
@@ -125,7 +161,7 @@ fun LikeComposable(
 
 
             Icon(
-                imageVector = if (bInitLike){
+                imageVector = if (bLikeDisplay){
                         Icons.Filled.Favorite
                     } else{
                         Icons.Filled.FavoriteBorder
@@ -143,7 +179,7 @@ fun LikeComposable(
                 modifier = Modifier
                     .wrapContentSize()
                 ,
-                text = nNbLikeInitP.toString(),
+                text = nNbLikeDisplay.toString(),
                 color = Color.Black, //MaterialTheme.colorScheme.onSurface, // Sinon problème de contraste en theme Dark
                 textAlign = TextAlign.Center
             )
@@ -167,8 +203,9 @@ fun LikeComposablePreviewItem() {
     LikeComposable(
         modifier = Modifier
             .height(40.dp),
-        nNbLikeInitP = 10,
-        bInitLike = true,
+        bTablet = false,
+        nNbLikeP = 10,
+        bInitLikeP = true,
         onClickLikeP = {},
         bIsClickableP = true
     )
@@ -183,8 +220,9 @@ fun LikeComposablePreviewTablet() {
     LikeComposable(
         modifier = Modifier
             .height(50.dp),
-        nNbLikeInitP = 1000,
-        bInitLike = false,
+        bTablet = false,
+        nNbLikeP = 1000,
+        bInitLikeP = false,
         onClickLikeP = {},
         bIsClickableP = false
     )
