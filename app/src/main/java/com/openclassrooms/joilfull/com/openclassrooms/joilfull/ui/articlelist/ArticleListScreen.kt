@@ -11,8 +11,9 @@ import androidx.navigation.NavController
 import com.openclassrooms.joilfull.Links
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.ErrorComposable
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.LoadingComposable
-import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.ArticleItemContent
-import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.bTablet
+import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.ArticleUIState
+import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.ArticleUIStateComposable
+import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.bDisplayItemOnRight
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.getWindowsSize
 import com.openclassrooms.joilfull.model.Article
 
@@ -59,21 +60,18 @@ fun ArticleListScreen(
             ){
 
                 val listCategoryAndArticles = (uiStateList as ArticleListUIState.Success).categoryAndArticles
-                val uiStateArticle = (uiStateList as ArticleListUIState.Success).uiStateArticleSelect
 
 
                 val onArticleClickP : (Article) -> Unit
 
-                if (bTablet(windowSize)){
+                if (bDisplayItemOnRight(windowSize)){
 
                     // Tablette =>
                     //  - charge l'article depuis le viewModel
                     //  - va recomposer ce composant avec l'article sélectionné
                     onArticleClickP = { article ->
 
-//                        if (viewModelList.selectedArticle()!=null){
-//                            viewModelList.unselectArticle()
-//                        }
+                        //viewModelList.setUnselectArticle()
 
                         viewModelList.loadArticleByID(article.nIDArticle)
 
@@ -96,37 +94,47 @@ fun ArticleListScreen(
                             .weight(2f),
                         onArticleClickP = onArticleClickP,
                         listCategoryAndArticles = listCategoryAndArticles,
-                        bTablet = bTablet(windowSize)
+                        bModeItemOnRight = bDisplayItemOnRight(windowSize)
                     )
 
 
                     // En mode tablette
                     // Et un article est sélectionné
 
-                    if (bTablet(windowSize)) {
+                    val uiStateArticle = (uiStateList as ArticleListUIState.Success).uiStateArticleSelect
 
-                        if (uiStateArticle==null) {
-                            // Aucun article n'est sélectionné
-                            // Rien ne s'affiche à droite
-                        }
-                        else{
+                    if (bDisplayItemOnRight(windowSize)) {
+                        // Mode item à droite
 
-                            ArticleItemContent(
+                        //val selectedArticle = viewModelList.getSelectedArticle()
+                        //if (selectedArticle==null) {
+                        if (uiStateArticle is ArticleUIState.ArticleSelected){
+
+                            val uiStateArticle = (uiStateList as ArticleListUIState.Success).uiStateArticleSelect
+
+                            ArticleUIStateComposable(
                                 modifier = Modifier
                                     .weight(1f),
                                 uiState = uiStateArticle,
+                                bModeItemOnRight = true,
                                 nIDCurrentUserP = viewModelList.getCurrentUserID(),
                                 nIDRessourceAvatarP = viewModelList.getCurrentUserAvatar(),
-                                onClickBackP = null, // Pas de backstack en mode tablette
+                                onBackOrCloseP = viewModelList::setUnselectArticle, // Pas de backstack en mode tablette
                                 onClickSendNoteP = viewModelList::sendNoteAndComment,
                                 onClickLikeP = viewModelList::setLike,
-                                unselectArticle = viewModelList::unselectArticle
+                                updateNoteOnViewModelP = {},
+                                nRateP = 0
                             )
 
+
+                        }
+                        else{
+                            // Aucun article sélectionné, on affiche rien
                         }
 
                     }
                     else{
+                        // Pas d'affichage d'item à droite
                         // Ouverture dans une autre fenêtre via navController.navigate
 
                     }

@@ -57,13 +57,14 @@ fun NotationInputComposable(
     nIDRessourceAvatarP : Int,
     nExistingNoteP : Int,            // 0 => pas de note existante
     sExistingCommentP : String,      // "" => pas de commentaire existant
-    onClickBackP : (() -> Unit)?,
+    onBackOrCloseP : (() -> Unit),
     onClickSendNoteP : (nNote:Int , sComment:String) -> Unit,
-    unselectArticle : (() -> Unit)
+    updateNoteOnViewModelP : ( (Int) -> Unit)                 // TODO JG : A nettoyer
 ){
 
     val context = LocalContext.current
     //val activity = context as? Activity
+
 
     Column(
         modifier = modifier
@@ -81,8 +82,6 @@ fun NotationInputComposable(
     {
 
         var nRating by remember { mutableIntStateOf(nExistingNoteP) }
-
-
 
         Row(
             modifier = Modifier,
@@ -111,6 +110,7 @@ fun NotationInputComposable(
                 bEnableP = (nExistingNoteP==0),
                 onRatingChanged = {
                     nRating = it.toInt()
+                    //updateNoteOnViewModelP(it.toInt()) // Pour sauver la note en cas de rotation d'écran
                 }
             )
         }
@@ -172,13 +172,7 @@ fun NotationInputComposable(
                             // Enregistre la note via le viewModel
                             onClickSendNoteP(/*nNote = */nRating,/*sComment = */textComment)
 
-                            if (onClickBackP==null){
-                                unselectArticle()
-                            }
-                            else{
-                                // On ferme la fenêtre fiche Article
-                                onClickBackP()
-                            }
+                            onBackOrCloseP()
 
                         }
 
@@ -287,9 +281,9 @@ fun NotationInputComposablePreview() {
         nIDRessourceAvatarP = R.drawable.currentuseravatar,
         nExistingNoteP = 0,
         sExistingCommentP = "",
-        onClickBackP = {},
+        onBackOrCloseP = {},
         onClickSendNoteP = { _, _ -> } ,// 2 paramètres vides,
-        unselectArticle = {}
+        updateNoteOnViewModelP = {}
     )
 
 }
@@ -308,9 +302,9 @@ fun NotationInputComposableExistingFeedbackPreview() {
         nIDRessourceAvatarP = R.drawable.currentuseravatar,
         nExistingNoteP = 3,
         sExistingCommentP = "Mon commentaire existant",
-        onClickBackP = {},
+        onBackOrCloseP = {},
         onClickSendNoteP = { _, _ -> } ,// 2 paramètres vides,
-        unselectArticle = {}
+        updateNoteOnViewModelP = {}
     )
 
 }

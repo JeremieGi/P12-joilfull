@@ -45,7 +45,7 @@ fun ArticleItemSimpleComposable(
     modifier: Modifier = Modifier,
     article : Article,
     bModeDetail : Boolean,  // Vrai => Mode détails, faux => Mode Item
-    bTablet : Boolean,
+    bModeItemOnRight : Boolean,
     onArticleClickP : (Article) -> Unit,
     onClickLikeP : (bValLike : Boolean) -> Unit
 ) {
@@ -124,7 +124,7 @@ fun ArticleItemSimpleComposable(
                     bInitLikeP = article.bFavorite,
                     onClickLikeP = onClickLikeP,
                     bIsClickableP = bModeDetail, // Clickable qu'en mode détail
-                    bTablet = bTablet
+                    bModeItemOnRight = bModeItemOnRight
                 )
 
                 if (bModeDetail){
@@ -228,7 +228,7 @@ fun ArticleItemComposablePreview() {
         ArticleItemSimpleComposable(
             article = article,
             bModeDetail = true,
-            bTablet = true,
+            bModeItemOnRight = true,
             onArticleClickP = {},
             onClickLikeP = {}
         )
@@ -259,7 +259,7 @@ fun ArticleItemComposablePreviewItemMode() {
         ArticleItemSimpleComposable(
             article = article,
             bModeDetail = false,
-            bTablet = false,
+            bModeItemOnRight = false,
             onArticleClickP = {},
             onClickLikeP = {}
         )

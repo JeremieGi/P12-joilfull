@@ -32,7 +32,7 @@ import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
 @Composable
 fun ArticleListComposable(
     listCategoryAndArticles : List<CategoryAndArticles>,
-    bTablet : Boolean,
+    bModeItemOnRight : Boolean,
     onArticleClickP : (Article) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -57,7 +57,8 @@ fun ArticleListComposable(
                 ),
                 onArticleClickP = onArticleClickP,
                 categoryAndArticles = categoryAndArticles,
-                bTablet = bTablet)
+                bModeItemOnRight = bModeItemOnRight
+            )
         }
 
     }
@@ -68,7 +69,7 @@ fun ArticleListComposable(
 @Composable
 fun CategoryAndArticlesItemScreen(
     modifier: Modifier = Modifier,
-    bTablet : Boolean,
+    bModeItemOnRight : Boolean,
     onArticleClickP : (Article) -> Unit,
     categoryAndArticles : CategoryAndArticles
 ) {
@@ -115,7 +116,7 @@ fun CategoryAndArticlesItemScreen(
                     article=article,
                     onArticleClickP=onArticleClickP,
                     bModeDetail = false,
-                    bTablet = bTablet,
+                    bModeItemOnRight = bModeItemOnRight,
                     onClickLikeP = {}
                 )
 
@@ -154,7 +155,7 @@ fun CategoryAndArticlesItemScreenPreview() {
     JoilfullTheme {
         CategoryAndArticlesItemScreen(
             categoryAndArticles = categ,
-            bTablet = true,
+            bModeItemOnRight = true,
             onArticleClickP = {}
         )
     }

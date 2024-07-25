@@ -43,7 +43,7 @@ import com.openclassrooms.joilfull.ui.theme.colorHeart
 @Composable
 fun LikeComposable(
     modifier : Modifier,
-    bTablet : Boolean,
+    bModeItemOnRight : Boolean,
     nNbLikeP : Int,
     bInitLikeP : Boolean,
     onClickLikeP : (bValLike : Boolean) -> Unit,
@@ -72,7 +72,7 @@ fun LikeComposable(
 
     // TODO Denis à montrer : 2 façons de gérer le click sur le like (code complexe je trouve)
     val onClickLikeFinal : () -> Unit
-    if (bTablet){
+    if (bModeItemOnRight){
         // En tablette, on appelle le viewModel qui va reclencher un Ui State et redessiner toute la fenêtre (car la liste doit se mettre à jour aussi)
         onClickLikeFinal = {
 
@@ -203,7 +203,7 @@ fun LikeComposablePreviewItem() {
     LikeComposable(
         modifier = Modifier
             .height(40.dp),
-        bTablet = false,
+        bModeItemOnRight = false,
         nNbLikeP = 10,
         bInitLikeP = true,
         onClickLikeP = {},
@@ -220,7 +220,7 @@ fun LikeComposablePreviewTablet() {
     LikeComposable(
         modifier = Modifier
             .height(50.dp),
-        bTablet = false,
+        bModeItemOnRight = false,
         nNbLikeP = 1000,
         bInitLikeP = false,
         onClickLikeP = {},

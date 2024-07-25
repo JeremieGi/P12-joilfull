@@ -35,8 +35,6 @@ class ArticleListViewModel  @Inject constructor(
      */
     fun loadArticlesList() {
 
-
-
         articleRepository.loadArticlesListSortByCategory().onEach { resultAPI ->
 
             // En fonction du résultat de l'API
@@ -55,18 +53,18 @@ class ArticleListViewModel  @Inject constructor(
                 is ResultCustom.Success -> {
 
                     // Y avait-il un article préalablement sélectionné ?
-                    val selectedArticle = selectedArticle()
+                    val selectedArticle = getSelectedArticle()
                     if (selectedArticle==null){
                         // Pas de sélection
                         _uiState.value = ArticleListUIState.Success(
                             categoryAndArticles = resultAPI.value,
-                            uiStateArticleSelect = null
+                            uiStateArticleSelect = ArticleUIState.NoneArticleSelected
                         )
                     }
                     else{
 
                         // Article à sélectionner
-                        val uiArticleState = ArticleUIState.SuccessArticle(article = selectedArticle)
+                        val uiArticleState = ArticleUIState.ArticleSelected(article = selectedArticle)
 
                         _uiState.value = ArticleListUIState.Success(
                             categoryAndArticles = resultAPI.value,
@@ -113,13 +111,15 @@ class ArticleListViewModel  @Inject constructor(
                 // Succès
                 is ResultCustom.Success -> {
 
+                    //setUnselectArticle()
+
                     val selectedArticle = resultAPI.value
 
                     // On change juste l'article sélectionné
                     _uiState.value = ArticleListUIState.Success(
 
                         categoryAndArticles = successState.categoryAndArticles,
-                        uiStateArticleSelect = ArticleUIState.SuccessArticle(
+                        uiStateArticleSelect = ArticleUIState.ArticleSelected(
                             article = selectedArticle
                         )
 
@@ -135,20 +135,7 @@ class ArticleListViewModel  @Inject constructor(
 
     }
 
-    /**
-     * Désélectionne un article
-     */
-    fun unselectArticle(){
 
-        val successState = _uiState.value as ArticleListUIState.Success
-
-        _uiState.value = ArticleListUIState.Success(
-            categoryAndArticles = successState.categoryAndArticles,
-            uiStateArticleSelect = null
-        )
-
-
-    }
 
     /**
      * Récupère l'avatar de l'utilisateur courant
@@ -169,7 +156,7 @@ class ArticleListViewModel  @Inject constructor(
      */
     fun sendNoteAndComment(nNoteP :Int , sCommentP : String) {
 
-        val selectedArticle = selectedArticle()
+        val selectedArticle = getSelectedArticle()
 
         selectedArticle?.let { article ->
 
@@ -191,7 +178,7 @@ class ArticleListViewModel  @Inject constructor(
      */
     fun setLike(bValLikeP : Boolean){
 
-        val selectedArticle = selectedArticle()
+        val selectedArticle = getSelectedArticle()
 
         selectedArticle?.let { article ->
 
@@ -208,7 +195,7 @@ class ArticleListViewModel  @Inject constructor(
     /**
      * Renvoie l'article sélectionné et null si il n'y en a pas
      */
-    fun selectedArticle() : Article? {
+    fun getSelectedArticle() : Article? {
 
         var articleResult : Article? = null
 
@@ -216,7 +203,7 @@ class ArticleListViewModel  @Inject constructor(
 
             val successListState = _uiState.value as ArticleListUIState.Success
 
-            if (successListState.uiStateArticleSelect is ArticleUIState.SuccessArticle) {
+            if (successListState.uiStateArticleSelect is ArticleUIState.ArticleSelected) {
 
                 val successArticleState = successListState.uiStateArticleSelect
 
@@ -230,6 +217,20 @@ class ArticleListViewModel  @Inject constructor(
 
     }
 
+    /**
+     * Désélectionne un article
+     */
+    fun setUnselectArticle(){
+
+        val successState = _uiState.value as ArticleListUIState.Success
+
+        _uiState.value = ArticleListUIState.Success(
+            categoryAndArticles = successState.categoryAndArticles,
+            uiStateArticleSelect = ArticleUIState.NoneArticleSelected
+        )
+
+
+    }
 
 
 }

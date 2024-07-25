@@ -12,7 +12,7 @@ sealed class ArticleListUIState  {
 
         val categoryAndArticles : List<CategoryAndArticles>,
 
-        val uiStateArticleSelect : ArticleUIState? // TODO Denis : Un UIState dans un Autre..
+        val uiStateArticleSelect : ArticleUIState // TODO Denis : Un UIState dans un Autre..
 
 
     ) : ArticleListUIState()

@@ -33,6 +33,8 @@ import com.openclassrooms.joilfull.R
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.CTE_MIN_SIZE
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.ErrorComposable
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.LoadingComposable
+import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.bDisplayItemOnRight
+import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.getWindowsSize
 import com.openclassrooms.joilfull.model.Article
 import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
 
@@ -47,13 +49,13 @@ fun ArticleScreen(
 
 ) {
 
-    //val windowSize = getWindowsSize()
+    val windowSize = getWindowsSize()
 
 
     // TODO JG : Voir si on peut pas virer çà
     // TODO Denis : Voir ce cas de test : Est ce vraiment comme çà qu'il faut faire pour éviter de recharger l'article
     // Si l'article n'est pas chargé
-    if (viewModelArticle.currentArticle==null){
+//    if (viewModelArticle.currentArticle==null){
 
         // Trigger loading article details when articleId changes
         // Premier lancement
@@ -63,43 +65,58 @@ fun ArticleScreen(
 
         val uiState by viewModelArticle.uiState.collectAsState()
 
+
+
         Box(
             modifier = modifier
                 .fillMaxSize()
         ) {
 
-            ArticleItemContent(
+            val bModeItemOnRight = bDisplayItemOnRight(windowSize)
+
+            val onBackOrCloseP : (() -> Unit)
+            if (bModeItemOnRight){
+                onBackOrCloseP = viewModelArticle::unselectArticle
+            }
+            else{
+                onBackOrCloseP = { navController.popBackStack() }
+            }
+
+            val nRate by viewModelArticle.nCurrentNote
+
+            ArticleUIStateComposable(
                 modifier = Modifier,
                 uiState = uiState,
+                bModeItemOnRight = bModeItemOnRight,
                 nIDCurrentUserP = viewModelArticle.getCurrentUserID(),
                 nIDRessourceAvatarP = viewModelArticle.getCurrentUserAvatar(),
-                onClickBackP = { navController.popBackStack() },
+                onBackOrCloseP = onBackOrCloseP,
                 onClickSendNoteP = viewModelArticle::sendNoteAndComment,
                 onClickLikeP = viewModelArticle::setLike,
-                unselectArticle = {} // Depuis ArticleScreen, on a ouvert la fenêtre via le NavControler
+                updateNoteOnViewModelP = viewModelArticle::updateNote,
+                nRateP = nRate
+
             )
 
         }
 
-
-    }
-
-    else{
-        // Cas d'une rotation par exemple
-        // Pas besoin de recharger l'article qu'on a déjà dans le viewModel
-
-        ArticleItemDetailComposable(
-            modifier = modifier,
-            articleP = viewModelArticle.currentArticle!!, // TODO Question Denis : test nullité plus haut mais il faut quand même !!
-            nIDCurrentUserP = viewModelArticle.getCurrentUserID(),
-            onClickLikeP = viewModelArticle::setLike,
-            onClickBackP = { navController.popBackStack() },
-            onClickSendNoteP = viewModelArticle::sendNoteAndComment,
-            nIDRessourceAvatarP = viewModelArticle.getCurrentUserAvatar(),
-            unselectArticle = {} // Depuis ArticleScreen, on a ouvert la fenêtre via le NavControler
-        )
-
-    }
+//    }
+//    else{
+//        // Cas d'une rotation par exemple
+//        // Pas besoin de recharger l'article qu'on a déjà dans le viewModel
+//
+//        ArticleItemDetailComposable(
+//            modifier = modifier,
+//            articleP = viewModelArticle.currentArticle!!, // TODO Question Denis : test nullité plus haut mais il faut quand même !!
+//            nIDCurrentUserP = viewModelArticle.getCurrentUserID(),
+//            onClickLikeP = viewModelArticle::setLike,
+//            onClickBackP = { navController.popBackStack() },
+//            onClickSendNoteP = viewModelArticle::sendNoteAndComment,
+//            nIDRessourceAvatarP = viewModelArticle.getCurrentUserAvatar(),
+//            unselectArticle = {} // Depuis ArticleScreen, on a ouvert la fenêtre via le NavControler
+//        )
+//
+//    }
 
 
 }
@@ -108,15 +125,17 @@ fun ArticleScreen(
  * Composant affichant le détails d'un article
  */
 @Composable
-fun ArticleItemContent(
+fun ArticleUIStateComposable(
     modifier: Modifier = Modifier,
     uiState: ArticleUIState,
+    bModeItemOnRight : Boolean,
     nIDCurrentUserP : Int,
     nIDRessourceAvatarP : Int,
-    onClickBackP : (() -> Unit)?,
+    onBackOrCloseP : (() -> Unit),
     onClickSendNoteP : (nNote:Int , sComment:String) -> Unit,
     onClickLikeP : (bValLike : Boolean) -> Unit,
-    unselectArticle : (() -> Unit)
+    updateNoteOnViewModelP : ( (Int) -> Unit),
+    nRateP : Int
 ){
 
 
@@ -124,13 +143,17 @@ fun ArticleItemContent(
     // En fonction de l'état du viewModel
     when (uiState) {
 
+        is ArticleUIState.NoneArticleSelected -> {
+            // Affiche rien
+        }
+
         // Chargement
         is ArticleUIState.IsLoadingArticle -> {
             LoadingComposable(modifier)
         }
 
         // Récupération des données avec succès
-        is ArticleUIState.SuccessArticle -> {
+        is ArticleUIState.ArticleSelected -> {
 
             //val article = (uiState as ArticleUIState.Success).article
             val article = uiState.article // Kotlin sait que ArticleUIState est un success à cet endroit
@@ -138,12 +161,14 @@ fun ArticleItemContent(
             ArticleItemDetailComposable(
                 modifier = modifier,
                 articleP = article,
+                bModeItemOnRight = bModeItemOnRight,
                 nIDCurrentUserP = nIDCurrentUserP,
                 nIDRessourceAvatarP = nIDRessourceAvatarP,
                 onClickLikeP = onClickLikeP,
-                onClickBackP = onClickBackP,
+                onBackOrCloseP = onBackOrCloseP,
                 onClickSendNoteP = onClickSendNoteP,
-                unselectArticle = unselectArticle
+                updateNoteOnViewModelP = updateNoteOnViewModelP,
+                nRateP = nRateP
             )
         }
 
@@ -172,12 +197,14 @@ fun ArticleItemContent(
 fun ArticleItemDetailComposable(
     modifier: Modifier = Modifier,
     articleP : Article,
+    bModeItemOnRight : Boolean,
     nIDCurrentUserP : Int,
     nIDRessourceAvatarP : Int,
     onClickLikeP : (bValLike : Boolean) -> Unit,
-    onClickBackP : (() -> Unit)?,
+    onBackOrCloseP : (() -> Unit),
     onClickSendNoteP : (nNote:Int , sComment:String) -> Unit,
-    unselectArticle : (() -> Unit)
+    updateNoteOnViewModelP : ( (Int) -> Unit),
+    nRateP : Int
 ){
 
  //   val focusRequester = remember { FocusRequester() }
@@ -201,8 +228,6 @@ fun ArticleItemDetailComposable(
     }
 */
 
-    // On est en mode tablette si pas de backstack
-    val bTablet = (onClickBackP==null)
 
     Column(
         modifier = modifier
@@ -222,7 +247,7 @@ fun ArticleItemDetailComposable(
             ArticleItemSimpleComposable(
                 article = articleP,
                 bModeDetail = true,
-                bTablet = bTablet,
+                bModeItemOnRight = bModeItemOnRight,
                 onArticleClickP = {}, // OnClick neutralisé
                 onClickLikeP = onClickLikeP
             )
@@ -232,13 +257,10 @@ fun ArticleItemDetailComposable(
             // Si la lambda onClicBackP est définie
 
             val icon : ImageVector
-            val onBackOrClose : (() -> Unit)
-            if (onClickBackP!=null){
+            if (!bModeItemOnRight){
                 icon = Icons.AutoMirrored.TwoTone.ArrowBack
-                onBackOrClose = onClickBackP
             }else{
                 icon = Icons.Default.Close
-                onBackOrClose = unselectArticle
             }
 
             IconButton(
@@ -258,7 +280,7 @@ fun ArticleItemDetailComposable(
                 ,
                 //.background(Color.Red)
 
-                onClick = onBackOrClose
+                onClick = onBackOrCloseP
 
             ) {
                 Icon(
@@ -294,24 +316,19 @@ fun ArticleItemDetailComposable(
             sExistingCommentP = existingFeedback?.sComment ?:"",
             nIDRessourceAvatarP = nIDRessourceAvatarP,
             onClickSendNoteP = onClickSendNoteP,
-            onClickBackP = onClickBackP,
-            unselectArticle = unselectArticle)
+            onBackOrCloseP = onBackOrCloseP,
+            updateNoteOnViewModelP = updateNoteOnViewModelP
+            )
 
     }
 
 }
 
-// Preview ne marche pas avec Hilt et les ViewModel
 @Preview(name = "Item Mode",showBackground = true, showSystemUi = true)
 @Composable
-fun ArticleScreenPreview(){
-
-
+fun ArticleUIStateComposablePreview(){
 
     JoilfullTheme {
-
-        // Pour tester différents code comme le bouton Back
-
 
         /*
          * Si vous souhaitez prévisualiser un composable qui utilise un ViewModel,
@@ -338,18 +355,20 @@ fun ArticleScreenPreview(){
 
 
 
-        val uiStateSuccess = ArticleUIState.SuccessArticle(article)
+        val uiStateSuccess = ArticleUIState.ArticleSelected(article)
 
         val navController = rememberNavController() // factice
 
-        ArticleItemContent(
+        ArticleUIStateComposable(
             uiState = uiStateSuccess,
             nIDCurrentUserP = 1,
             nIDRessourceAvatarP = R.drawable.currentuseravatar,
-            onClickBackP = { navController.popBackStack() },
+            bModeItemOnRight = true,
+            onBackOrCloseP = { navController.popBackStack() },
             onClickSendNoteP = {_,_ -> }, // 2 paramètres et retour Unit
             onClickLikeP = {},
-            unselectArticle = {} // Depuis ArticleScreen, on a ouvert la fenêtre via le NavControler
+            updateNoteOnViewModelP={},
+            nRateP = 0
         )
 
 

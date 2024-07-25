@@ -13,7 +13,7 @@ import java.text.DecimalFormat
 // Les éléments cliquables et interactifs font au moins 48 dp. Cela respecte les directives d'accessibilité de Material Design.
 val CTE_MIN_SIZE = 48.dp
 
-fun bTablet( windowSize: WindowSizeClass? ) : Boolean {
+fun bDisplayItemOnRight( windowSize: WindowSizeClass? ) : Boolean {
 
     val bModeTablet : Boolean
 

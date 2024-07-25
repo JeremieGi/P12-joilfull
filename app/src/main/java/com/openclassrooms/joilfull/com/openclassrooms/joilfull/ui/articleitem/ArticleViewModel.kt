@@ -1,6 +1,8 @@
 package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem
 
 
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.openclassrooms.joilfull.model.Article
@@ -28,11 +30,8 @@ class ArticleViewModel @Inject constructor(
     // Backing property to avoid state updates from other classes
     val uiState: StateFlow<ArticleUIState> = _uiState.asStateFlow() // Accès en lecture seule de l'extérieur
 
-    // Par simplicité de gestion, je stocke l'article chargé
-    private var _currentArticle : Article? = null
-    val currentArticle: Article?
-        get() = _currentArticle
-
+    private var _nCurrentNote = mutableStateOf(0)
+    val nCurrentNote: State<Int> = _nCurrentNote
 
     // Renvoie un article par son ID
     fun loadArticleByID(articleId: Int) {
@@ -54,12 +53,11 @@ class ArticleViewModel @Inject constructor(
                 // Succès
                 is ResultCustom.Success -> {
 
-                    // On conserve l'article chargé dans le viewModel
-                    _currentArticle = resultAPI.value
-
-                    _uiState.value = ArticleUIState.SuccessArticle(resultAPI.value)
+                    _uiState.value = ArticleUIState.ArticleSelected(resultAPI.value)
 
                 }
+
+                // NoneArticleSelected => pas traité ici
 
             }
 
@@ -87,7 +85,7 @@ class ArticleViewModel @Inject constructor(
      */
     fun sendNoteAndComment(nNoteP :Int , sCommentP : String) {
 
-        _currentArticle?.let { article ->
+        getCurrentArticle()?.let { article ->
 
             val nIDCurrentUser = userRepository.getCurrentUserID()
 
@@ -107,12 +105,10 @@ class ArticleViewModel @Inject constructor(
      */
     fun setLike(bValLikeP : Boolean){
 
-        _currentArticle?.let { article ->
+        getCurrentArticle()?.let { article ->
 
             //val nIDCurrentUser = userRepository.getCurrentUserID()
             articleRepository.setLike(article.nIDArticle,bValLikeP)
-
-            _currentArticle?.setFavorite(bValLikeP)
 
             // Redéclenche un chargement de la fiche
             // TODO JG : Ne recharge pas l'article car il ne change pas..
@@ -122,6 +118,44 @@ class ArticleViewModel @Inject constructor(
 
     }
 
+    /**
+     * Désélectionne un article
+     */
+    fun unselectArticle(){
+
+       // val currentState = _uiState.value
+
+        //if (currentState is ArticleUIState.ArticleSelected) {
+            _uiState.value = ArticleUIState.NoneArticleSelected
+        //}
+
+
+    }
+
+    /**
+     * Renvoie l'article sélectionné
+     */
+    private fun getCurrentArticle() : Article? {
+
+
+        var articleResult : Article? = null
+
+            if (uiState.value is ArticleUIState.ArticleSelected) {
+
+                val successArticleState = uiState.value as ArticleUIState.ArticleSelected
+
+                articleResult =successArticleState.article
+
+            }
+
+
+        return articleResult
+
+    }
+
+    fun updateNote(nNoteInputP : Int) {
+        this._nCurrentNote.value = nNoteInputP
+    }
 
 
 }
