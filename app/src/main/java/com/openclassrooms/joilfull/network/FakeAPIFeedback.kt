@@ -24,6 +24,7 @@ class FakeAPIFeedback @Inject constructor() {
         // Article 0 -> Pas d'avis
 
         // Article 1 -> 1 Avis
+        // Utilisateur de test n'a que cet avis => Article 1 = "Jean pour femme"
         _listFeedback.add(
             ArticleFeedback(
                 1,
@@ -39,7 +40,7 @@ class FakeAPIFeedback @Inject constructor() {
                 2,
                 4,
                 "Super article",
-                nIDUser = 1
+                nIDUser = 2
             )
         )
         _listFeedback.add(
@@ -47,7 +48,7 @@ class FakeAPIFeedback @Inject constructor() {
                 2,
                 2,
                 "Article pas top",
-                nIDUser = 2
+                nIDUser = 3
             )
         )
 
@@ -62,7 +63,7 @@ class FakeAPIFeedback @Inject constructor() {
                         nIDArticle,
                         (nNbFeedback % 5) +1,
                         "Commentaire numéro ${nIDArticle+nNbFeedback}",
-                        nIDUser = nNbFeedback
+                        nIDUser = nNbFeedback + 1 // Pour que mon user 1 de test n'est pas d'avis sur ces articles
                     )
                 )
 

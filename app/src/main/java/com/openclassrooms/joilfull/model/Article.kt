@@ -87,14 +87,36 @@ class Article (
     }
 
     /**
-     *
+     * Renvoie le nombre de likes à afficher
      */
     fun getNbLikes() : Int {
 
-        var nbLike = this.nNbLikesInit
-        if (this._bFavorite) nbLike++
+        var nbLike = this.nNbLikesInit  // Nb like de l'API
+        if (this._bFavorite) nbLike++   // +1 si l'utilisateur a placé l'article dans ces favoris (dans un cas réel on aurait une entrée dans l'api pour topé un article en tant que favori d'un utilisateur)
         return  nbLike
 
+    }
+
+    /**
+     * Recherche la note d'un Utilisateur dans l'article. Renvoie null si l'utilisateur n'a jamais noté l'article
+     */
+    fun getExistingNote(nIDUserP : Int) : ArticleFeedback? {
+
+        val resultFeedback : ArticleFeedback?
+
+        val listFeedbacks = _listArticleFeedback.filter { it.nIDUser == nIDUserP }
+
+        when (listFeedbacks.size) {
+            0 -> resultFeedback = null
+            1 -> resultFeedback = listFeedbacks[0]
+            else -> {
+                // On ne devrait pas avoir un utilisateur qui donne plusieurs fois son avis sur un même produit
+                assert(false) // L'application plantera ici
+                resultFeedback = null
+            }
+        }
+
+        return resultFeedback
     }
 
 

@@ -158,6 +158,13 @@ class ArticleListViewModel  @Inject constructor(
     }
 
     /**
+     * Récupère l'ID de l'utilisateur courant
+     */
+    fun getCurrentUserID() : Int {
+        return userRepository.getCurrentUserID()
+    }
+
+    /**
      * Enregistrer la note et le commentaire saisi par l'utilisateur
      */
     fun sendNoteAndComment(nNoteP :Int , sCommentP : String) {
@@ -201,7 +208,7 @@ class ArticleListViewModel  @Inject constructor(
     /**
      * Renvoie l'article sélectionné et null si il n'y en a pas
      */
-    private fun selectedArticle() : Article? {
+    fun selectedArticle() : Article? {
 
         var articleResult : Article? = null
 

@@ -3,7 +3,9 @@ package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem
 import android.content.res.Configuration
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,7 +32,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,6 +55,8 @@ import com.openclassrooms.joilfull.ui.theme.colorStar
 fun NotationInputComposable(
     modifier: Modifier = Modifier,
     nIDRessourceAvatarP : Int,
+    nExistingNoteP : Int,            // 0 => pas de note existante
+    sExistingCommentP : String,      // "" => pas de commentaire existant
     onClickBackP : (() -> Unit)?,
     onClickSendNoteP : (nNote:Int , sComment:String) -> Unit,
     unselectArticle : (() -> Unit)
@@ -63,10 +67,22 @@ fun NotationInputComposable(
 
     Column(
         modifier = modifier
+            .then(
+                if (nExistingNoteP==0) {
+                    modifier
+                } else {
+                    modifier
+                        .background(Color.Gray)
+                        .clickable(enabled = false){}
+
+                }
+            )
     )
     {
 
-        var nRating by rememberSaveable { mutableIntStateOf(0) }
+        var nRating by remember { mutableIntStateOf(nExistingNoteP) }
+
+
 
         Row(
             modifier = Modifier,
@@ -86,10 +102,13 @@ fun NotationInputComposable(
                 .size(5.dp)
             )
 
+
             // Champ de notation à 5 étoiles
             StarRatingBar(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier
+                    .weight(1f),
                 ratingP = nRating.toFloat(),
+                bEnableP = (nExistingNoteP==0),
                 onRatingChanged = {
                     nRating = it.toInt()
                 }
@@ -106,7 +125,7 @@ fun NotationInputComposable(
         ){
 
             // Champ de saisie de texte qui conserve sa valeur lors de la rotation
-            var textComment by rememberSaveable { mutableStateOf("") }
+            var textComment by remember { mutableStateOf(sExistingCommentP) }
             TextField (
                 modifier = Modifier
                     .weight(1f)
@@ -124,50 +143,56 @@ fun NotationInputComposable(
                 }
             )
 
-            IconButton(
-                onClick = {
+            // Bouton d'envoi que si l'utilisateur n'a pas déjà noté l'article
+            if (nExistingNoteP==0) {
 
-                    // Contrôle des saisies
+                IconButton(
+                    onClick = {
 
-                    var bInputOK = true
+                        // Contrôle des saisies
 
-                    if (nRating==0){
-                        Toast.makeText(context,
-                            context.getString(R.string.merci_de_saisir_une_note), Toast.LENGTH_LONG).show()
-                        bInputOK = false
-                    }
+                        var bInputOK = true
 
-                    if (textComment.isBlank()){
-                        Toast.makeText(context,
-                            context.getString(R.string.merci_de_saisir_un_commentaire), Toast.LENGTH_LONG).show()
-                        bInputOK = false
-                    }
-
-
-                    // Si les saisies sont ok
-                    if (bInputOK){
-
-                        // Enregistre la note via le viewModel
-                        onClickSendNoteP(/*nNote = */nRating,/*sComment = */textComment)
-
-                        if (onClickBackP==null){
-                            unselectArticle()
-                        }
-                        else{
-                            // On ferme la fenêtre fiche Article
-                            onClickBackP()
+                        if (nRating==0){
+                            Toast.makeText(context,
+                                context.getString(R.string.merci_de_saisir_une_note), Toast.LENGTH_LONG).show()
+                            bInputOK = false
                         }
 
+                        if (textComment.isBlank()){
+                            Toast.makeText(context,
+                                context.getString(R.string.merci_de_saisir_un_commentaire), Toast.LENGTH_LONG).show()
+                            bInputOK = false
+                        }
+
+
+                        // Si les saisies sont ok
+                        if (bInputOK){
+
+                            // Enregistre la note via le viewModel
+                            onClickSendNoteP(/*nNote = */nRating,/*sComment = */textComment)
+
+                            if (onClickBackP==null){
+                                unselectArticle()
+                            }
+                            else{
+                                // On ferme la fenêtre fiche Article
+                                onClickBackP()
+                            }
+
+                        }
+
+
                     }
-
-
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.TwoTone.Send,
+                        contentDescription = stringResource(R.string.envoyer_le_commentaire_et_la_note)
+                    )
                 }
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.TwoTone.Send,
-                    contentDescription = stringResource(R.string.envoyer_le_commentaire_et_la_note)
-                )
+
             }
+
 
         }
 
@@ -186,6 +211,7 @@ fun StarRatingBar(
     modifier: Modifier = Modifier,
     maxStars: Int = 5,
     ratingP: Float,
+    bEnableP : Boolean,
     onRatingChanged: (Float) -> Unit
 ) {
     val density = LocalDensity.current.density
@@ -215,19 +241,26 @@ fun StarRatingBar(
 
             Icon(
                 modifier = Modifier
-                    .selectable(
-                        selected = isSelected,
-                        onClick = {
-                            onRatingChanged(i.toFloat())
-                        }
-                    )
+
                     .sizeIn(
                         minWidth = CTE_MIN_SIZE,
                         minHeight = CTE_MIN_SIZE
                     )
                     .width(starSize)
                     .height(starSize)
-                    ,
+                    .then(
+                        if (bEnableP) {
+                            Modifier.selectable(
+                                selected = isSelected,
+                                onClick = {
+                                    onRatingChanged(i.toFloat())
+                                }
+                            )
+
+                        } else {
+                            Modifier
+                        }
+                    ),
                 imageVector = icon,
                 contentDescription = sContentDescription,
                 tint = iconTintColor
@@ -241,7 +274,6 @@ fun StarRatingBar(
 }
 
 @Preview(name = "Light Mode")
-@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
 fun NotationInputComposablePreview() {
 
@@ -253,6 +285,29 @@ fun NotationInputComposablePreview() {
            // .background(Color.Black /*MaterialTheme.colorScheme.surfaceDim*/)
             ,
         nIDRessourceAvatarP = R.drawable.currentuseravatar,
+        nExistingNoteP = 0,
+        sExistingCommentP = "",
+        onClickBackP = {},
+        onClickSendNoteP = { _, _ -> } ,// 2 paramètres vides,
+        unselectArticle = {}
+    )
+
+}
+
+@Preview(name = "Light Mode")
+@Composable
+fun NotationInputComposableExistingFeedbackPreview() {
+
+    NotationInputComposable(
+        modifier = Modifier
+            .width(
+                width = 300.dp
+            )
+        // .background(Color.Black /*MaterialTheme.colorScheme.surfaceDim*/)
+        ,
+        nIDRessourceAvatarP = R.drawable.currentuseravatar,
+        nExistingNoteP = 3,
+        sExistingCommentP = "Mon commentaire existant",
         onClickBackP = {},
         onClickSendNoteP = { _, _ -> } ,// 2 paramètres vides,
         unselectArticle = {}
@@ -271,7 +326,7 @@ fun StarRatingBarPreview() {
                 width = 300.dp
             )
         ,
-            //.background(Color.Black),
+        bEnableP = true,
         maxStars = 5,
         ratingP = 3.5f,
         onRatingChanged = {}

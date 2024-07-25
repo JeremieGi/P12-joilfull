@@ -49,6 +49,8 @@ fun ArticleScreen(
 
     //val windowSize = getWindowsSize()
 
+
+    // TODO JG : Voir si on peut pas virer çà
     // TODO Denis : Voir ce cas de test : Est ce vraiment comme çà qu'il faut faire pour éviter de recharger l'article
     // Si l'article n'est pas chargé
     if (viewModelArticle.currentArticle==null){
@@ -69,6 +71,7 @@ fun ArticleScreen(
             ArticleItemContent(
                 modifier = Modifier,
                 uiState = uiState,
+                nIDCurrentUserP = viewModelArticle.getCurrentUserID(),
                 nIDRessourceAvatarP = viewModelArticle.getCurrentUserAvatar(),
                 onClickBackP = { navController.popBackStack() },
                 onClickSendNoteP = viewModelArticle::sendNoteAndComment,
@@ -88,6 +91,7 @@ fun ArticleScreen(
         ArticleItemDetailComposable(
             modifier = modifier,
             articleP = viewModelArticle.currentArticle!!, // TODO Question Denis : test nullité plus haut mais il faut quand même !!
+            nIDCurrentUserP = viewModelArticle.getCurrentUserID(),
             onClickLikeP = viewModelArticle::setLike,
             onClickBackP = { navController.popBackStack() },
             onClickSendNoteP = viewModelArticle::sendNoteAndComment,
@@ -107,6 +111,7 @@ fun ArticleScreen(
 fun ArticleItemContent(
     modifier: Modifier = Modifier,
     uiState: ArticleUIState,
+    nIDCurrentUserP : Int,
     nIDRessourceAvatarP : Int,
     onClickBackP : (() -> Unit)?,
     onClickSendNoteP : (nNote:Int , sComment:String) -> Unit,
@@ -133,6 +138,7 @@ fun ArticleItemContent(
             ArticleItemDetailComposable(
                 modifier = modifier,
                 articleP = article,
+                nIDCurrentUserP = nIDCurrentUserP,
                 nIDRessourceAvatarP = nIDRessourceAvatarP,
                 onClickLikeP = onClickLikeP,
                 onClickBackP = onClickBackP,
@@ -157,10 +163,16 @@ fun ArticleItemContent(
     }
 }
 
+/**
+ * // TODO Question Denis : Il est préconisé de ne pas passé le viewModel en paramètre pour des questions de perf
+ * // mais du coup je me retrouve à hisser toutes les méthodes dont j'ai besoin... et il y en a beaucoup
+ */
+
 @Composable
 fun ArticleItemDetailComposable(
     modifier: Modifier = Modifier,
     articleP : Article,
+    nIDCurrentUserP : Int,
     nIDRessourceAvatarP : Int,
     onClickLikeP : (bValLike : Boolean) -> Unit,
     onClickBackP : (() -> Unit)?,
@@ -271,11 +283,15 @@ fun ArticleItemDetailComposable(
             text = articleP.sDescriptionArticle
         )
 
+        val existingFeedback =  articleP.getExistingNote(nIDCurrentUserP)
+
         NotationInputComposable(
             modifier = Modifier
                 .padding(
                     vertical = 10.dp
                 ),
+            nExistingNoteP = existingFeedback?.nNote ?:0,
+            sExistingCommentP = existingFeedback?.sComment ?:"",
             nIDRessourceAvatarP = nIDRessourceAvatarP,
             onClickSendNoteP = onClickSendNoteP,
             onClickBackP = onClickBackP,
@@ -328,6 +344,7 @@ fun ArticleScreenPreview(){
 
         ArticleItemContent(
             uiState = uiStateSuccess,
+            nIDCurrentUserP = 1,
             nIDRessourceAvatarP = R.drawable.currentuseravatar,
             onClickBackP = { navController.popBackStack() },
             onClickSendNoteP = {_,_ -> }, // 2 paramètres et retour Unit

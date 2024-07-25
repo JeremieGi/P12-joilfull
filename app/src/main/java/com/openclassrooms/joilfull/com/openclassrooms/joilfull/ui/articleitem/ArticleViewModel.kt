@@ -74,6 +74,13 @@ class ArticleViewModel @Inject constructor(
         return userRepository.getCurrentUserAvatar()
     }
 
+    /**
+     * Récupère l'ID de l'utilisateur courant
+     */
+    fun getCurrentUserID() : Int {
+        return userRepository.getCurrentUserID()
+    }
+
 
     /**
      * Enregistrer la note et le commentaire saisi par l'utilisateur

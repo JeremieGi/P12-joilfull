@@ -70,7 +70,13 @@ fun ArticleListScreen(
                     //  - charge l'article depuis le viewModel
                     //  - va recomposer ce composant avec l'article sélectionné
                     onArticleClickP = { article ->
+
+//                        if (viewModelList.selectedArticle()!=null){
+//                            viewModelList.unselectArticle()
+//                        }
+
                         viewModelList.loadArticleByID(article.nIDArticle)
+
                     }
 
                 }
@@ -109,6 +115,7 @@ fun ArticleListScreen(
                                 modifier = Modifier
                                     .weight(1f),
                                 uiState = uiStateArticle,
+                                nIDCurrentUserP = viewModelList.getCurrentUserID(),
                                 nIDRessourceAvatarP = viewModelList.getCurrentUserAvatar(),
                                 onClickBackP = null, // Pas de backstack en mode tablette
                                 onClickSendNoteP = viewModelList::sendNoteAndComment,
