@@ -23,6 +23,8 @@ fun bDisplayItemOnRight( windowSize: WindowSizeClass? ) : Boolean {
     }
     else{
 
+        // TODO Denis : En mode téléphone portrait : Ca affiche l'article à droite => pas très grave
+
         when (windowSize.widthSizeClass) {
 
             WindowWidthSizeClass.Expanded/*, WindowWidthSizeClass.Medium*/ -> {

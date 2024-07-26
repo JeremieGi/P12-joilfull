@@ -5,13 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import dagger.hilt.android.AndroidEntryPoint
-import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
-import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.rememberNavController
-import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.ErrorComposable
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.NavGraph
-import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articlelist.ArticleListScreen
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
