@@ -32,7 +32,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,6 +51,7 @@ import com.openclassrooms.joilfull.R
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.CTE_MIN_SIZE
 import com.openclassrooms.joilfull.ui.theme.colorStar
 
+
 @Composable
 fun NotationInputComposable(
     modifier: Modifier = Modifier,
@@ -59,7 +60,154 @@ fun NotationInputComposable(
     sExistingCommentP : String,      // "" => pas de commentaire existant
     onBackOrCloseP : (() -> Unit),
     onClickSendNoteP : (nNote:Int , sComment:String) -> Unit,
-    updateNoteOnViewModelP : ( (Int) -> Unit)                 // TODO JG : A nettoyer
+    //updateNoteOnViewModelP : ( (Int) -> Unit)                 // TODO JG : A nettoyer
+){
+
+    val context = LocalContext.current
+    //val activity = context as? Activity
+
+    Column(
+        modifier = modifier
+            .then(
+                if (nExistingNoteP==0) {
+                    modifier
+                } else {
+                    modifier
+                        .background(Color.Gray)
+                        .clickable(enabled = false){}
+
+                }
+            )
+    )
+    {
+
+        // TODO Denis prio 1
+        var nRating by rememberSaveable { mutableIntStateOf(nExistingNoteP) }
+
+        Row(
+            modifier = Modifier,
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                painter = painterResource(id = nIDRessourceAvatarP),
+                contentDescription = stringResource(R.string.votre_avatar_utilisateur),
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(50.dp)
+                    .clip(RoundedCornerShape(percent = 100))
+            )
+
+            Spacer(modifier = Modifier
+                .size(5.dp)
+            )
+
+            // Champ de notation à 5 étoiles
+            StarRatingBar(
+                modifier = Modifier.weight(1f),
+                ratingP = nRating.toFloat(),
+                bEnableP = (nExistingNoteP==0), // Actif si note initiale à 0 = note non saisie
+                onRatingChanged = {
+                    nRating = it.toInt()
+                    //updateNoteOnViewModelP(it.toInt()) // Pour sauver la note en cas de rotation d'écran
+                }
+            )
+        }
+
+        Spacer(modifier = Modifier
+            .height(10.dp)
+        )
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+        ){
+
+            // Champ de saisie de texte qui conserve sa valeur lors de la rotation
+            var textComment by rememberSaveable { mutableStateOf(sExistingCommentP) }
+            TextField (
+                modifier = Modifier
+                    .weight(1f)
+                    .border(1.dp, Color.Gray, RoundedCornerShape(8.dp))
+                    .padding(5.dp)
+                    .defaultMinSize(
+                        minHeight = 50.dp
+                    ),
+                value = textComment,
+                onValueChange = { textComment = it },
+                textStyle = LocalTextStyle.current.copy(fontSize = 16.sp),
+                maxLines = 2,
+                placeholder = {
+                    Text(stringResource(R.string.note_placeholder))
+                }
+            )
+
+            // Bouton d'envoi que si l'utilisateur n'a pas déjà noté l'article
+            if (nExistingNoteP==0) {
+
+                IconButton(
+                    onClick = {
+
+                        // Contrôle des saisies
+
+                        var bInputOK = true
+
+                        if (nRating==0){
+                            Toast.makeText(context,
+                                context.getString(R.string.merci_de_saisir_une_note), Toast.LENGTH_LONG).show()
+                            bInputOK = false
+                        }
+
+                        if (textComment.isBlank()){
+                            Toast.makeText(context,
+                                context.getString(R.string.merci_de_saisir_un_commentaire), Toast.LENGTH_LONG).show()
+                            bInputOK = false
+                        }
+
+
+                        // Si les saisies sont ok
+                        if (bInputOK){
+
+                            // Enregistre la note via le viewModel
+                            onClickSendNoteP(/*nNote = */nRating,/*sComment = */textComment)
+
+                            onBackOrCloseP()
+
+                        }
+
+
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.TwoTone.Send,
+                        contentDescription = stringResource(R.string.envoyer_le_commentaire_et_la_note)
+                    )
+                }
+
+            }
+
+
+        }
+
+
+
+
+    }
+
+
+}
+
+
+/*
+@Composable
+fun NotationInputComposable(
+    modifier: Modifier = Modifier,
+    nIDRessourceAvatarP : Int,
+    nExistingNoteP : Int,            // 0 => pas de note existante
+    sExistingCommentP : String,      // "" => pas de commentaire existant
+    onBackOrCloseP : (() -> Unit),
+    onClickSendNoteP : (nNote:Int , sComment:String) -> Unit,
+    updateNoteOnViewModelP : ( (Int) -> Unit)
 ){
 
     val context = LocalContext.current
@@ -197,7 +345,7 @@ fun NotationInputComposable(
 
 
 }
-
+*/
 
 
 @Composable
@@ -283,7 +431,7 @@ fun NotationInputComposablePreview() {
         sExistingCommentP = "",
         onBackOrCloseP = {},
         onClickSendNoteP = { _, _ -> } ,// 2 paramètres vides,
-        updateNoteOnViewModelP = {}
+        //updateNoteOnViewModelP = {}
     )
 
 }
@@ -304,7 +452,7 @@ fun NotationInputComposableExistingFeedbackPreview() {
         sExistingCommentP = "Mon commentaire existant",
         onBackOrCloseP = {},
         onClickSendNoteP = { _, _ -> } ,// 2 paramètres vides,
-        updateNoteOnViewModelP = {}
+        //updateNoteOnViewModelP = {}
     )
 
 }

@@ -203,8 +203,8 @@ fun ArticleItemDetailComposable(
     onClickLikeP : (bValLike : Boolean) -> Unit,
     onBackOrCloseP : (() -> Unit),
     onClickSendNoteP : (nNote:Int , sComment:String) -> Unit,
-    updateNoteOnViewModelP : ( (Int) -> Unit),
-    nRateP : Int
+    updateNoteOnViewModelP : ( (Int) -> Unit), // TODO JG : A nettoyer
+    nRateP : Int // TODO JG : A nettoyer
 ){
 
  //   val focusRequester = remember { FocusRequester() }
@@ -312,12 +312,12 @@ fun ArticleItemDetailComposable(
                 .padding(
                     vertical = 10.dp
                 ),
-            nExistingNoteP = existingFeedback?.nNote ?:0,
+            nExistingNoteP = existingFeedback?.nNote ?:0, // nRateP => pour test de la solution ViewModel
             sExistingCommentP = existingFeedback?.sComment ?:"",
             nIDRessourceAvatarP = nIDRessourceAvatarP,
             onClickSendNoteP = onClickSendNoteP,
             onBackOrCloseP = onBackOrCloseP,
-            updateNoteOnViewModelP = updateNoteOnViewModelP
+            //updateNoteOnViewModelP = updateNoteOnViewModelP
             )
 
     }
