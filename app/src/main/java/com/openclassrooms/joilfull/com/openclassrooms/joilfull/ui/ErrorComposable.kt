@@ -1,13 +1,11 @@
 package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui
 
 
-import android.app.Activity
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.openclassrooms.joilfull.R
@@ -21,15 +19,14 @@ import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
 fun ErrorComposable(
     modifier: Modifier = Modifier,
     sMessage: String,
-    onClickRetryP: () -> Unit
+    onClickRetryP: () -> Unit,
+    closeActivity: () -> Unit
 ) {
-
-    val activity = (LocalContext.current as Activity)
 
     AlertDialog(
         onDismissRequest = {
             // Dismiss the dialog when the user clicks outside the dialog or on the back button.
-            activity.finish()
+            closeActivity()
         },
         title = { Text(text = stringResource(R.string.erreur)) },
         text = { Text(text = sMessage) },
@@ -38,7 +35,7 @@ fun ErrorComposable(
         dismissButton =  {
             TextButton(
                 onClick = {
-                    activity.finish()
+                    closeActivity()
                 }
             ) {
                 Text(text = stringResource(R.string.fermer))
@@ -62,7 +59,6 @@ fun ErrorComposable(
 
 }
 
-// TODO Denis 2 => Preview simple qui échoue
 @Preview(showBackground = true)
 @Composable
 fun ErrorDialogPreview() {
@@ -70,7 +66,8 @@ fun ErrorDialogPreview() {
     JoilfullTheme {
         ErrorComposable(
             sMessage = stringResource(R.string.erreur_pr_visualis_e),
-            onClickRetryP = { }
+            onClickRetryP = { },
+            closeActivity = {}
         )
     }
 

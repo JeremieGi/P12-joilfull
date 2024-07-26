@@ -81,7 +81,7 @@ fun NotationInputComposable(
     )
     {
 
-        // TODO Denis prio 1
+        // TODO Denis prio 1 : En mode tablette, persistance de cette valeur
         var nRating by rememberSaveable { mutableIntStateOf(nExistingNoteP) }
 
         Row(

@@ -70,7 +70,7 @@ fun LikeComposable(
     val bLikeDisplay : Boolean
     val nNbLikeDisplay : Int
 
-    // TODO Denis à montrer : 2 façons de gérer le click sur le like (code complexe je trouve)
+    // TODO Denis prio 2  : 2 façons de gérer le click sur le like (code complexe je trouve)
     val onClickLikeFinal : () -> Unit
     if (bModeItemOnRight){
         // En tablette, on appelle le viewModel qui va reclencher un Ui State et redessiner toute la fenêtre (car la liste doit se mettre à jour aussi)
@@ -169,7 +169,7 @@ fun LikeComposable(
                 modifier = Modifier
                     .wrapContentSize(),
                 contentDescription = stringResource(R.string.icone_coeur),
-                tint = colorHeart // TODO Denis 2 : J'ai 2 fichiers de couleurs Color.kt et colors.xml : lequel utiliser ?
+                tint = colorHeart // TODO Denis : J'ai 2 fichiers de couleurs Color.kt et colors.xml : lequel utiliser ?
             )
 
             Spacer(modifier = Modifier.size(4.dp))

@@ -55,7 +55,7 @@ fun NoteComposable(
                 .wrapContentSize() // Utilise la largeur de la moitié du composant Row
             ,
             contentDescription = null, //stringResource(R.string.etoile),
-            tint = colorStar // TODO Denis 2 : J'ai 2 fichiers de couleurs Color.kt et colors.xml : lequel utiliser ?
+            tint = colorStar // TODO Denis : J'ai 2 fichiers de couleurs Color.kt et colors.xml : lequel utiliser ?
         )
 
         Spacer(modifier = Modifier.size(3.dp))

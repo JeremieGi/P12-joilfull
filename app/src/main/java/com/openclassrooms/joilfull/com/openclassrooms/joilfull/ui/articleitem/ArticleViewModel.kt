@@ -110,9 +110,7 @@ class ArticleViewModel @Inject constructor(
             //val nIDCurrentUser = userRepository.getCurrentUserID()
             articleRepository.setLike(article.nIDArticle,bValLikeP)
 
-            // Redéclenche un chargement de la fiche
-            // TODO JG : Ne recharge pas l'article car il ne change pas..
-            loadArticleByID(article.nIDArticle)
+            // Pas besoin de recharger : Dans l'itnerface une variable remember fera l'a'ffichage (pour éviter des redessins)
 
         }
 
@@ -123,12 +121,7 @@ class ArticleViewModel @Inject constructor(
      */
     fun unselectArticle(){
 
-       // val currentState = _uiState.value
-
-        //if (currentState is ArticleUIState.ArticleSelected) {
-            _uiState.value = ArticleUIState.NoneArticleSelected
-        //}
-
+       _uiState.value = ArticleUIState.NoneArticleSelected
 
     }
 

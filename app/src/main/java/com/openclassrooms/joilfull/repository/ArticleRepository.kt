@@ -212,12 +212,11 @@ class ArticleRepository @Inject constructor (
         }
         else{
 
-            // Article trouvé en mémoire
-            if (_mapArticles.containsKey(nIDArticleP)){
-                emit(ResultCustom.Success(_mapArticles[nIDArticleP]!!)) // TODO Denis 2 : Encore des !!
-            }
-            else{
-                emit(ResultCustom.Failure("Article ID $nIDArticleP non trouvé"))
+            _mapArticles[nIDArticleP]?.let { article ->
+                emit(ResultCustom.Success(article))
+            } ?: run {
+                // Gérer le cas où l'article n'est pas trouvé
+                // Par exemple, émettre un échec ou une valeur par défaut
             }
 
         }

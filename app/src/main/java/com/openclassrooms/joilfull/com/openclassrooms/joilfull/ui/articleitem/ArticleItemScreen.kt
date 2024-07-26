@@ -1,5 +1,6 @@
 package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem
 
+import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Box
@@ -23,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,6 +37,7 @@ import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.ErrorComposabl
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.LoadingComposable
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.bDisplayItemOnRight
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.getWindowsSize
+import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.logCompose
 import com.openclassrooms.joilfull.model.Article
 import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
 
@@ -51,72 +54,48 @@ fun ArticleScreen(
 
     val windowSize = getWindowsSize()
 
+    LaunchedEffect(articleId) {
+        // Coroute exécutée lorsque articleId change
+        // Coroute exécutée aussi à la rotation de l'écran : Lorsqu'une activité ou un fragment est recomposé en réponse à un changement de configuration, Compose recompose toute l'UI visible.
+        viewModelArticle.loadArticleByID(articleId)
+        logCompose("ArticleScreen : loadArticleByID($articleId)")
+    }
 
-    // TODO JG : Voir si on peut pas virer çà
-    // TODO Denis : Voir ce cas de test : Est ce vraiment comme çà qu'il faut faire pour éviter de recharger l'article
-    // Si l'article n'est pas chargé
-//    if (viewModelArticle.currentArticle==null){
+    val uiState by viewModelArticle.uiState.collectAsState()
 
-        // Trigger loading article details when articleId changes
-        // Premier lancement
-        LaunchedEffect(articleId) {
-            viewModelArticle.loadArticleByID(articleId)
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+    ) {
+
+        val bModeItemOnRight = bDisplayItemOnRight(windowSize)
+
+        val onBackOrCloseP : (() -> Unit)
+        if (bModeItemOnRight){
+            onBackOrCloseP = viewModelArticle::unselectArticle
+        }
+        else{
+            onBackOrCloseP = { navController.popBackStack() }
         }
 
-        val uiState by viewModelArticle.uiState.collectAsState()
+        val nRate by viewModelArticle.nCurrentNote
 
+        ArticleUIStateComposable(
+            modifier = Modifier,
+            uiState = uiState,
+            bModeItemOnRight = bModeItemOnRight,
+            nIDCurrentUserP = viewModelArticle.getCurrentUserID(),
+            nIDRessourceAvatarP = viewModelArticle.getCurrentUserAvatar(),
+            onBackOrCloseP = onBackOrCloseP,
+            onClickSendNoteP = viewModelArticle::sendNoteAndComment,
+            onClickLikeP = viewModelArticle::setLike,
+            updateNoteOnViewModelP = viewModelArticle::updateNote,
+            nRateP = nRate
 
+        )
 
-        Box(
-            modifier = modifier
-                .fillMaxSize()
-        ) {
+    }
 
-            val bModeItemOnRight = bDisplayItemOnRight(windowSize)
-
-            val onBackOrCloseP : (() -> Unit)
-            if (bModeItemOnRight){
-                onBackOrCloseP = viewModelArticle::unselectArticle
-            }
-            else{
-                onBackOrCloseP = { navController.popBackStack() }
-            }
-
-            val nRate by viewModelArticle.nCurrentNote
-
-            ArticleUIStateComposable(
-                modifier = Modifier,
-                uiState = uiState,
-                bModeItemOnRight = bModeItemOnRight,
-                nIDCurrentUserP = viewModelArticle.getCurrentUserID(),
-                nIDRessourceAvatarP = viewModelArticle.getCurrentUserAvatar(),
-                onBackOrCloseP = onBackOrCloseP,
-                onClickSendNoteP = viewModelArticle::sendNoteAndComment,
-                onClickLikeP = viewModelArticle::setLike,
-                updateNoteOnViewModelP = viewModelArticle::updateNote,
-                nRateP = nRate
-
-            )
-
-        }
-
-//    }
-//    else{
-//        // Cas d'une rotation par exemple
-//        // Pas besoin de recharger l'article qu'on a déjà dans le viewModel
-//
-//        ArticleItemDetailComposable(
-//            modifier = modifier,
-//            articleP = viewModelArticle.currentArticle!!, // TODO Question Denis : test nullité plus haut mais il faut quand même !!
-//            nIDCurrentUserP = viewModelArticle.getCurrentUserID(),
-//            onClickLikeP = viewModelArticle::setLike,
-//            onClickBackP = { navController.popBackStack() },
-//            onClickSendNoteP = viewModelArticle::sendNoteAndComment,
-//            nIDRessourceAvatarP = viewModelArticle.getCurrentUserAvatar(),
-//            unselectArticle = {} // Depuis ArticleScreen, on a ouvert la fenêtre via le NavControler
-//        )
-//
-//    }
 
 
 }
@@ -138,7 +117,9 @@ fun ArticleUIStateComposable(
     nRateP : Int
 ){
 
+    // TODO Denis prio 4 : Au clic d'un élémént de la liste sur téléphone : 3 appels : Loading puis 2 fois Selected article (au lieu de 1)
 
+    logCompose("ArticleUIStateComposable : Changement UIState : $uiState")
 
     // En fonction de l'état du viewModel
     when (uiState) {
@@ -175,11 +156,14 @@ fun ArticleUIStateComposable(
         // Exception
         is ArticleUIState.ErrorArticle -> {
 
+            val activity = (LocalContext.current as Activity)
+
             val error = uiState.exception.message ?: "Unknown error"
             ErrorComposable(
                 modifier=modifier,
                 sMessage=error,
-                onClickRetryP = { }
+                onClickRetryP = { },
+                closeActivity = activity::finish
             )
 
 
@@ -190,7 +174,7 @@ fun ArticleUIStateComposable(
 
 /**
  * // TODO Question Denis : Il est préconisé de ne pas passé le viewModel en paramètre pour des questions de perf
- * // mais du coup je me retrouve à hisser toutes les méthodes dont j'ai besoin... et il y en a beaucoup
+ * // mais du coup je me retrouve à hisser toutes les méthodes dont j'ai besoin... et il y en a beaucoup ..
  */
 
 @Composable
@@ -204,13 +188,13 @@ fun ArticleItemDetailComposable(
     onBackOrCloseP : (() -> Unit),
     onClickSendNoteP : (nNote:Int , sComment:String) -> Unit,
     updateNoteOnViewModelP : ( (Int) -> Unit), // TODO JG : A nettoyer
-    nRateP : Int // TODO JG : A nettoyer
+    nRateP : Int // TODO JG : A nettoyer si ViewModel pas utilisé (à voir avec Denis)
 ){
 
  //   val focusRequester = remember { FocusRequester() }
  //   val lifecycleOwner = LocalLifecycleOwner.current
 
-    // TODO Denis : Je n'arrive pas à redéfinir correctement l'ordre de focus ici
+    // TODO Denis : Je n'arrive pas à redéfinir correctement l'ordre de focus ici (Embetant pour l'accessibilité)
 
     /*
     // Observer de cycle de vie pour demander le focus au onResume

@@ -1,6 +1,7 @@
 package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui
 
 import android.app.Activity
+import android.util.Log
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -75,4 +76,8 @@ fun getWindowsSize() : WindowSizeClass? {
 
     return windowSizeClass
 
+}
+
+fun logCompose(sLogP : String){
+    Log.d("**Compose**",sLogP)
 }

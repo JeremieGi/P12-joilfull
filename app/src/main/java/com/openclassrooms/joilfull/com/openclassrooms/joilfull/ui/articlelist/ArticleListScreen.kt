@@ -1,11 +1,13 @@
 package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articlelist
 
+import android.app.Activity
 import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.openclassrooms.joilfull.Links
@@ -15,6 +17,7 @@ import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.Ar
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.ArticleUIStateComposable
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.bDisplayItemOnRight
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.getWindowsSize
+import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.logCompose
 import com.openclassrooms.joilfull.model.Article
 
 
@@ -41,6 +44,8 @@ fun ArticleListScreen(
     // lorsque la valeur uiState est modifiée,
     // la recomposition a lieu pour les composables utilisant la valeur uiState.
     val uiStateList by viewModelList.uiState.collectAsState()
+
+    logCompose("ArticleListScreen : Changement UIState : $uiStateList")
 
     val windowSize = getWindowsSize()
 
@@ -82,6 +87,7 @@ fun ArticleListScreen(
                     // Phone => useNavHost
                     onArticleClickP = { article ->
                         // TODO Denis : pourquoi ArticleListScreen est recomposé après cet appel ?
+                        logCompose("navController.navigate")
                         navController.navigate("${Links.CTE_ROUTE}/${article.nIDArticle}")
 
                     }
@@ -152,11 +158,14 @@ fun ArticleListScreen(
         // Exception
         is ArticleListUIState.Error -> {
 
+            val activity = (LocalContext.current as Activity)
+
             val error = (uiStateList as ArticleListUIState.Error).exception.message ?: "Unknown error"
             ErrorComposable(
                 modifier=modifier,
                 sMessage = error,
-                onClickRetryP = { viewModelList.loadArticlesList() }
+                onClickRetryP = { viewModelList.loadArticlesList() },
+                closeActivity = activity::finish
             )
 
 
