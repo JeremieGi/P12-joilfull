@@ -146,9 +146,5 @@ class ArticleViewModel @Inject constructor(
 
     }
 
-    fun updateNote(nNoteInputP : Int) {
-        this._nCurrentNote.value = nNoteInputP
-    }
-
 
 }

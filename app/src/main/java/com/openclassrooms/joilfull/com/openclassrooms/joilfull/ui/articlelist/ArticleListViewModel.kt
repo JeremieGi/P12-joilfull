@@ -26,7 +26,6 @@ class ArticleListViewModel  @Inject constructor(
 
     // UI state - Chargement par défaut
     private val _uiState = MutableStateFlow<ArticleListUIState>(ArticleListUIState.IsLoading)
-    // Backing property to avoid state updates from other classes
     val uiState: StateFlow<ArticleListUIState> = _uiState.asStateFlow() // Accès en lecture seule de l'extérieur
 
 

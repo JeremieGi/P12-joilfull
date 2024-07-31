@@ -127,9 +127,7 @@ fun ArticleListScreen(
                                 nIDRessourceAvatarP = viewModelList.getCurrentUserAvatar(),
                                 onBackOrCloseP = viewModelList::setUnselectArticle, // Pas de backstack en mode tablette
                                 onClickSendNoteP = viewModelList::sendNoteAndComment,
-                                onClickLikeP = viewModelList::setLike,
-                                updateNoteOnViewModelP = {},
-                                nRateP = 0
+                                onClickLikeP = viewModelList::setLike
                             )
 
 

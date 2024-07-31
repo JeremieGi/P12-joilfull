@@ -59,8 +59,7 @@ fun NotationInputComposable(
     nExistingNoteP : Int,            // 0 => pas de note existante
     sExistingCommentP : String,      // "" => pas de commentaire existant
     onBackOrCloseP : (() -> Unit),
-    onClickSendNoteP : (nNote:Int , sComment:String) -> Unit,
-    //updateNoteOnViewModelP : ( (Int) -> Unit)                 // TODO JG : A nettoyer
+    onClickSendNoteP : (nNote:Int , sComment:String) -> Unit
 ){
 
     val context = LocalContext.current
@@ -81,8 +80,8 @@ fun NotationInputComposable(
     )
     {
 
-        // TODO Denis prio 1 : En mode tablette, persistance de cette valeur
-        var nRating by rememberSaveable { mutableIntStateOf(nExistingNoteP) }
+        // Le paramètre permet de modifier nRating si la valeur de nExistingNoteP change
+        var nRating by rememberSaveable(nExistingNoteP) { mutableIntStateOf(nExistingNoteP) }
 
         Row(
             modifier = Modifier,
@@ -124,7 +123,7 @@ fun NotationInputComposable(
         ){
 
             // Champ de saisie de texte qui conserve sa valeur lors de la rotation
-            var textComment by rememberSaveable { mutableStateOf(sExistingCommentP) }
+            var textComment by rememberSaveable(sExistingCommentP) { mutableStateOf(sExistingCommentP) }
             TextField (
                 modifier = Modifier
                     .weight(1f)

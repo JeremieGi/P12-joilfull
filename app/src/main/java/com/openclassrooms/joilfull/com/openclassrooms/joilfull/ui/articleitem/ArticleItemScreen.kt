@@ -88,10 +88,7 @@ fun ArticleScreen(
             nIDRessourceAvatarP = viewModelArticle.getCurrentUserAvatar(),
             onBackOrCloseP = onBackOrCloseP,
             onClickSendNoteP = viewModelArticle::sendNoteAndComment,
-            onClickLikeP = viewModelArticle::setLike,
-            updateNoteOnViewModelP = viewModelArticle::updateNote,
-            nRateP = nRate
-
+            onClickLikeP = viewModelArticle::setLike
         )
 
     }
@@ -112,12 +109,11 @@ fun ArticleUIStateComposable(
     nIDRessourceAvatarP : Int,
     onBackOrCloseP : (() -> Unit),
     onClickSendNoteP : (nNote:Int , sComment:String) -> Unit,
-    onClickLikeP : (bValLike : Boolean) -> Unit,
-    updateNoteOnViewModelP : ( (Int) -> Unit),
-    nRateP : Int
+    onClickLikeP : (bValLike : Boolean) -> Unit
 ){
 
-    // TODO Denis prio 4 : Au clic d'un élémént de la liste sur téléphone : 3 appels : Loading puis 2 fois Selected article (au lieu de 1)
+    // Comportement étrange : Au clic d'un élémént de la liste sur téléphone : 3 appels : Loading puis 2 fois Selected article (au lieu de 1)
+
 
     logCompose("ArticleUIStateComposable : Changement UIState : $uiState")
 
@@ -147,9 +143,7 @@ fun ArticleUIStateComposable(
                 nIDRessourceAvatarP = nIDRessourceAvatarP,
                 onClickLikeP = onClickLikeP,
                 onBackOrCloseP = onBackOrCloseP,
-                onClickSendNoteP = onClickSendNoteP,
-                updateNoteOnViewModelP = updateNoteOnViewModelP,
-                nRateP = nRateP
+                onClickSendNoteP = onClickSendNoteP
             )
         }
 
@@ -187,8 +181,6 @@ fun ArticleItemDetailComposable(
     onClickLikeP : (bValLike : Boolean) -> Unit,
     onBackOrCloseP : (() -> Unit),
     onClickSendNoteP : (nNote:Int , sComment:String) -> Unit,
-    updateNoteOnViewModelP : ( (Int) -> Unit), // TODO JG : A nettoyer
-    nRateP : Int // TODO JG : A nettoyer si ViewModel pas utilisé (à voir avec Denis)
 ){
 
  //   val focusRequester = remember { FocusRequester() }
@@ -350,9 +342,7 @@ fun ArticleUIStateComposablePreview(){
             bModeItemOnRight = true,
             onBackOrCloseP = { navController.popBackStack() },
             onClickSendNoteP = {_,_ -> }, // 2 paramètres et retour Unit
-            onClickLikeP = {},
-            updateNoteOnViewModelP={},
-            nRateP = 0
+            onClickLikeP = {}
         )
 
 
