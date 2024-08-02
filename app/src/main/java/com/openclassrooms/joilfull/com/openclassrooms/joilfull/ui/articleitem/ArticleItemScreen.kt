@@ -2,6 +2,7 @@ package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem
 
 import android.app.Activity
 import androidx.compose.foundation.background
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,8 +21,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -167,6 +172,7 @@ fun ArticleUIStateComposable(
  * // mais du coup je me retrouve à hisser toutes les méthodes dont j'ai besoin... et il y en a beaucoup ..
  */
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ArticleItemDetailComposable(
     modifier: Modifier = Modifier,
@@ -182,12 +188,21 @@ fun ArticleItemDetailComposable(
 
     // TODO Denis Prio 1 : Je n'arrive pas à redéfinir correctement l'ordre de focus ici (Embetant pour l'accessibilité)
 
+   val focusRequester = remember { FocusRequester() }
+
+   // val (first, second, third) = remember { FocusRequester.createRefs() }
+
+    // Request focus when the composable is first launched
+  //  LaunchedEffect(Unit) {
+   //     focusRequester.requestFocus()
+  //  }
 
     Column(
         modifier = modifier
             .padding(
                 horizontal = 10.dp
             )
+            //.semantics { isTraversalGroup = true }
     ){
 
         Box(
@@ -196,6 +211,7 @@ fun ArticleItemDetailComposable(
                     min = 200.dp
                 )*/
                 .weight(8f)
+
 
         ) {
 
@@ -222,6 +238,8 @@ fun ArticleItemDetailComposable(
                         minWidth = CTE_MIN_SIZE,
                         minHeight = CTE_MIN_SIZE
                     )
+                    .focusRequester(focusRequester)
+                    .focusable()
 
                 ,
                 onClick = onBackOrCloseP
@@ -240,12 +258,16 @@ fun ArticleItemDetailComposable(
                     .align(Alignment.TopEnd)
                     .padding(10.dp) //  Ecart avec le coin haut / Droit
                     .zIndex(1f)     // Elément placé devant l'image même s'il est déclaré avant (permet un bon ordre de focus pour l'accessibilité)
+                    .focusable()
+           //         .focusRequester(second)
+           //         .focusProperties { next = third }
                 ,
                 articleP = articleP
             )
 
 
             ArticleItemSimpleComposable(
+          //      modifier = Modifier.focusRequester(third),
                 article = articleP,
                 bModeDetail = true,
                 bModeItemOnRight = bModeItemOnRight,
