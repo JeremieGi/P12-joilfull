@@ -73,14 +73,15 @@ dependencies {
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     //Tests de routines avec des Mocks
-    testImplementation("io.mockk:mockk:1.13.9")
-    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0-RC2")
+    testImplementation(libs.mockk)
+    testImplementation (libs.kotlinx.coroutines.test)
 
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
     // Gestion des tailles d'écran
-    implementation("androidx.compose.material3:material3-window-size-class:1.2.1")
+    //implementation("androidx.compose.material3:material3-window-size-class:1.2.1")
+
 
     // ViewModel avec Compose
     implementation(libs.androidx.lifecycle.viewmodel.compose)
@@ -94,7 +95,7 @@ dependencies {
 
 
     // Glide
-    implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
+    implementation(libs.compose)
 
     //Hilt
     implementation(libs.hilt.android)
@@ -105,11 +106,11 @@ dependencies {
     kapt(libs.hilt.compiler)
 
     // Navigation avec Compose
-    implementation("androidx.navigation:navigation-compose:2.7.7")
+    implementation(libs.androidx.navigation.compose)
 
-    implementation("androidx.compose.ui:ui-tooling-preview:1.6.8")
-    implementation("androidx.compose.ui:ui-text-google-fonts:1.6.8") // Font Open Sans
+    implementation(libs.ui.tooling.preview)
+    implementation(libs.androidx.ui.text.google.fonts) // Font Open Sans
 
 
-    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+    implementation(libs.androidx.hilt.navigation.compose)
 }
