@@ -189,12 +189,10 @@ class ArticleRepository @Inject constructor (
                             it.nIDArticle == nIDArticleP
                         }
 
-                        // Normalement un seul article
-                        if (listArticleFilter.size == 1){
-                            emit(ResultCustom.Success(listArticleFilter[0]))
-                        }
+
                         when (listArticleFilter.size){
                             1 ->
+                                // Normalement un seul article
                                 emit(ResultCustom.Success(listArticleFilter[0]))
                             0 ->
                                 emit(ResultCustom.Failure("Article ID $nIDArticleP non trouvé"))

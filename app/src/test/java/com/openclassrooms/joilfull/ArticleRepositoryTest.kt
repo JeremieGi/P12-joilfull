@@ -15,6 +15,8 @@ import io.mockk.mockk
 import io.mockk.mockkStatic
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Before
@@ -102,7 +104,7 @@ class ArticleRepositoryTest {
 
 
     /**
-     * Test a basic call
+     * loadArticlesListSortByCategory
      */
     @Test
     fun test_loadArticlesListSortByCategory() = runTest {
@@ -146,6 +148,89 @@ class ArticleRepositoryTest {
 
             val listArticlesByCategory = res.value
             assertEquals(listArticlesByCategory.size,2) // 3 articles dans 2 catégories différentes
+
+        }
+        else{
+            assertFalse("Le résultat devrait être de type ResultCustom.Success",false)
+        }
+
+    }
+
+
+    /**
+     * Simule une erreur 404
+     */
+    @Test
+    fun testNetworkProblem() = runTest {
+
+        val errorResponseBody = "Error 404 message".toResponseBody("text/plain".toMediaType())
+
+        // Le mock renverra une erreur 404
+        coEvery {
+            mockDataServiceAPI.getArticles()
+        } returns Response.error(404, errorResponseBody)
+
+        //when => Test réel de la fonction
+        val listResult = run {
+            cutArticleRepository.loadArticlesListSortByCategory().toList()
+        }
+
+        coVerify {
+            mockDataServiceAPI.getArticles()
+        }
+
+        // On attend 2 valeurs dans le flow
+        assertEquals(2, listResult.size)
+
+        // Première valeur => Loading
+        assertEquals(ResultCustom.Loading, listResult[0])
+
+        // Deuxième valeur => Erreur
+        assert(listResult[1] is ResultCustom.Failure)
+
+    }
+
+    /**
+     * loadArticleByID
+     */
+    @Test
+    fun test_loadArticleByID() = runTest {
+
+        coEvery {
+            mockDataServiceAPI.getArticles()
+        } returns Response.success(mockDataServiceAPIResponse)
+
+
+        coEvery {
+            mockFakeAPIFeedback.getArticleFeedback(any())
+        } returns mockFakeAPIFeedbackResponse
+
+
+        //when => Test réel de la fonction
+        val listResult = run {
+            cutArticleRepository.loadArticleByID(0).toList()
+        }
+
+        coVerify {
+            mockDataServiceAPI.getArticles()
+            mockFakeAPIFeedback.getArticleFeedback(any())
+        }
+
+        // On attend 2 valeurs dans le flow
+        assertEquals(2, listResult.size)
+
+        // Première valeur => Loading
+        assertEquals(ResultCustom.Loading, listResult[0])
+
+        // Deuxième valeur => La réponse avec succès
+        val res = listResult[1]
+
+        assert(res is ResultCustom.Success)
+
+        if (res is ResultCustom.Success){
+
+            val article = res.value
+            assertEquals(article.nIDArticle,0) // L'article 0 est renvoyé
 
         }
         else{
