@@ -2,7 +2,6 @@ package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem
 
 import android.app.Activity
 import androidx.compose.foundation.background
-import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,6 +27,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -36,7 +36,6 @@ import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.CTE_MIN_SIZE
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.ErrorComposable
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.LoadingComposable
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.bDisplayItemOnRight
-import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.getWindowsSize
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.logCompose
 import com.openclassrooms.joilfull.model.Article
 import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
@@ -52,7 +51,7 @@ fun ArticleScreen(
 
 ) {
 
-    val windowSize = getWindowsSize()
+    //val windowSize = getWindowsSize()
 
     LaunchedEffect(articleId) {
         // Coroute exécutée lorsque articleId change
@@ -68,7 +67,7 @@ fun ArticleScreen(
             .fillMaxSize()
     ) {
 
-        val bModeItemOnRight = bDisplayItemOnRight(windowSize)
+        val bModeItemOnRight = bDisplayItemOnRight(/*windowSize*/LocalContext.current)
 
         val onBackOrCloseP : (() -> Unit)
         if (bModeItemOnRight){
@@ -78,7 +77,7 @@ fun ArticleScreen(
             onBackOrCloseP = { navController.popBackStack() }
         }
 
-        val nRate by viewModelArticle.nCurrentNote
+        //val nRate by viewModelArticle.nCurrentNote
 
         ArticleUIStateComposable(
             modifier = Modifier,
@@ -183,26 +182,8 @@ fun ArticleItemDetailComposable(
     onClickSendNoteP : (nNote:Int , sComment:String) -> Unit,
 ){
 
- //   val focusRequester = remember { FocusRequester() }
- //   val lifecycleOwner = LocalLifecycleOwner.current
 
     // TODO Denis : Je n'arrive pas à redéfinir correctement l'ordre de focus ici (Embetant pour l'accessibilité)
-
-    /*
-    // Observer de cycle de vie pour demander le focus au onResume
-    DisposableEffect(lifecycleOwner) {
-        val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_RESUME) {
-                // Demande le focus lorsque l'écran est visible
-                focusRequester.requestFocus()
-            }
-        }
-        lifecycleOwner.lifecycle.addObserver(observer)
-        onDispose {F
-            lifecycleOwner.lifecycle.removeObserver(observer)
-        }
-    }
-*/
 
 
     Column(
@@ -214,33 +195,26 @@ fun ArticleItemDetailComposable(
 
         Box(
             modifier = Modifier
+                /*.heightIn(
+                    min = 200.dp
+                )*/
                 .weight(8f)
-                //.focusable()
 
         ) {
 
 
-            ArticleItemSimpleComposable(
-                article = articleP,
-                bModeDetail = true,
-                bModeItemOnRight = bModeItemOnRight,
-                onArticleClickP = {}, // OnClick neutralisé
-                onClickLikeP = onClickLikeP
-            )
-
-            // Bouton visible uniquement lors de l'appel à ArticleScreen (c'est à dire utilisation de navController)
-            //if (!bModeTablet){
-            // Si la lambda onClicBackP est définie
-
             val icon : ImageVector
             if (!bModeItemOnRight){
+                // Retour en mode téléphone
                 icon = Icons.AutoMirrored.TwoTone.ArrowBack
             }else{
+                // Masque la partie Article en mode tablette
                 icon = Icons.Default.Close
             }
 
             IconButton(
                 modifier = Modifier
+                    .zIndex(1f)     // Elément placé devant l'image même s'il est déclaré avant (permet un bon ordre de focus pour l'accessibilité)
                     .align(Alignment.TopStart)
                     .padding(10.dp) // Décalage de 10dp du coin supérieur gauche
                     .background(
@@ -251,11 +225,8 @@ fun ArticleItemDetailComposable(
                         minWidth = CTE_MIN_SIZE,
                         minHeight = CTE_MIN_SIZE
                     )
-                    //.focusRequester(focusRequester)
-                    .focusable()
-                ,
-                //.background(Color.Red)
 
+                ,
                 onClick = onBackOrCloseP
 
             ) {
@@ -265,6 +236,27 @@ fun ArticleItemDetailComposable(
                     tint = MaterialTheme.colorScheme.onSurface // Utilise la couleur du thème
                 )
             }
+
+
+            ShareButtonComposable(
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(10.dp) //  Ecart avec le coin haut / Droit
+                    .zIndex(1f)     // Elément placé devant l'image même s'il est déclaré avant (permet un bon ordre de focus pour l'accessibilité)
+                ,
+                articleP = articleP
+            )
+
+
+            ArticleItemSimpleComposable(
+                article = articleP,
+                bModeDetail = true,
+                bModeItemOnRight = bModeItemOnRight,
+                onArticleClickP = {}, // OnClick neutralisé
+                onClickLikeP = onClickLikeP
+            )
+
+
 
 
         }

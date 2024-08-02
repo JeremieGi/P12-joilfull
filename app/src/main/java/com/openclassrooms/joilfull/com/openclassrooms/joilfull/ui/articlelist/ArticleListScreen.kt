@@ -16,7 +16,6 @@ import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.LoadingComposa
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.ArticleUIState
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem.ArticleUIStateComposable
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.bDisplayItemOnRight
-import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.getWindowsSize
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.logCompose
 import com.openclassrooms.joilfull.model.Article
 
@@ -47,7 +46,7 @@ fun ArticleListScreen(
 
     logCompose("ArticleListScreen : Changement UIState : $uiStateList")
 
-    val windowSize = getWindowsSize()
+    //val windowSize = getWindowsSize()
 
     // En fonction de l'état du viewModel
     when (uiStateList) {
@@ -69,7 +68,7 @@ fun ArticleListScreen(
 
                 val onArticleClickP : (Article) -> Unit
 
-                if (bDisplayItemOnRight(windowSize)){
+                if (bDisplayItemOnRight(/*windowSize*/LocalContext.current)){
 
                     // Tablette =>
                     //  - charge l'article depuis le viewModel
@@ -100,7 +99,7 @@ fun ArticleListScreen(
                             .weight(2f),
                         onArticleClickP = onArticleClickP,
                         listCategoryAndArticles = listCategoryAndArticles,
-                        bModeItemOnRight = bDisplayItemOnRight(windowSize)
+                        bModeItemOnRight = bDisplayItemOnRight(LocalContext.current/*windowSize*/)
                     )
 
 
@@ -109,14 +108,14 @@ fun ArticleListScreen(
 
                     val uiStateArticle = (uiStateList as ArticleListUIState.Success).uiStateArticleSelect
 
-                    if (bDisplayItemOnRight(windowSize)) {
+                    if (bDisplayItemOnRight(LocalContext.current/*windowSize*/)) {
                         // Mode item à droite
 
                         //val selectedArticle = viewModelList.getSelectedArticle()
                         //if (selectedArticle==null) {
                         if (uiStateArticle is ArticleUIState.ArticleSelected){
 
-                            val uiStateArticle = (uiStateList as ArticleListUIState.Success).uiStateArticleSelect
+                            //val uiStateArticle = (uiStateList as ArticleListUIState.Success).uiStateArticleSelect
 
                             ArticleUIStateComposable(
                                 modifier = Modifier

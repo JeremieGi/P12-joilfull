@@ -1,21 +1,16 @@
 package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui
 
-import android.app.Activity
+import android.content.Context
 import android.util.Log
-import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
-import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import java.text.DecimalFormat
 
 // Les éléments cliquables et interactifs font au moins 48 dp. Cela respecte les directives d'accessibilité de Material Design.
 val CTE_MIN_SIZE = 48.dp
 
-fun bDisplayItemOnRight( windowSize: WindowSizeClass? ) : Boolean {
+fun bDisplayItemOnRight( /*windowSize: WindowSizeClass?*/ context: Context) : Boolean {
 
+    /*
     val bModeTablet : Boolean
 
     if (windowSize==null){
@@ -40,6 +35,10 @@ fun bDisplayItemOnRight( windowSize: WindowSizeClass? ) : Boolean {
     }
 
     return bModeTablet
+*/
+    // Correspond mieux aux specs
+    val metrics = context.resources.configuration
+    return metrics.smallestScreenWidthDp >= 600 // Mes émulateurs : Tél = 411, tablette = 800
 
 }
 
@@ -62,7 +61,7 @@ fun sDisplayPrice(dPrice : Double) : String {
     return sPrice
 
 }
-
+/*
 @Composable
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 fun getWindowsSize() : WindowSizeClass? {
@@ -78,6 +77,7 @@ fun getWindowsSize() : WindowSizeClass? {
     return windowSizeClass
 
 }
+*/
 
 fun logCompose(sLogP : String){
     Log.d("**Compose**",sLogP)
