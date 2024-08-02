@@ -41,7 +41,7 @@ class Article (
     /**
      * Moyenne des notes de l'article
      */
-    private fun dNotesAverage() : Double {
+    fun dNotesAverage() : Double {
 
         // Extrait uniquement les notes
         val notesList: List<Int> = _listArticleFeedback.map { it.nNote }
@@ -117,6 +117,10 @@ class Article (
         }
 
         return resultFeedback
+    }
+
+    fun getCountFeedback() : Int {
+        return this._listArticleFeedback.size
     }
 
 
