@@ -111,9 +111,6 @@ fun ArticleUIStateComposable(
     onClickLikeP : (bValLike : Boolean) -> Unit
 ){
 
-    // Comportement étrange : Au clic d'un élémént de la liste sur téléphone : 3 appels : Loading puis 2 fois Selected article (au lieu de 1)
-
-
     logCompose("ArticleUIStateComposable : Changement UIState : $uiState")
 
     // En fonction de l'état du viewModel
@@ -183,7 +180,7 @@ fun ArticleItemDetailComposable(
 ){
 
 
-    // TODO Denis : Je n'arrive pas à redéfinir correctement l'ordre de focus ici (Embetant pour l'accessibilité)
+    // TODO Denis Prio 1 : Je n'arrive pas à redéfinir correctement l'ordre de focus ici (Embetant pour l'accessibilité)
 
 
     Column(

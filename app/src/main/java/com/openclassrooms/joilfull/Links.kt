@@ -27,6 +27,7 @@ object Links {
     // TODO Denis : Je n'arrive pas à tester le depp link 100% sur l'émulateur
     // Pour tester le deep link via adb : .\adb.exe shell am start -d "joiefull://article_item/2" -a android.intent.action.VIEW
     // mais comment faire pour tester en réel ?
+    // Sur mon poste : C:\Users\User\AppData\Local\Android\Sdk\platform-tools\adb.exe
 
     fun createDeepLink(nIDArticleP : Int?): String {
 
