@@ -130,19 +130,18 @@ fun ArticleItemSimpleComposable(
                 // TODO : A montrer à Denis : Gestion de la taille de la box très petite
 
                 // Si box assez haute
-                val modifierLike = if (boxSize.height > 200) {
+                val modifierLike = if (boxSize.height > 300) {
                     Modifier
                         .align(Alignment.BottomEnd)
                         .padding(10.dp)
                         .sizeIn(minHeight = 60.dp)
-                        .fillMaxHeight(0.1f)
+                        .fillMaxHeight(0.1f) // Plus l'image est grande, plus la hauteur de la zone Like est grande
                 } else {
                     // Box très petite en hauteur (tél en mode portrait)
                     Modifier
-                        .align(Alignment.CenterEnd)
-                        .padding(7.dp)
-                        .offset(x = (-30).dp)       // décalage à gauche
-                        .fillMaxHeight(1f)
+                        .align(Alignment.BottomEnd)
+                        .padding(2.dp)
+                        .offset(x = (-40).dp) // Décalage du bouton Like à gauche pour éviter les superpositions
                 }
 
                 // Superposition du picto cœur avec un nombre entier
