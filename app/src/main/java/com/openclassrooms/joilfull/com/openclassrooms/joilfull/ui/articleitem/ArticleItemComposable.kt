@@ -91,15 +91,19 @@ fun ArticleItemSimpleComposable(
 
                 // Surface spécialement dédié pour arrondir les coins de la GlideImage
                 Surface(
+                    modifier = Modifier,
                     shape = RoundedCornerShape(16.dp),  // Coins arrondis
 
                 ){
 
                     GlideImage(
                         modifier = Modifier
+                            /*.heightIn(
+                                min = 300.dp
+                            )*/
                             .fillMaxSize()
                             .background(Color.Gray)       // Pour les photos plus petites (comble l'espace)
-                            //.focusTarget()
+
                         ,
                         model = article.sURLPicture,
                         contentDescription = article.sDescriptionPicture,
@@ -260,6 +264,45 @@ fun ArticleItemComposablePreviewItemMode() {
             article = article,
             bModeDetail = false,
             bModeItemOnRight = false,
+            onArticleClickP = {},
+            onClickLikeP = {}
+        )
+    }
+}
+
+
+
+// Cas de superposition du bouton "Like" et "Partager" que je veux éviter
+@Preview(
+    name = "Tel landscape",
+    widthDp = 500,
+    heightDp = 150)
+@Composable
+fun ArticleItemComposableTelLandscapePreview() {
+
+    // #Remarque : Preview charge mal les images avec URL du component Glide
+
+    //val myURI = Uri.parse("android.resource://com.openclassrooms.joilfull/" + com.openclassrooms.joilfull.R.drawable.sacpreview)
+
+    val article = Article(
+        nIDArticle = 0,
+        sURLPicture = "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/D-velopper-une-interface-accessible-en-Jetpack-Compose/main/img/accessories/1.jpg",
+        //sURLPicture = myURI.toString(),
+        sDescriptionPicture = "Sac à main orange posé sur une poignée de porte",
+        //sName = "Sac à main orange",
+        sName = "Sac à main orange très long pour tester largeur mini",
+        sCategory = "ACCESSORIES", // Enumération ici : pas trop d'intéret si jamais le WS renvoie une nouvelle catégorie
+        nNbLikesInit = 56,
+        dPrice = 69.99,
+        dOriginalPrice = 99.00
+    )
+
+
+    JoilfullTheme {
+        ArticleItemSimpleComposable(
+            article = article,
+            bModeDetail = true,
+            bModeItemOnRight = true,
             onArticleClickP = {},
             onClickLikeP = {}
         )

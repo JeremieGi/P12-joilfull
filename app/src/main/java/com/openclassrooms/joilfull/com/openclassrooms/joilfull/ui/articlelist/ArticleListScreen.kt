@@ -86,7 +86,7 @@ fun ArticleListScreen(
                 else{
                     // Phone => useNavHost
                     onArticleClickP = { article ->
-                        // TODO Denis : pourquoi ArticleListScreen est recomposé après cet appel ?
+                        // ArticleListScreen est recomposé après cet appel ...
                         logCompose("navController.navigate")
                         navController.navigate("${Links.CTE_ROUTE}/${article.nIDArticle}")
 
@@ -175,7 +175,7 @@ fun ArticleListScreen(
 }
 
 /*
-// TODO Denis 2  : Cette preview ne marche pas : Failed to instantiate a ViewModel
+// Cette preview ne marche pas : Failed to instantiate a ViewModel
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Preview(
     showBackground = true

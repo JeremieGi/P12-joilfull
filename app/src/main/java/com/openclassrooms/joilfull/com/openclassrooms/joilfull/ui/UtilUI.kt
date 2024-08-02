@@ -23,10 +23,9 @@ fun bDisplayItemOnRight( windowSize: WindowSizeClass? ) : Boolean {
     }
     else{
 
-        // TODO Denis : En mode téléphone portrait : Ca affiche l'article à droite => pas très grave
+        // En mode téléphone portrait : Ca affiche l'article à droite
 
         when (windowSize.widthSizeClass) {
-
             WindowWidthSizeClass.Expanded/*, WindowWidthSizeClass.Medium*/ -> {
                 // Affiche la fiche article dans la même fenêtre uniquement pour un tablette en mode portrait
                 // Si j'ajoute Medium => Ca affiche la fiche Article aussi en tablette mode paysage, mais aussi en téléphone mode paysage

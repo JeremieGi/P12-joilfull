@@ -167,7 +167,7 @@ fun ArticleUIStateComposable(
 }
 
 /**
- * // TODO Question Denis : Il est préconisé de ne pas passé le viewModel en paramètre pour des questions de perf
+ * // Il est préconisé de ne pas passé le viewModel en paramètre pour des questions de perf
  * // mais du coup je me retrouve à hisser toutes les méthodes dont j'ai besoin... et il y en a beaucoup ..
  */
 

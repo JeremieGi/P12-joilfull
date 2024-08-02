@@ -6,11 +6,6 @@ sealed class ArticleUIState {
 
     data object IsLoadingArticle : ArticleUIState()
 
-    // TODO : Je n'avais pas de changement d'état au chagment de valeur de  article
-//    data class SuccessArticle(
-//        val article : Article,
-//    ) : ArticleUIState()
-
     // Article sélectionné
     data class ArticleSelected(val article: Article) : ArticleUIState()
 

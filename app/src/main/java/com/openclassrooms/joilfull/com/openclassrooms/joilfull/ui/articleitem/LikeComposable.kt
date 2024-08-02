@@ -70,10 +70,11 @@ fun LikeComposable(
     val bLikeDisplay : Boolean
     val nNbLikeDisplay : Int
 
-    // TODO Denis prio 2  : 2 façons de gérer le click sur le like (code complexe je trouve)
+    // 2 façons de gérer le click sur le like
     val onClickLikeFinal : () -> Unit
     if (bModeItemOnRight){
-        // En tablette, on appelle le viewModel qui va reclencher un Ui State et redessiner toute la fenêtre (car la liste doit se mettre à jour aussi)
+        // En tablette, on appelle le viewModel qui va reclencher un Ui State et redessiner toute la fenêtre
+        // (car la liste doit se mettre à jour aussi)
         onClickLikeFinal = {
 
             val bNewValLike = !bInitLikeP
