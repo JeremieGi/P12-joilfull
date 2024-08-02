@@ -282,7 +282,7 @@ fun ArticleItemComposablePreviewItemMode() {
 @Preview(
     name = "Tel landscape",
     widthDp = 500,
-    heightDp = 100)
+    heightDp = 200)
 @Composable
 fun ArticleItemComposableTelLandscapePreview() {
 

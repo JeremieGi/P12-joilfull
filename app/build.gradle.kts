@@ -36,6 +36,11 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
 
+        // Configure additional Java compiler arguments
+        tasks.withType<JavaCompile> {
+            options.compilerArgs.add("-Xlint:deprecation")
+        }
+
     }
     kotlinOptions {
         jvmTarget = "1.8"
@@ -56,7 +61,8 @@ android {
 
 dependencies {
 
-    // TODO JG : Nouvelle façon de déclarer des dépendances
+    // TODO Denis Info : Nouvelle façon de déclarer des dépendances
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

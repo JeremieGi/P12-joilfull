@@ -189,7 +189,7 @@ fun ArticleItemDetailComposable(
     // TODO Denis Prio 1 : Je n'arrive pas à redéfinir correctement l'ordre de focus ici (Embetant pour l'accessibilité)
 
    val focusRequester = remember { FocusRequester() }
-
+   // https://developer.android.com/develop/ui/compose/touch-input/focus/change-focus-traversal-order?hl=fr
    // val (first, second, third) = remember { FocusRequester.createRefs() }
 
     // Request focus when the composable is first launched
@@ -203,6 +203,7 @@ fun ArticleItemDetailComposable(
                 horizontal = 10.dp
             )
             //.semantics { isTraversalGroup = true }
+            .focusable()
     ){
 
         Box(
@@ -211,6 +212,7 @@ fun ArticleItemDetailComposable(
                     min = 200.dp
                 )*/
                 .weight(8f)
+                .focusable()
 
 
         ) {
