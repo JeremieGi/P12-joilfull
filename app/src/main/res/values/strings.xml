@@ -16,7 +16,7 @@
     <string name="merci_de_saisir_une_note">Merci de saisir une note</string>
     <string name="merci_de_saisir_un_commentaire">Merci de saisir un commentaire</string>
     <string name="note_placeholder">Partager ici vos impressions sur cette pièce</string>
-    <string name="article_talkback">Article %1$s avec %2$s coeurs au prix de %3$s euros au lieu de %4$s euros. Double-cliquer pour ouvrir</string>
+    <string name="article_talkback">Article %1$s. %2$s personnes ont aimé cet article. Son prix est de %3$s euros au lieu de %4$s euros. Double-cliquer pour ouvrir</string>
     <string name="article_ajout_aux_favoris">Article ajouté aux favoris</string>
     <string name="article_retir_des_favoris">Article retiré des favoris</string>
     <string name="note_de_sur_5">Note de %1$s sur 5</string>
@@ -25,8 +25,8 @@
     <string name="personnalise_ton_message_de_partage">Personnalise ton message de partage</string>
     <string name="partager">Partager</string>
     <string name="annuler">Annuler</string>
-    <string name="cliquer_ici_pour_retirer_votre_like">Cliquer ici pour retirer votre like</string>
-    <string name="cliquer_ici_pour_liker_cet_article">Cliquer ici pour liker cet article</string>
-    <string name="cet_article_a_c_urs">Cet article a %1$s cœurs</string>
+    <string name="cliquer_ici_pour_retirer_votre_like">Cliquer ici pour retirer cet article dans vos favoris</string>
+    <string name="cliquer_ici_pour_liker_cet_article">Cliquer ici pour placer cet article dans vos favoris</string>
+    <string name="cet_article_a_c_urs">%1$s personnes ont aimé cet article</string>
     <string name="aucune">Aucune</string>
 </resources>
