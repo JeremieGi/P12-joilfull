@@ -27,11 +27,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.traversalIndex
 import androidx.compose.ui.unit.dp
 import com.openclassrooms.joilfull.Links
 import com.openclassrooms.joilfull.R
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.CTE_MIN_SIZE
 import com.openclassrooms.joilfull.model.Article
+
 
 /**
  * Bouton "Partager"
@@ -40,7 +43,7 @@ import com.openclassrooms.joilfull.model.Article
 fun ShareButtonComposable(
     modifier: Modifier = Modifier,
     articleP : Article,
-
+    fTransversalIndexP : Float = 0f // Permet de redéfinier l'ordre de balayage pour TalkBack
     ){
 
     val currentContext = LocalContext.current
@@ -61,6 +64,7 @@ fun ShareButtonComposable(
             ) // Fond avec coins arrondis
     ) {
         IconButton(
+            modifier = Modifier.semantics { this.traversalIndex = fTransversalIndexP },
             onClick = {
                 // Lance une recomposition pour afficher la pop-up
                 bShowDialog = true

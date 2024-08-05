@@ -2,7 +2,6 @@ package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem
 
 import android.app.Activity
 import androidx.compose.foundation.background
-import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,15 +20,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.isTraversalGroup
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.traversalIndex
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
@@ -185,35 +184,21 @@ fun ArticleItemDetailComposable(
     onClickSendNoteP : (nNote:Int , sComment:String) -> Unit,
 ){
 
-
-    // TODO Denis Prio 1 : Je n'arrive pas à redéfinir correctement l'ordre de focus ici (Embetant pour l'accessibilité)
-
-   val focusRequester = remember { FocusRequester() }
-   // https://developer.android.com/develop/ui/compose/touch-input/focus/change-focus-traversal-order?hl=fr
-   // val (first, second, third) = remember { FocusRequester.createRefs() }
-
-    // Request focus when the composable is first launched
-  //  LaunchedEffect(Unit) {
-   //     focusRequester.requestFocus()
-  //  }
+    // L'ordre de balyage a été modifié pour TalkBack
+    // https://developer.android.com/develop/ui/compose/accessibility/traversal?hl=fr
+    // .semantics { this.traversalIndex = -3f } => par défaut vaut 0. En utilisant les valeurs négatives, l'élément qui a le nombre le plus faible aura le focus en 1er
 
     Column(
         modifier = modifier
             .padding(
                 horizontal = 10.dp
             )
-            //.semantics { isTraversalGroup = true }
-            .focusable()
+            .semantics { isTraversalGroup = true } // Indique que sur cet élément l'ordre de balayage ne sera pas celui par défaut (de haut en bas et de gauche  à droite)
     ){
 
         Box(
             modifier = Modifier
-                /*.heightIn(
-                    min = 200.dp
-                )*/
                 .weight(8f)
-                .focusable()
-
 
         ) {
 
@@ -240,8 +225,7 @@ fun ArticleItemDetailComposable(
                         minWidth = CTE_MIN_SIZE,
                         minHeight = CTE_MIN_SIZE
                     )
-                    .focusRequester(focusRequester)
-                    .focusable()
+                    .semantics { this.traversalIndex = -3f } // Ordre de balayage : En premier : le bouton Back
 
                 ,
                 onClick = onBackOrCloseP
@@ -259,26 +243,21 @@ fun ArticleItemDetailComposable(
                 modifier = Modifier
                     .align(Alignment.TopEnd)
                     .padding(10.dp) //  Ecart avec le coin haut / Droit
-                    .zIndex(1f)     // Elément placé devant l'image même s'il est déclaré avant (permet un bon ordre de focus pour l'accessibilité)
-                    .focusable()
-           //         .focusRequester(second)
-           //         .focusProperties { next = third }
+                    .zIndex(1f)     // Elément placé devant l'image même s'il est déclaré avant
                 ,
-                articleP = articleP
+                articleP = articleP,
+               fTransversalIndexP = -2f // Ordre de balayage : En 2ème : le bouton Share
             )
 
 
             ArticleItemSimpleComposable(
-          //      modifier = Modifier.focusRequester(third),
+                modifier = Modifier.semantics { this.traversalIndex = -1f },
                 article = articleP,
                 bModeDetail = true,
                 bModeItemOnRight = bModeItemOnRight,
                 onArticleClickP = {}, // OnClick neutralisé
                 onClickLikeP = onClickLikeP
             )
-
-
-
 
         }
 
@@ -306,7 +285,6 @@ fun ArticleItemDetailComposable(
             nIDRessourceAvatarP = nIDRessourceAvatarP,
             onClickSendNoteP = onClickSendNoteP,
             onBackOrCloseP = onBackOrCloseP,
-            //updateNoteOnViewModelP = updateNoteOnViewModelP
             )
 
     }

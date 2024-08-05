@@ -36,7 +36,7 @@ fun ArticleListScreen(
 
 
     // Recharger les articles quand l'écran est visible
-    LaunchedEffect(Unit) {
+    LaunchedEffect(Unit) { // Pour déclencher l'effet secondaire une seule fois au cours du cycle de vie de ce composable
         viewModelList.loadArticlesList()
     }
 
