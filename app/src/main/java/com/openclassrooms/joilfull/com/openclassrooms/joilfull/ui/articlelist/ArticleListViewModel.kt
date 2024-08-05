@@ -194,7 +194,7 @@ class ArticleListViewModel  @Inject constructor(
     /**
      * Renvoie l'article sélectionné et null si il n'y en a pas
      */
-    fun getSelectedArticle() : Article? {
+    private fun getSelectedArticle() : Article? {
 
         var articleResult : Article? = null
 

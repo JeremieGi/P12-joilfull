@@ -21,7 +21,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -171,7 +170,7 @@ fun ArticleUIStateComposable(
  * // mais du coup je me retrouve à hisser toutes les méthodes dont j'ai besoin... et il y en a beaucoup ..
  */
 
-@OptIn(ExperimentalComposeUiApi::class)
+//@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ArticleItemDetailComposable(
     modifier: Modifier = Modifier,
@@ -301,13 +300,6 @@ fun ArticleUIStateComposablePreview(){
          * Si vous souhaitez prévisualiser un composable qui utilise un ViewModel,
          * vous devez créer un autre composable avec les paramètres de ViewModel transmis en tant qu'arguments du composable. De cette façon, vous n'avez pas besoin de prévisualiser le composable qui utilise ViewModel.
          */
-        /*
-
-        ArticleScreen(
-            navController = navController,
-            articleId = 2
-        )
-        */
 
         val article = Article(
             nIDArticle = 0,

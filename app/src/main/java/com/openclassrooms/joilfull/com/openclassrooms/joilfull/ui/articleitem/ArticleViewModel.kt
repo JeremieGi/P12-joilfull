@@ -1,8 +1,6 @@
 package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem
 
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.openclassrooms.joilfull.model.Article
@@ -30,8 +28,6 @@ class ArticleViewModel @Inject constructor(
     // Backing property to avoid state updates from other classes
     val uiState: StateFlow<ArticleUIState> = _uiState.asStateFlow() // Accès en lecture seule de l'extérieur
 
-    private var _nCurrentNote = mutableStateOf(0)
-    val nCurrentNote: State<Int> = _nCurrentNote
 
     // Renvoie un article par son ID
     fun loadArticleByID(articleId: Int) {
@@ -126,21 +122,20 @@ class ArticleViewModel @Inject constructor(
     }
 
     /**
-     * Renvoie l'article sélectionné
+     * Renvoie l'article sélectionné, null si pas d'article sélectionné
      */
     private fun getCurrentArticle() : Article? {
 
 
         var articleResult : Article? = null
 
-            if (uiState.value is ArticleUIState.ArticleSelected) {
+        if (uiState.value is ArticleUIState.ArticleSelected) {
 
-                val successArticleState = uiState.value as ArticleUIState.ArticleSelected
+            val successArticleState = uiState.value as ArticleUIState.ArticleSelected
 
-                articleResult =successArticleState.article
+            articleResult =successArticleState.article
 
-            }
-
+        }
 
         return articleResult
 

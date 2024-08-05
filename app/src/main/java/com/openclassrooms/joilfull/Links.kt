@@ -22,7 +22,7 @@ object Links {
         navDeepLink { uriPattern = "$CTE_DEEP_LINK/{$CTE_PARAM_ID_ARTICLE}" }
     )
 
-    val routeWithArgs = "${CTE_ROUTE}/{${CTE_PARAM_ID_ARTICLE}}"
+    const val CTE_ROUTE_WITH_ARGS = "${CTE_ROUTE}/{${CTE_PARAM_ID_ARTICLE}}"
 
     // TODO Denis : Je n'arrive pas à tester le deep link 100% sur l'émulateur
     // Pour tester le deep link via adb : .\adb.exe shell am start -d "joiefull://article_item/2" -a android.intent.action.VIEW

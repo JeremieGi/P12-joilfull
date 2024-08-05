@@ -43,7 +43,7 @@ fun NavGraph(
         // Fenêtre d'un article
         composable(
 
-            route = Links.routeWithArgs, // "articleItem/{articleId}"
+            route = Links.CTE_ROUTE_WITH_ARGS, // "articleItem/{articleId}"
             deepLinks = Links.deepLinks, // "joiefull://articleItem/{articleId}"
             arguments = Links.arguments
 

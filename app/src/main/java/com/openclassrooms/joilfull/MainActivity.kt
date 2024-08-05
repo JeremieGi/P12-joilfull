@@ -5,7 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import dagger.hilt.android.AndroidEntryPoint
-import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.rememberNavController
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.NavGraph
 

@@ -1,7 +1,6 @@
 package com.openclassrooms.joilfull.di
 
 import com.openclassrooms.joilfull.network.IArticlesAPI
-import com.openclassrooms.joilfull.repository.ArticleRepository
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module

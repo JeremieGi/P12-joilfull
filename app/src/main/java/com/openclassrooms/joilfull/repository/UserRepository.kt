@@ -11,10 +11,17 @@ import javax.inject.Singleton
 class UserRepository  @Inject constructor () {
 
 
+    /**
+     * Renvoie l'ID de l'utilisateur courant
+     *
+     */
     fun getCurrentUserID() : Int {
         return 1
     }
 
+    /**
+     * Renvoie l'avatar de l'utilisateur courant
+     */
     fun getCurrentUserAvatar() : Int {
         return R.drawable.currentuseravatar
     }

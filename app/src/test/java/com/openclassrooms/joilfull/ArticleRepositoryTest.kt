@@ -26,7 +26,7 @@ import retrofit2.Response
 
 class ArticleRepositoryTest {
 
-    // TODO : Voir aec Denis si TU suffisants ?
+    // TODO : Voir avec Denis si TU suffisants ? Pas de test instrumenté JetPack demandé ?
 
     private lateinit var cutArticleRepository : ArticleRepository //Class Under Test
     private lateinit var mockDataServiceAPI : IArticlesAPI

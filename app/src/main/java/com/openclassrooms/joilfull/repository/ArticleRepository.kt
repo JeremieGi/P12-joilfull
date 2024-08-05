@@ -33,16 +33,14 @@ class ArticleRepository @Inject constructor (
 
         val responseRetrofit = dataService.getArticles()
 
-        //delay(5000) // Pour tester le chargement
-        //throw Exception("test exception") // Pour tester la gestion d'exception
+        //delay(5000)                           // Pour tester le chargement
+        //throw Exception("test exception")     // Pour tester la gestion d'exception
 
         // si la requête met du temps, pas grave, on est dans une coroutine, le thread principal n'est pas bloqué
 
         if (responseRetrofit.isSuccessful){
 
             val listAPIResponseArticle = responseRetrofit.body()
-
-            // transform in model object
 
             val resultListCandidate : List<Article>
 
@@ -63,7 +61,7 @@ class ArticleRepository @Inject constructor (
 
                 // On charge aussi les feedbacks
                 resultListCandidate.forEach {
-                    // TODO Denis Question : Comment faire si le chargement de fakeAPIFeedback était asynchrone (un autre WS par exemple)
+                    // TODO Denis Question : si le chargement de fakeAPIFeedback était asynchrone (un autre WS par exemple) çà marcherait ?
                     it.initFeedback(fakeAPIFeedback.getArticleFeedback(it.nIDArticle))
                 }
 
