@@ -216,18 +216,14 @@ fun ArticleItemSimpleComposable(
 @Composable
 fun ArticleItemComposablePreview() {
 
-    // #Remarque : Preview charge mal les images avec URL du component Glide
-
-    //val myURI = Uri.parse("android.resource://com.openclassrooms.joilfull/" + com.openclassrooms.joilfull.R.drawable.sacpreview)
+    // Preview charge mal les images avec URL du component Glide
 
     val article = Article(
         nIDArticle = 0,
         sURLPicture = "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/D-velopper-une-interface-accessible-en-Jetpack-Compose/main/img/accessories/1.jpg",
-        //sURLPicture = myURI.toString(),
         sDescriptionPicture = "Sac à main orange posé sur une poignée de porte",
-        //sName = "Sac à main orange",
         sName = "Sac à main orange très long pour tester largeur mini",
-        sCategory = "ACCESSORIES", // Enumération ici : pas trop d'intéret si jamais le WS renvoie une nouvelle catégorie
+        sCategory = "ACCESSORIES",
         nNbLikesInit = 56,
         dPrice = 69.99,
         dOriginalPrice = 99.00
@@ -253,10 +249,9 @@ fun ArticleItemComposablePreviewItemMode() {
     val article = Article(
         nIDArticle = 0,
         sURLPicture = "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/D-velopper-une-interface-accessible-en-Jetpack-Compose/main/img/accessories/1.jpg",
-        //sURLPicture = myURI.toString(),
         sDescriptionPicture = "Sac à main orange posé sur une poignée de porte",
         sName = "Sac à main orange",
-        sCategory = "ACCESSORIES", // Enumération ici : pas trop d'intéret si jamais le WS renvoie une nouvelle catégorie
+        sCategory = "ACCESSORIES",
         nNbLikesInit = 56,
         dPrice = 69.99,
         dOriginalPrice = 99.00
@@ -286,18 +281,14 @@ fun ArticleItemComposablePreviewItemMode() {
 @Composable
 fun ArticleItemComposableTelLandscapePreview() {
 
-    // #Remarque : Preview charge mal les images avec URL du component Glide
-
-    //val myURI = Uri.parse("android.resource://com.openclassrooms.joilfull/" + com.openclassrooms.joilfull.R.drawable.sacpreview)
+    // Preview charge mal les images avec URL du component Glide
 
     val article = Article(
         nIDArticle = 0,
         sURLPicture = "https://raw.githubusercontent.com/OpenClassrooms-Student-Center/D-velopper-une-interface-accessible-en-Jetpack-Compose/main/img/accessories/1.jpg",
-        //sURLPicture = myURI.toString(),
         sDescriptionPicture = "Sac à main orange posé sur une poignée de porte",
-        //sName = "Sac à main orange",
         sName = "Sac à main orange très long pour tester largeur mini",
-        sCategory = "ACCESSORIES", // Enumération ici : pas trop d'intéret si jamais le WS renvoie une nouvelle catégorie
+        sCategory = "ACCESSORIES",
         nNbLikesInit = 56,
         dPrice = 69.99,
         dOriginalPrice = 99.00

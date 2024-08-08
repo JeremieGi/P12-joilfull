@@ -38,7 +38,6 @@ import com.openclassrooms.joilfull.R
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.CTE_MIN_SIZE
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.ErrorComposable
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.LoadingComposable
-import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.bDisplayItemOnRight
 import com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.logCompose
 import com.openclassrooms.joilfull.model.Article
 import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
@@ -70,17 +69,22 @@ fun ArticleScreen(
             .fillMaxSize()
     ) {
 
-        val bModeItemOnRight = bDisplayItemOnRight(/*windowSize*/LocalContext.current)
-
-        val onBackOrCloseP : (() -> Unit)
-        if (bModeItemOnRight){
-            onBackOrCloseP = viewModelArticle::unselectArticle
-        }
-        else{
-            onBackOrCloseP = { navController.popBackStack() }
-        }
-
-        //val nRate by viewModelArticle.nCurrentNote
+//        val bModeItemOnRight = bDisplayItemOnRight(/*windowSize*/LocalContext.current)
+//
+//        val isBackStackEmpty = navController.currentBackStackEntry?.destination?.route
+//        logCompose("isBackStackEmpty = $isBackStackEmpty")
+//
+//        val onBackOrCloseP : (() -> Unit)
+//        if (bModeItemOnRight){
+//            onBackOrCloseP = viewModelArticle::unselectArticle
+//        }
+//        else{
+//            onBackOrCloseP = { navController.popBackStack() }
+//        }
+//
+        // Cet écran est lancé soit en mode téléphone. En mode tablette, il peut aussi être lancé via le deep link et il faut alors que le bouton face un popBackStack
+        val bModeItemOnRight = false
+        val onBackOrCloseP : (() -> Unit) = { navController.popBackStack() }
 
         ArticleUIStateComposable(
             modifier = Modifier,
@@ -183,9 +187,11 @@ fun ArticleItemDetailComposable(
     onClickSendNoteP : (nNote:Int , sComment:String) -> Unit,
 ){
 
-    // L'ordre de balyage a été modifié pour TalkBack
+    // L'ordre de balayage a été modifié pour TalkBack
     // https://developer.android.com/develop/ui/compose/accessibility/traversal?hl=fr
     // .semantics { this.traversalIndex = -3f } => par défaut vaut 0. En utilisant les valeurs négatives, l'élément qui a le nombre le plus faible aura le focus en 1er
+
+    // TODO Question : Quelle stratégie pour détecter les recompositions inutiles ?
 
     Column(
         modifier = modifier

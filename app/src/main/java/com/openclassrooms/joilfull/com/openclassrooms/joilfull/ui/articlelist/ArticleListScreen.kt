@@ -111,11 +111,7 @@ fun ArticleListScreen(
                     if (bDisplayItemOnRight(LocalContext.current/*windowSize*/)) {
                         // Mode item à droite
 
-                        //val selectedArticle = viewModelList.getSelectedArticle()
-                        //if (selectedArticle==null) {
                         if (uiStateArticle is ArticleUIState.ArticleSelected){
-
-                            //val uiStateArticle = (uiStateList as ArticleListUIState.Success).uiStateArticleSelect
 
                             ArticleUIStateComposable(
                                 modifier = Modifier
