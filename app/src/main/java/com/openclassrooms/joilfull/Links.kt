@@ -9,7 +9,7 @@ object Links {
 
 
 
-    const val CTE_ROUTE = "article_item" // Reprend la chaine défini dans le Manifest.xml => <data android:scheme="joiefull" android:host="article_item" />
+    const val CTE_ROUTE = "article_item"            // Reprend la chaine définie dans le Manifest.xml => <data android:scheme="joiefull" android:host="article_item" />
     const val CTE_PARAM_ID_ARTICLE = "articleId"
 
     private const val CTE_DEEP_LINK = "joiefull://$CTE_ROUTE"
@@ -24,11 +24,16 @@ object Links {
 
     const val CTE_ROUTE_WITH_ARGS = "${CTE_ROUTE}/{${CTE_PARAM_ID_ARTICLE}}"
 
-    // TODO Denis : Je n'arrive pas à tester le deep link 100% sur l'émulateur
+    // TODO : Je n'arrive pas à tester le deep link 100% sur l'émulateur
     // Pour tester le deep link via adb : .\adb.exe shell am start -d "joiefull://article_item/2" -a android.intent.action.VIEW
     // mais comment faire pour tester en réel ?
     // Sur mon poste : C:\Users\User\AppData\Local\Android\Sdk\platform-tools\adb.exe
 
+    // intent://article_item/2/#Intent;scheme=joilfull;package=com.openclassrooms.joilfull;end
+
+    /**
+     * Renvoie le deep link d'un article à partir de son ID
+     */
     fun createDeepLink(nIDArticleP : Int?): String {
 
         return "${CTE_DEEP_LINK}/${nIDArticleP}"

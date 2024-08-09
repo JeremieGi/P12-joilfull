@@ -170,7 +170,7 @@ fun LikeComposable(
                 modifier = Modifier
                     .wrapContentSize(),
                 contentDescription = stringResource(R.string.icone_coeur),
-                tint = colorHeart // TODO Denis : J'ai 2 fichiers de couleurs Color.kt et colors.xml : lequel utiliser ?
+                tint = colorHeart
             )
 
             Spacer(modifier = Modifier.size(4.dp))

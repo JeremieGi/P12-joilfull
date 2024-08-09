@@ -61,7 +61,6 @@ class ArticleRepository @Inject constructor (
 
                 // On charge aussi les feedbacks
                 resultListCandidate.forEach {
-                    // TODO Denis Question : si le chargement de fakeAPIFeedback était asynchrone (un autre WS par exemple) çà marcherait ?
                     it.initFeedback(fakeAPIFeedback.getArticleFeedback(it.nIDArticle))
                 }
 
@@ -111,7 +110,7 @@ class ArticleRepository @Inject constructor (
                         emit(ResultCustom.Failure(resultAPI.errorMessage))
 
                     // En chargement
-                    ResultCustom.Loading -> {
+                    is ResultCustom.Loading -> {
                         // Propagation du chargement
                         emit(ResultCustom.Loading)
                     }
@@ -171,7 +170,7 @@ class ArticleRepository @Inject constructor (
                         emit(ResultCustom.Failure(resultAPI.errorMessage))
 
                     // En chargement
-                    ResultCustom.Loading -> {
+                    is ResultCustom.Loading -> {
                         // Propagation du chargement
                         emit(ResultCustom.Loading)
                     }

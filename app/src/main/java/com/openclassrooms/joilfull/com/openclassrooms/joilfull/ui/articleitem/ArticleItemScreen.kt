@@ -191,8 +191,6 @@ fun ArticleItemDetailComposable(
     // https://developer.android.com/develop/ui/compose/accessibility/traversal?hl=fr
     // .semantics { this.traversalIndex = -3f } => par défaut vaut 0. En utilisant les valeurs négatives, l'élément qui a le nombre le plus faible aura le focus en 1er
 
-    // TODO Question : Quelle stratégie pour détecter les recompositions inutiles ?
-
     Column(
         modifier = modifier
             .padding(

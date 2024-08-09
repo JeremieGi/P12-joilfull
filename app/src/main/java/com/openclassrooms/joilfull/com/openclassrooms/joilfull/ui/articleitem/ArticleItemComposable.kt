@@ -127,8 +127,6 @@ fun ArticleItemSimpleComposable(
 
                 }
 
-                // TODO : A montrer à Denis : Gestion de la taille de la box très petite
-
                 // Si box assez haute
                 val modifierLike = if (boxSize.height > 300) {
                     Modifier
