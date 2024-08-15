@@ -1,7 +1,6 @@
 package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem
 
 
-import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -51,7 +50,7 @@ import com.openclassrooms.joilfull.ui.theme.JoilfullTheme
 fun ArticleItemSimpleComposable(
     modifier: Modifier = Modifier,
     article : Article,
-    bModeDetail : Boolean,  // Vrai => Mode détails, faux => Mode Item
+    bModeDetail : Boolean,          // Vrai => Mode détails (liste), faux => Mode Item
     bModeItemOnRight : Boolean,
     onArticleClickP : (Article) -> Unit,
     onClickLikeP : (bValLike : Boolean) -> Unit
@@ -113,9 +112,6 @@ fun ArticleItemSimpleComposable(
 
                     GlideImage(
                         modifier = Modifier
-                            /*.heightIn(
-                                min = 300.dp
-                            )*/
                             .fillMaxSize()
                             .background(Color.Gray)       // Pour les photos plus petites (comble l'espace)
 
@@ -128,7 +124,7 @@ fun ArticleItemSimpleComposable(
                 }
 
                 // Si box assez haute
-                val modifierLike = if (boxSize.height > 300) {
+                val modifierLike = if (boxSize.height >= 300) {
                     Modifier
                         .align(Alignment.BottomEnd)
                         .padding(10.dp)
@@ -210,7 +206,6 @@ fun ArticleItemSimpleComposable(
 
 
 @Preview(name = "Light Mode")
-@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES/*, showBackground = true*/)
 @Composable
 fun ArticleItemComposablePreview() {
 
@@ -240,7 +235,10 @@ fun ArticleItemComposablePreview() {
 }
 
 // Preview dans les items
-@Preview(name = "Item Mode",showBackground = true, heightDp = 250, widthDp = 198)
+@Preview(name = "Item Mode",
+    showBackground = true,
+    heightDp = 300,
+    widthDp = 250)
 @Composable
 fun ArticleItemComposablePreviewItemMode() {
 

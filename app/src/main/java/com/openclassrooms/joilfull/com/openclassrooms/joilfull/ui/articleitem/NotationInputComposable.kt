@@ -1,11 +1,11 @@
 package com.openclassrooms.joilfull.com.openclassrooms.joilfull.ui.articleitem
 
-import android.content.res.Configuration
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -360,7 +361,7 @@ fun StarRatingBar(
     val starSpacing = (0.5f * density).dp
 
     Row(
-        modifier = modifier,//.selectableGroup(),
+        modifier = modifier.horizontalScroll(rememberScrollState()), // Scrollable horizontalement pour gérer le cas où la largeur ne suffit pas à afficher 5 étoiles avec une hauteur de 42dp chacune (acessibilité)
         verticalAlignment = Alignment.CenterVertically
     ) {
         for (i in 1..maxStars) {
@@ -456,8 +457,7 @@ fun NotationInputComposableExistingFeedbackPreview() {
 
 }
 
-@Preview(name = "Light Mode")
-@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@Preview(showBackground = true)
 @Composable
 fun StarRatingBarPreview() {
 
@@ -475,3 +475,20 @@ fun StarRatingBarPreview() {
 
 }
 
+@Preview(name = "Light Mode")
+@Composable
+fun StarRatingBarTabletPortraitPreview() {
+
+    StarRatingBar(
+        modifier = Modifier
+            .width(
+                width = 200.dp
+            )
+        ,
+        bEnableP = true,
+        maxStars = 5,
+        ratingP = 3.5f,
+        onRatingChanged = {}
+    )
+
+}
