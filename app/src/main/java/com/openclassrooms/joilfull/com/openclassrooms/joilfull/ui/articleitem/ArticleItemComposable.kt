@@ -51,7 +51,7 @@ fun ArticleItemSimpleComposable(
     modifier: Modifier = Modifier,
     article : Article,
     bModeDetail : Boolean,          // Vrai => Mode détails (liste), faux => Mode Item
-    bModeItemOnRight : Boolean,
+    bModeItemOnRight : Boolean,     // Le détail de l'article s'affiche à droite ? Utile pour le clic sur le like
     onArticleClickP : (Article) -> Unit,
     onClickLikeP : (bValLike : Boolean) -> Unit
 ) {

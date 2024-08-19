@@ -69,19 +69,7 @@ fun ArticleScreen(
             .fillMaxSize()
     ) {
 
-//        val bModeItemOnRight = bDisplayItemOnRight(/*windowSize*/LocalContext.current)
-//
-//        val isBackStackEmpty = navController.currentBackStackEntry?.destination?.route
-//        logCompose("isBackStackEmpty = $isBackStackEmpty")
-//
-//        val onBackOrCloseP : (() -> Unit)
-//        if (bModeItemOnRight){
-//            onBackOrCloseP = viewModelArticle::unselectArticle
-//        }
-//        else{
-//            onBackOrCloseP = { navController.popBackStack() }
-//        }
-//
+
         // Cet écran est lancé soit en mode téléphone. En mode tablette, il peut aussi être lancé via le deep link et il faut alors que le bouton face un popBackStack
         val bModeItemOnRight = false
         val onBackOrCloseP : (() -> Unit) = { navController.popBackStack() }
